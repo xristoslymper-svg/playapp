@@ -2,539 +2,193 @@
 <html lang="en">
 <head>
 <meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>PlayPocket — Screen-Free Cognitive Play</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<meta name="theme-color" content="#fbf8f7" />
+<title>SmartParent — Play with purpose</title>
 <style>
 :root{
-  --ink:#2f3a36;
-  --muted:#7d8a84;
-  --bg:#fbf6f8;
-  --surface:#ffffff;
-  --line:#eadfe5;
-  --soft:#f8f2f5;
-  --accent:#8daf9d;
-  --accent-strong:#6e9480;
-  --accent-soft:#eef5f0;
-  --rose:#e8bfd0;
-  --rose-soft:#f9eaf1;
-  --shadow:0 10px 28px rgba(97,111,104,.06);
-  font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text",Inter,system-ui,sans-serif;
+  --bg:#fbf8f7;--card:#fff;--ink:#303936;--muted:#7d8783;--line:#ebe2e4;
+  --rose:#e9c2d1;--rose2:#d89eb5;--roseSoft:#fbf0f4;--sage:#9ab8a7;--sage2:#6f927f;--sageSoft:#eef5f1;
+  --lav:#e7def3;--yellow:#f3e7ac;--blue:#d9eaf0;--peach:#f3dac7;--aqua:#d8eeee;--green:#d9ebdd;
+  --shadow:0 12px 32px rgba(76,91,83,.055);
+  font-family:"Avenir Next","Nunito Sans","SF Pro Rounded","Segoe UI Rounded","Segoe UI",system-ui,-apple-system,sans-serif;
   color:var(--ink)
 }
-*{box-sizing:border-box}
-html,body{background:var(--bg)}
-body{margin:0;-webkit-font-smoothing:antialiased}
-button,input{font:inherit}
-button{color:inherit}
-.app{width:100%;max-width:560px;min-height:100vh;margin:0 auto;background:var(--bg);padding-bottom:96px}
-.page{padding:0 20px 40px}
-.brand{height:76px;padding:16px 20px;display:flex;align-items:center;gap:12px}
-.mark{width:40px;height:40px;border-radius:13px;background:linear-gradient(180deg,var(--accent),var(--accent-strong));color:#fff;display:grid;place-items:center;font-size:14px;font-weight:800}
-.brandname{font-size:19px;font-weight:750;letter-spacing:-.03em}
-.profilepill{margin-left:auto;border:1px solid var(--line);background:#fff;border-radius:999px;padding:5px 12px 5px 5px;display:flex;align-items:center;gap:8px;font-size:12px;font-weight:700;cursor:pointer}
-.profilepill span,.avatar{width:30px;height:30px;border-radius:10px;background:var(--rose-soft);color:var(--accent-strong);display:grid;place-items:center;font-weight:750}
-.eyebrow{display:block;color:var(--muted);font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase}
-h1,h2,strong{letter-spacing:-.03em}
-.hero,.quicknow,.panel,.card,.gamehero,.skillpanel,.info,.variation,.reassure,.evidence,.profileinsight,.profilesummary,.search,.empty{background:#fff;border:1px solid var(--line);border-radius:28px;box-shadow:var(--shadow)}
-.hero{margin:0 20px 24px;padding:28px 24px;display:grid;gap:18px;background:linear-gradient(180deg,#fff,#fbf8fa)}
-.hero h1{font-size:42px;line-height:1.02;margin:0;font-weight:760}
-.hero h1 em{font-style:normal;color:var(--accent-strong)}
-.hero p,.muted{color:var(--muted);line-height:1.56}
-.hero p{font-size:15px;margin:0;max-width:42ch}
-.actions{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.primary,.secondary{border-radius:18px;min-height:56px;padding:0 18px;font-weight:720;cursor:pointer;display:flex;align-items:center;justify-content:center}
-.primary{border:0;background:var(--accent-strong);color:#fff}
-.secondary{border:1px solid var(--line);background:var(--rose-soft);color:var(--ink)}
-.trust{padding-top:14px;border-top:1px solid var(--line);color:var(--muted);font-size:11px;line-height:1.5}
-.quicknow{margin:0 20px 24px;padding:18px;display:grid;grid-template-columns:46px 1fr 42px;gap:12px;align-items:center;background:linear-gradient(180deg,#fff,#f8fbf8)}
-.quickicon{width:46px;height:46px;border-radius:15px;background:linear-gradient(180deg,var(--accent),var(--accent-strong));color:#fff;display:grid;place-items:center;font-size:15px}
-.quicknow h2{font-size:21px;line-height:1.1;margin:3px 0 4px;font-weight:730}
-.quicknow p{font-size:12px;margin:0}
-.roundbtn{width:42px;height:42px;border:1px solid var(--line);border-radius:14px;background:var(--rose-soft);cursor:pointer}
-.section{padding:0 20px 24px}
-.sectionhead{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;margin-bottom:14px}
-.sectionhead h2{font-size:29px;line-height:1.06;margin:4px 0 0;font-weight:740}
-.smalllink,.textbtn{border:0;background:transparent;color:#111;font-weight:700;cursor:pointer;font-size:12px}
-.skillstrip{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.skillchip{border:1px solid var(--line);background:linear-gradient(180deg,#fff,#fcf8fa);border-radius:24px;padding:18px 16px;min-height:118px;text-align:left;cursor:pointer;display:flex;flex-direction:column;justify-content:space-between}
-.skillchip b{font-size:16px;font-weight:740;line-height:1.05;display:flex;align-items:center;gap:8px}
-.skillchip span{font-size:11px;color:var(--muted);line-height:1.4}
-.panel{margin:0 20px 24px;padding:22px;background:linear-gradient(180deg,#fff,#fdfafb)}
-.panel h2{font-size:25px;line-height:1.06;margin:5px 0 0;font-weight:740}
-.panel p{font-size:12px;margin:12px 0 0}
-.skillmix{display:grid;grid-template-columns:1fr;gap:10px;margin-top:16px}
-.skillmix div{min-height:84px;background:var(--accent-soft);border:1px solid #dce8df;border-radius:20px;padding:14px;display:flex;flex-direction:column;justify-content:center;gap:4px}
-.skillmix strong{font-size:14px;font-weight:720;display:flex;align-items:center;gap:8px}
-.skillmix span{font-size:11px;color:var(--muted);line-height:1.4}
-.weeklylist{display:grid;gap:10px;margin-top:14px}
-.weeklylist button{border:1px solid var(--line);background:var(--soft);border-radius:18px;min-height:56px;padding:12px 14px;display:flex;align-items:center;justify-content:space-between;text-align:left;font-size:12px;font-weight:700;cursor:pointer}.weeklylist .label{display:flex;align-items:center;gap:8px}
-.quickgrid{display:grid;grid-template-columns:1fr;gap:12px}
-.mini{border:1px solid var(--line);background:linear-gradient(180deg,#fff,#fcf8fa);border-radius:24px;padding:18px;text-align:left;min-height:158px;cursor:pointer;display:flex;flex-direction:column}
-.mini .topline{display:flex;justify-content:space-between;margin-bottom:18px}.mini .topline .miniemoji{font-size:20px}
-.mini strong{font-size:23px;line-height:1.05;margin-bottom:8px;font-weight:740}
-.mini small{font-size:12px;color:var(--muted);line-height:1.45}
-.miniskill{margin-top:auto;padding-top:14px;font-size:10px;font-weight:750;color:var(--accent-strong)}
-.reassure{margin:0 20px 24px;padding:18px;display:flex;gap:12px;background:linear-gradient(180deg,#fff,#f8fbf8)}
-.reassure p{font-size:12px;margin:4px 0 0}
-.topbar{height:66px;padding:10px 14px;position:sticky;top:0;z-index:5;background:rgba(251,246,248,.92);backdrop-filter:blur(14px);display:grid;grid-template-columns:42px 1fr 42px;align-items:center;text-align:center;font-size:13px;font-weight:720;border-bottom:1px solid var(--line)}
-.iconbtn{border:1px solid var(--line);background:#fff;width:40px;height:40px;border-radius:14px;font-size:20px;cursor:pointer}
-.intro{padding:24px 0 20px}
-.intro h1{font-size:36px;line-height:1.02;margin:8px 0 10px;font-weight:760}
-.intro p{font-size:14px;margin:0}
-.presets{display:flex;gap:8px;overflow:auto;padding-bottom:10px;scrollbar-width:none}
-.presets::-webkit-scrollbar{display:none}
-.presets button{flex:none;border:1px solid var(--line);background:#fff;border-radius:999px;padding:10px 14px;font-size:11px;font-weight:700;cursor:pointer}
-.q{padding:24px 0;border-top:1px solid var(--line)}
-.q h2{font-size:24px;margin:0 0 6px;font-weight:740}
-.qsub{font-size:12px;color:var(--muted);margin:0 0 14px;line-height:1.5}
-.grid{display:grid;gap:10px}.grid.two{grid-template-columns:repeat(2,1fr)}.grid.four{grid-template-columns:repeat(4,1fr)}
-.choice,.skillchoice,.material{border:1px solid var(--line);background:#fff;cursor:pointer}
-.choice{min-height:82px;border-radius:20px;padding:12px;font-size:12px;font-weight:700}
-.age{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}.age .choice{aspect-ratio:1;min-height:0}
-.sel{background:var(--accent)!important;border-color:var(--accent)!important;color:#fff!important}
-.sel small{color:#eef6f1!important}.sel .skillicon{background:rgba(255,255,255,.18);color:#fff;border-color:rgba(255,255,255,.24)}
-.profilesummary{width:100%;padding:12px 14px;display:grid;grid-template-columns:42px 1fr 24px;gap:10px;align-items:center;text-align:left;cursor:pointer}
-.profilesummary strong{display:block;font-size:13px}.profilesummary small{display:block;font-size:11px;color:var(--muted);margin-top:2px}
-.skillgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.skillchoice{min-height:128px;border-radius:24px;padding:16px;display:flex;align-items:flex-start;gap:10px;text-align:left;background:linear-gradient(180deg,#fff,#fbf8fa)}
-.skillchoice.wide{grid-column:1/-1;min-height:96px}
-.skillicon{width:34px;height:34px;border-radius:11px;background:var(--accent-soft);border:1px solid #dce8df;display:grid;place-items:center;font-size:13px;flex:none}
-.skillchoice strong{font-size:14px;font-weight:720}.skillchoice small{display:block;font-size:10px;color:var(--muted);line-height:1.4;margin-top:4px}
-.materialgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-.material{border-radius:20px;min-height:92px;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:6px;font-size:11px;font-weight:700;padding:8px;background:linear-gradient(180deg,#fff,#f8fbf8)}.material span{font-size:21px}
-.full{width:100%;margin-top:12px}
-.match{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:18px}
-.match div{border:1px solid var(--line);background:#fff;border-radius:22px;padding:14px;box-shadow:var(--shadow)}
-.match span{display:block;text-transform:uppercase;color:var(--muted);letter-spacing:.09em;font-size:9px;font-weight:700}.match strong{display:block;margin-top:6px;font-size:13px;font-weight:720}
-.cards{display:grid;gap:14px}.card{padding:20px;overflow:hidden}.cardtop{display:grid;grid-template-columns:42px 1fr 42px;align-items:center;margin-bottom:16px}.rank{width:40px;height:40px;border-radius:14px;background:var(--accent-soft);border:1px solid #dce8df;display:grid;place-items:center;font-size:10px;font-weight:750} .cardlabel{text-align:center;color:var(--muted);font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.10em}.heart{border:0;background:transparent;font-size:21px;cursor:pointer}.emoji-inline{margin-right:6px}.metainline{display:flex;gap:6px;flex-wrap:wrap}.metainline span{font-size:10px;background:var(--accent-soft);border:1px solid #dce8df;border-radius:999px;padding:6px 9px;color:var(--accent-strong);font-weight:700}.card h2{font-size:31px;line-height:1.02;margin:12px 0 8px;font-weight:760}.card p{font-size:14px;margin:0}.skillblock{padding:14px 0 12px;margin-top:12px;border-top:1px solid var(--line)}.skilllabel{display:block;color:#929793;font-size:9px;text-transform:uppercase;letter-spacing:.1em;font-weight:700;margin-bottom:7px}.tags{display:flex;gap:7px;flex-wrap:wrap}.skilltag{background:var(--accent-soft);border:1px solid #d9e7dd;border-radius:999px;padding:7px 10px;font-size:10px;font-weight:700;display:inline-flex;align-items:center;gap:6px}.why{margin:12px 0 10px;background:var(--rose-soft);border:1px solid var(--line);border-radius:18px;padding:12px 14px;color:#5d625f;font-size:11px;line-height:1.5}.softtag{background:#fff;border:1px solid var(--line);border-radius:999px;padding:6px 9px;font-size:10px;color:var(--muted)}.cardaction{width:100%;margin-top:14px;border:0;background:linear-gradient(180deg,var(--accent),var(--accent-strong));color:#fff;border-radius:18px;min-height:54px;padding:0 16px;font-weight:720;display:flex;align-items:center;justify-content:space-between;cursor:pointer}
-.empty{padding:20px;font-size:14px;color:var(--muted)}
-.gamehero{padding:24px;margin-top:2px}.gameicon{width:52px;height:52px;border-radius:17px;background:linear-gradient(180deg,var(--accent),var(--accent-strong));color:#fff;display:grid;place-items:center;font-size:22px;margin-bottom:16px}.gamehero h1{font-size:38px;line-height:1.02;margin:8px 0 10px;font-weight:760}.metagrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:18px}.metabox{border:1px solid var(--line);background:var(--soft);border-radius:18px;padding:14px}.metabox span{display:block;text-transform:uppercase;letter-spacing:.09em;font-size:9px;color:#929793;font-weight:700}.metabox strong{display:block;margin-top:6px;font-size:13px;font-weight:720}
-.skillpanel,.info{padding:20px;margin-top:14px}.info h2,.feedback h2{font-size:24px;margin:0 0 10px;font-weight:740}.inlineaction{margin-top:12px;border:1px solid var(--line);background:var(--rose-soft);border-radius:999px;padding:10px 14px;font-weight:700;cursor:pointer}.steps{list-style:none;padding:0;margin:0;display:grid;gap:12px}.steps li{display:grid;grid-template-columns:32px 1fr;gap:12px}.num{width:32px;height:32px;border-radius:11px;background:linear-gradient(180deg,var(--accent),var(--accent-strong));color:#fff;display:grid;place-items:center;font-size:11px;font-weight:750}.variations{display:grid;grid-template-columns:1fr;gap:12px;margin-top:14px}.variation{padding:18px}.variation strong{display:block;font-size:16px;margin-bottom:6px}.variation p{margin:0;color:var(--muted);font-size:13px;line-height:1.5}.evidence{margin-top:14px;padding:16px;display:flex;gap:10px;font-size:12px;color:var(--muted);line-height:1.5}.feedback{padding:20px 0 0}.feedback p{font-size:13px;color:var(--muted)}.feedbackgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}.feedbackgrid button{border:1px solid var(--line);background:#fff;border-radius:18px;min-height:54px;padding:12px;font-weight:700;cursor:pointer;text-align:left}.search{display:flex;align-items:center;gap:8px;padding:12px 16px;margin-bottom:14px}.search input,.textinput{width:100%;border:0;background:transparent;outline:none;font-size:14px}.textinput{border:1px solid var(--line);background:#fff;border-radius:20px;padding:14px 16px}.profileswitch{display:flex;gap:8px;overflow:auto;padding-bottom:8px}.profileswitch button{border:1px solid var(--line);background:var(--rose-soft);border-radius:999px;padding:10px 14px;font-weight:700} .profileinsight{padding:18px;display:flex;gap:12px;margin-top:16px}.profileinsight p{font-size:12px;margin:4px 0 0}.pillrow{display:flex;gap:8px;flex-wrap:wrap}.pill{display:inline-flex;align-items:center;gap:7px;padding:8px 10px;border-radius:999px;background:var(--accent-soft);border:1px solid #d9e7dd;font-size:11px;font-weight:700;color:var(--accent-strong)}.nav{position:fixed;left:50%;transform:translateX(-50%);bottom:16px;width:min(520px,calc(100% - 22px));background:rgba(255,255,255,.96);border:1px solid var(--line);border-radius:24px;padding:7px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;box-shadow:0 18px 38px rgba(120,132,126,.12)}.nav button{border:0;background:transparent;border-radius:18px;min-height:56px;display:grid;place-items:center;gap:2px;font-size:11px;font-weight:700;color:var(--muted);cursor:pointer}.nav .active{background:var(--accent-strong);color:#fff}
-@media(max-width:520px){.actions{grid-template-columns:1fr}.grid.four{grid-template-columns:repeat(2,1fr)}.skillgrid,.skillstrip,.match,.feedbackgrid,.metagrid{grid-template-columns:1fr 1fr}}
+*{box-sizing:border-box}html,body{margin:0;background:var(--bg);-webkit-font-smoothing:antialiased}button,input,textarea,select{font:inherit;color:inherit}button{cursor:pointer}.app{max-width:560px;min-height:100vh;margin:auto;padding-bottom:95px}.page{padding:0 18px 14px}.top{padding:16px 18px 10px;display:flex;align-items:center;gap:11px}.logo{width:42px;height:42px;border-radius:15px;background:linear-gradient(180deg,var(--sage),var(--sage2));color:#fff;display:grid;place-items:center;font-size:20px;box-shadow:0 6px 18px rgba(111,146,127,.18)}.brandcopy{display:flex;flex-direction:column;line-height:1}.brandcopy b{font-size:20px;font-weight:800;letter-spacing:-.035em}.brandcopy span{font-size:10px;color:var(--muted);font-weight:650;margin-top:6px;line-height:1.25;max-width:285px}.avatar{margin-left:auto;border:1px solid var(--line);background:#fff;border-radius:999px;padding:4px 10px 4px 5px;display:flex;align-items:center;gap:7px;min-height:42px;font-size:11px;font-weight:800}.avatar i{font-style:normal;width:31px;height:31px;border-radius:11px;background:var(--roseSoft);display:grid;place-items:center}
+h1,h2,h3,p{margin-top:0}h1,h2,h3{letter-spacing:-.035em}.eyebrow{text-transform:uppercase;letter-spacing:.1em;font-size:10px;font-weight:850;color:var(--muted)}.muted{color:var(--muted);line-height:1.5}.card{background:var(--card);border:1px solid var(--line);border-radius:27px;box-shadow:var(--shadow)}.section{margin-top:14px}.section-head{display:flex;align-items:end;justify-content:space-between;margin:0 3px 10px}.section-head h2{font-size:24px;margin:4px 0 0}.link{border:0;background:transparent;color:var(--sage2);font-weight:850;font-size:12px;padding:6px}.btn{border:0;border-radius:18px;min-height:52px;padding:0 16px;font-weight:820}.primary{background:var(--sage2);color:#fff}.secondary{background:var(--roseSoft);border:1px solid var(--line)}.ghost{background:#fff;border:1px solid var(--line)}.full{width:100%}.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}.chips{display:flex;flex-wrap:wrap;gap:7px}.chip{padding:7px 10px;border-radius:999px;background:var(--sageSoft);border:1px solid #d9e7df;font-size:10px;font-weight:760}.hero{padding:24px;background:linear-gradient(180deg,#fff,#fdfafb)}.hero .big{font-size:56px;line-height:.95;font-weight:830;letter-spacing:-.065em;margin:10px 0 5px}.hero .big small{font-size:18px;color:var(--muted);font-weight:720;letter-spacing:-.02em}.hero .goal-label{font-size:12px;color:var(--muted);font-weight:700}.progress{height:11px;border-radius:999px;background:#f1ecee;overflow:hidden;margin:14px 0 9px}.progress span{display:block;height:100%;border-radius:999px;background:linear-gradient(90deg,var(--rose2),var(--sage2))}.mini-stats{display:flex;justify-content:space-between;gap:10px;font-size:11px;color:var(--muted);margin-bottom:17px}.mini-stats b{color:var(--ink)}.home-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px}.home-actions .btn{font-size:13px}.mix{padding:20px}.period-tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin:4px 0 15px}.period-tabs button{border:1px solid var(--line);background:#faf7f8;border-radius:999px;min-height:36px;font-size:11px;font-weight:800;color:var(--muted)}.period-tabs button.sel{background:var(--sageSoft);color:var(--sage2);border-color:#d6e4dc}.mix-row{display:grid;grid-template-columns:34px minmax(0,1fr) 45px;gap:10px;align-items:center;margin-top:14px}.mix-icon{width:34px;height:34px;border-radius:12px;display:grid;place-items:center}.mix-label{font-size:12px;font-weight:800;margin-bottom:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.mix-track{height:9px;background:#f1edef;border-radius:999px;overflow:hidden}.mix-track span{display:block;height:100%;border-radius:999px}.pct{text-align:right;font-size:12px;font-weight:850}.insight{margin-top:17px;background:var(--roseSoft);border:1px solid #f0dce4;border-radius:17px;padding:13px 14px;font-size:12px;font-weight:650;line-height:1.45;letter-spacing:-.01em;min-height:48px;display:flex;align-items:center}.recommend{padding:20px;background:linear-gradient(180deg,#fff,#f8fbf9)}.recommend h2{font-size:28px;margin:7px 0 8px}.recommend p{font-size:13px}.why{margin:12px 0;background:var(--roseSoft);border:1px solid #f0dce4;border-radius:17px;padding:13px 14px;color:#626d68;font-size:12px;font-weight:650;line-height:1.45;letter-spacing:-.01em;min-height:48px;display:flex;align-items:center}.milestone-preview{padding:20px;display:grid;grid-template-columns:50px 1fr 24px;gap:12px;align-items:center;background:var(--card)}.badge{width:50px;height:50px;border-radius:17px;background:var(--roseSoft);display:grid;place-items:center;font-size:23px}.milestone-preview h3{font-size:18px;line-height:1.2;margin:4px 0 4px;font-weight:820}.milestone-preview p{font-size:12px;line-height:1.45;margin:0;font-weight:650}
+.nav{position:fixed;left:50%;transform:translateX(-50%);bottom:max(10px,env(safe-area-inset-bottom));width:min(530px,calc(100% - 18px));padding:7px;background:rgba(255,255,255,.96);backdrop-filter:blur(18px);border:1px solid var(--line);border-radius:24px;display:grid;grid-template-columns:repeat(5,1fr);gap:5px;z-index:20;box-shadow:0 18px 40px rgba(71,85,78,.12)}.nav button{border:0;background:transparent;border-radius:17px;min-height:58px;color:var(--muted);display:grid;place-items:center;font-size:10px;font-weight:780}.nav button b{font-size:18px;font-weight:500}.nav .active{background:var(--sageSoft);color:var(--sage2)}
+.screen-head{padding:8px 2px 15px}.screen-head h1{font-size:34px;line-height:1.05;margin:7px 0}.screen-head p{font-size:13px}.panel{padding:19px}.filter-label{font-size:13px;font-weight:850;margin:18px 0 9px}.filter-label:first-child{margin-top:0}.filter-row{display:flex;gap:7px;overflow:auto;padding-bottom:3px;scrollbar-width:none}.filter-row button{flex:none;border:1px solid var(--line);background:#fff;border-radius:999px;padding:10px 14px;font-size:11px;font-weight:780}.filter-row button.sel{background:var(--sage2);color:#fff;border-color:var(--sage2)}.balance{width:100%;border:1px solid #d9e6df;background:var(--sageSoft);border-radius:21px;padding:14px 15px;text-align:left;display:flex;align-items:center;justify-content:space-between;gap:12px}.balance b{font-size:13px}.balance small{display:block;font-size:10px;color:var(--muted);font-weight:650;margin-top:3px;line-height:1.4}.balance.sel{outline:2px solid #c6ddcf}.skill-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}.skill{position:relative;border:1px solid var(--line);background:#fff;border-radius:20px;min-height:72px;padding:13px;text-align:left;font-size:12px;font-weight:820;display:flex;align-items:flex-start;gap:9px}.skill .em{font-size:19px;line-height:1}.skill.sel{background:var(--roseSoft);border-color:#deb2c3}.skill.sel:after{content:'✓';position:absolute;right:9px;top:9px;width:19px;height:19px;border-radius:999px;background:var(--sage2);color:#fff;display:grid;place-items:center;font-size:11px}.counter{font-size:10px;color:var(--muted);margin:7px 2px 0}.rec-list{display:grid;gap:12px;margin-top:14px}.game-card{padding:19px}.game-top{display:flex;align-items:center;justify-content:space-between;gap:10px}.game-emoji{width:46px;height:46px;border-radius:15px;background:var(--roseSoft);display:grid;place-items:center;font-size:22px}.game-card h2{font-size:27px;margin:12px 0 7px}.game-card p{font-size:13px}.rank{font-size:10px;font-weight:850;color:var(--sage2);text-transform:uppercase;letter-spacing:.08em}.activity-detail{padding:21px}.activity-detail h1{font-size:34px;margin:10px 0 8px}.steps{padding-left:20px}.steps li{margin:0 0 10px;line-height:1.45;font-size:13px}.note{padding:13px 14px;border-radius:17px;background:var(--sageSoft);font-size:12px;line-height:1.45;margin-top:11px}.warn{background:#fff5e9}.log-list{display:grid;gap:9px}.log-item{width:100%;border:1px solid var(--line);background:#fff;border-radius:19px;min-height:66px;padding:10px 12px;display:grid;grid-template-columns:40px 1fr 24px;gap:10px;align-items:center;text-align:left}.log-item i{font-style:normal;width:40px;height:40px;border-radius:13px;background:var(--roseSoft);display:grid;place-items:center;font-size:19px}.log-item b{display:block;font-size:14px}.log-item small{font-size:10px;color:var(--muted)}.input{width:100%;border:1px solid var(--line);background:#fff;border-radius:17px;min-height:50px;padding:12px 14px;outline:none}.input:focus{border-color:#c8dcd0;box-shadow:0 0 0 3px var(--sageSoft)}textarea.input{min-height:88px;resize:vertical}.future{margin-top:10px;padding:13px 14px;border:1px dashed #ead6de;border-radius:17px;background:var(--roseSoft);color:var(--muted);font-size:12px;font-weight:650;line-height:1.45;letter-spacing:-.01em;min-height:48px;display:flex;align-items:center}.session{padding:20px}.duration-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}.duration-grid button{border:1px solid var(--line);background:#fff;border-radius:14px;min-height:44px;font-size:11px;font-weight:780}.duration-grid button.sel{background:var(--sage2);color:#fff}.together{padding:15px;border-radius:20px;background:var(--sageSoft);border:1px solid #dbe8e0}.stepper{display:flex;align-items:center;justify-content:center;gap:13px;margin:8px 0 10px}.stepper button{width:40px;height:40px;border-radius:13px;border:1px solid var(--line);background:#fff;font-size:20px}.stepper strong{font-size:22px;min-width:70px;text-align:center}.shortcuts{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}.shortcuts button{border:1px solid var(--line);background:#fff;border-radius:13px;min-height:40px;font-size:11px;font-weight:760}.confirm{text-align:center;padding:26px}.confirm-icon{width:72px;height:72px;border-radius:24px;background:var(--roseSoft);display:grid;place-items:center;font-size:35px;margin:0 auto 14px}.confirm h1{font-size:32px;margin:6px 0}.library-grid{display:grid;gap:10px}.lib-card{padding:15px;display:grid;grid-template-columns:42px 1fr auto;gap:11px;align-items:center}.lib-card .game-emoji{width:42px;height:42px}.lib-card h3{margin:0 0 4px;font-size:15px}.lib-card p{margin:0;font-size:10px}.discover-intro{padding:20px;background:linear-gradient(180deg,#fff,#fdfafb)}.discover-intro h1{font-size:32px;line-height:1.05;margin:7px 0 8px}.pref-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.pref{position:relative;border:1px solid var(--line);background:#fff;border-radius:18px;min-height:58px;padding:11px 12px;text-align:left;font-size:11px;font-weight:800;display:flex;align-items:center;gap:8px}.pref .em{font-size:18px}.pref.sel{background:var(--roseSoft);border-color:#dfb7c6}.pref.sel:after{content:'✓';position:absolute;right:8px;top:8px;width:18px;height:18px;border-radius:999px;background:var(--sage2);color:#fff;display:grid;place-items:center;font-size:10px}.product-list{display:grid;gap:12px;margin-top:12px}.product-card{padding:18px}.product-head{display:grid;grid-template-columns:56px 1fr;gap:12px;align-items:center}.product-art{width:56px;height:56px;border-radius:18px;background:linear-gradient(145deg,var(--roseSoft),var(--sageSoft));display:grid;place-items:center;font-size:27px;border:1px solid var(--line)}.product-card h3{font-size:19px;line-height:1.15;margin:0 0 4px}.product-meta{font-size:10px;color:var(--muted);font-weight:700}.product-why{margin:12px 0;background:var(--sageSoft);border:1px solid #dbe8e0;border-radius:16px;padding:11px 12px;font-size:11px;line-height:1.45}.affiliate-note{font-size:9px;color:var(--muted);line-height:1.4;margin:10px 2px 0}.discover-count{font-size:10px;color:var(--muted);margin:7px 2px 0}.goal-card{padding:20px;margin-bottom:14px}.goal-card h2{font-size:24px;line-height:1.15;margin:6px 0 6px;font-weight:820}.goal-card p{font-size:12px;line-height:1.45;margin:0 0 14px;font-weight:650}.goal-options{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-bottom:10px}.goal-options button{border:1px solid var(--line);background:#fff;border-radius:14px;min-height:43px;font-size:11px;font-weight:800}.goal-options button.sel{background:var(--sage2);color:#fff;border-color:var(--sage2)}.goal-custom{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center}.goal-custom .input{min-height:44px}.goal-current{display:flex;align-items:baseline;gap:6px;margin:10px 0 14px}.goal-current strong{font-size:36px;letter-spacing:-.04em;font-weight:830}.goal-current span{font-size:12px;color:var(--muted);font-weight:700}.milestones{display:grid;gap:12px}.ms{padding:18px;display:grid;grid-template-columns:48px 1fr;gap:12px;align-items:center}.ms .badge{width:48px;height:48px;border-radius:16px;font-size:21px}.ms h3{font-size:17px;line-height:1.2;margin:3px 0 4px;font-weight:820}.ms p{font-size:12px;line-height:1.4;margin:0;font-weight:650}.locked{opacity:.62}.profile-row{padding:13px 0;border-top:1px solid var(--line)}.profile-row:first-child{border-top:0}.profile-row label{font-size:11px;font-weight:800;display:block;margin-bottom:7px}
+@media(min-width:700px){.app{padding-top:8px}}
 </style>
 </head>
-<body><div class="app" id="app"></div>
+<body>
+<div id="app" class="app"></div>
 <script>
-const games = [
-  {
-    id: 'secret-delivery',
-    title: 'Secret Delivery',
-    summary: 'Remember a little mission and deliver the right objects in order.',
-    ageMin: 5,
-    ageMax: 7,
-    duration: 10,
-    locations: ['home'],
-    materials: ['kitchen-objects', 'socks', 'toys'],
-    skills: ['memory', 'attention'],
-    energy: 'medium',
-    challenge: 2,
-    setupMinutes: 1,
-    instructions: [
-      'Place 3–5 familiar objects at one end of the room.',
-      'Give a short mission: “Bring me the spoon, then the sock, then the red cup.”',
-      'Let your child complete the mission without reminders if they can.',
-      'Swap roles after a few rounds so your child gives you a mission.'
-    ],
-    supports: 'Practises holding several pieces of information in mind while staying focused on a goal.',
-    easier: 'Ask for two objects only, with no order requirement.',
-    harder: 'Add a fourth object or a rule such as touching the sofa before every delivery.',
-    silly: 'Use a secret-agent voice and invent an urgent “mission from headquarters.”',
-    safety: 'Use lightweight, non-breakable objects.',
-    parentEffort: 'low',
-  },
-  {
-    id: 'sock-sort-sprint',
-    title: 'Sock Sort Sprint',
-    summary: 'Turn a pile of socks into a fast little pattern-and-matching challenge.',
-    ageMin: 4,
-    ageMax: 7,
-    duration: 5,
-    locations: ['home'],
-    materials: ['socks'],
-    skills: ['attention', 'spatial', 'numbers'],
-    energy: 'medium',
-    challenge: 1,
-    setupMinutes: 1,
-    instructions: [
-      'Scatter several pairs of socks on the floor.',
-      'Ask your child to find matching pairs.',
-      'Next, sort them by colour, size, pattern, or owner.',
-      'Finish by counting how many pairs you found.'
-    ],
-    supports: 'Practises visual attention, matching, categorising, and early number sense.',
-    easier: 'Use only three very different pairs.',
-    harder: 'Mix in similar-looking socks or ask for two sorting rules at once.',
-    silly: 'Pretend every sock is looking for its “best friend.”',
-    parentEffort: 'low',
-  },
-  {
-    id: 'cushion-islands',
-    title: 'Cushion Islands',
-    summary: 'Cross the room using cushions as islands while following changing movement rules.',
-    ageMin: 4,
-    ageMax: 8,
-    duration: 10,
-    locations: ['home'],
-    materials: ['cushions'],
-    skills: ['movement', 'body-awareness', 'self-control'],
-    energy: 'active',
-    challenge: 2,
-    setupMinutes: 2,
-    instructions: [
-      'Place cushions on the floor with safe gaps between them.',
-      'The floor becomes “water”; your child moves from island to island.',
-      'Call out a rule before each crossing: tiptoe, freeze halfway, move sideways, or carry a toy.',
-      'Let your child invent the next movement rule.'
-    ],
-    supports: 'Practises balance, motor planning, body awareness, and stopping or changing an action on cue.',
-    easier: 'Put cushions close together and use normal walking.',
-    harder: 'Increase gaps slightly or add memory rules such as “red cushion, then blue cushion.”',
-    silly: 'Add imaginary sharks, sleeping dragons, or ticklish lava.',
-    safety: 'Use a clear floor area, non-slip cushions, and no jumping near furniture.',
-    parentEffort: 'medium',
-  },
-  {
-    id: 'story-dice-without-dice',
-    title: 'Three-Thing Story',
-    summary: 'Build a tiny story around three random things you can see.',
-    ageMin: 4,
-    ageMax: 8,
-    duration: 10,
-    locations: ['home', 'outside', 'car', 'waiting'],
-    materials: ['none'],
-    skills: ['language', 'creativity'],
-    energy: 'calm',
-    challenge: 1,
-    setupMinutes: 0,
-    instructions: [
-      'Choose three things you can both see, such as a dog, a red sign, and a cloud.',
-      'Start a story that includes the first object.',
-      'Take turns adding one sentence at a time.',
-      'Make sure all three objects appear before the story ends.'
-    ],
-    supports: 'Practises vocabulary, sequencing, flexible thinking, and shared storytelling.',
-    easier: 'Use two objects and let the parent do most of the story setup.',
-    harder: 'Add a required emotion, character goal, or surprise ending.',
-    silly: 'Every third sentence must contain a ridiculous sound effect.',
-    parentEffort: 'low',
-  },
-  {
-    id: 'copy-my-clap',
-    title: 'Copy My Clap',
-    summary: 'Repeat growing clap-and-tap patterns like a living memory game.',
-    ageMin: 4,
-    ageMax: 8,
-    duration: 5,
-    locations: ['home', 'outside', 'waiting'],
-    materials: ['none'],
-    skills: ['memory', 'attention', 'movement'],
-    energy: 'medium',
-    challenge: 1,
-    setupMinutes: 0,
-    instructions: [
-      'Make a simple two-part pattern, such as clap-clap, tap knees.',
-      'Your child copies it.',
-      'Add one new action each round.',
-      'Switch roles and copy your child’s patterns too.'
-    ],
-    supports: 'Practises listening, sequencing, working memory, and coordination.',
-    easier: 'Use two actions and repeat them slowly.',
-    harder: 'Use cross-body movements or add pauses that must be remembered.',
-    silly: 'Mix in animal noises, eyebrow wiggles, or dramatic bows.',
-    parentEffort: 'low',
-  },
-  {
-    id: 'cup-code',
-    title: 'Cup Code',
-    summary: 'Copy and extend simple cup patterns to crack the secret code.',
-    ageMin: 5,
-    ageMax: 8,
-    duration: 10,
-    locations: ['home'],
-    materials: ['cups'],
-    skills: ['spatial', 'problem-solving', 'numbers'],
-    energy: 'calm',
-    challenge: 2,
-    setupMinutes: 1,
-    instructions: [
-      'Use 4–8 plastic cups.',
-      'Build a small arrangement and ask your child to copy it.',
-      'Then create a repeating pattern: upright, upside-down, upright, upside-down.',
-      'Ask what should come next and let your child create a code for you.'
-    ],
-    supports: 'Practises spatial matching, pattern recognition, prediction, and planning.',
-    easier: 'Copy a line of three cups.',
-    harder: 'Build a small 3D structure or show the model for five seconds, then cover it.',
-    silly: 'Each cup becomes a tiny alien house with an absurd resident.',
-    safety: 'Use plastic or paper cups rather than glass.',
-    parentEffort: 'low',
-  },
-  {
-    id: 'red-light-wiggle-light',
-    title: 'Red Light, Wiggle Light',
-    summary: 'Move, freeze, and switch rules on cue.',
-    ageMin: 4,
-    ageMax: 7,
-    duration: 5,
-    locations: ['home', 'outside'],
-    materials: ['none'],
-    skills: ['self-control', 'attention', 'movement'],
-    energy: 'active',
-    challenge: 1,
-    setupMinutes: 0,
-    instructions: [
-      'Choose two cues: “green” means move and “red” means freeze.',
-      'Play several quick rounds.',
-      'Add “yellow” for slow motion.',
-      'When that feels easy, swap the rules so red means move and green means freeze.'
-    ],
-    supports: 'Practises inhibition, attention, and switching between rules.',
-    easier: 'Use only move and freeze.',
-    harder: 'Reverse the rules or add a fourth cue such as “blue = spin once.”',
-    silly: 'Move like jelly, a robot, or a confused penguin.',
-    safety: 'Choose a clear area away from sharp furniture or traffic.',
-    parentEffort: 'low',
-  },
-  {
-    id: 'restaurant-detective',
-    title: 'Restaurant Detective',
-    summary: 'Spot tiny details around you without leaving the table.',
-    ageMin: 4,
-    ageMax: 8,
-    duration: 10,
-    locations: ['waiting'],
-    materials: ['none'],
-    skills: ['attention', 'language'],
-    energy: 'calm',
-    challenge: 1,
-    setupMinutes: 0,
-    instructions: [
-      'Choose a detective challenge: find three round things, two things beginning with B, or something nobody else noticed.',
-      'Take turns choosing challenges.',
-      'Ask your child to describe the clue without pointing.',
-      'Guess what they found.'
-    ],
-    supports: 'Practises sustained attention, describing, categorising, and vocabulary.',
-    easier: 'Ask for colours or obvious shapes.',
-    harder: 'Use two features at once: “something small, metal, and shiny.”',
-    silly: 'Pretend you are detectives investigating “The Case of the Missing Banana.”',
-    parentEffort: 'low',
-  },
-  {
-    id: 'car-category-chain',
-    title: 'Category Chain',
-    summary: 'Keep a spoken category going without repeating an answer.',
-    ageMin: 5,
-    ageMax: 8,
-    duration: 10,
-    locations: ['car', 'waiting'],
-    materials: ['none'],
-    skills: ['language', 'memory', 'self-control'],
-    energy: 'calm',
-    challenge: 2,
-    setupMinutes: 0,
-    instructions: [
-      'Pick a familiar category such as animals, foods, or things in a park.',
-      'Take turns naming one item in the category.',
-      'No repeats are allowed.',
-      'When the chain ends, choose a new category together.'
-    ],
-    supports: 'Practises word retrieval, listening, memory for previous answers, and turn-taking.',
-    easier: 'Allow repeats or give a few choices when your child gets stuck.',
-    harder: 'Use narrower categories such as animals that live in water.',
-    silly: 'Make the final round “things a dinosaur would pack for holiday.”',
-    parentEffort: 'low',
-  },
-  {
-    id: 'paper-path-planner',
-    title: 'Paper Path Planner',
-    summary: 'Design a route on paper and then test whether it works.',
-    ageMin: 5,
-    ageMax: 8,
-    duration: 15,
-    locations: ['home'],
-    materials: ['paper', 'crayons', 'toys'],
-    skills: ['problem-solving', 'spatial', 'creativity'],
-    energy: 'calm',
-    challenge: 2,
-    setupMinutes: 2,
-    instructions: [
-      'Draw a start and finish on paper.',
-      'Add 3–5 obstacles such as rivers, rocks, or sleeping monsters.',
-      'Ask your child to draw a safe route through the map.',
-      'Use a small toy as the traveller and test the route together.'
-    ],
-    supports: 'Practises planning ahead, spatial reasoning, and adapting a plan when something does not work.',
-    easier: 'Use one obstacle and a clear path.',
-    harder: 'Add rules such as “cross each bridge only once” or create two possible routes and compare them.',
-    silly: 'Add a cheese volcano, invisible socks, or a dragon who only eats broccoli.',
-    parentEffort: 'medium',
-  },
-  {
-    id: 'dice-movement-machine',
-    title: 'Dice Movement Machine',
-    summary: 'Roll a die and turn the number into a mini movement challenge.',
-    ageMin: 4,
-    ageMax: 8,
-    duration: 10,
-    locations: ['home', 'outside'],
-    materials: ['dice'],
-    skills: ['numbers', 'movement', 'body-awareness'],
-    energy: 'active',
-    challenge: 1,
-    setupMinutes: 0,
-    instructions: [
-      'Choose one movement, such as jumps, toe taps, or arm circles.',
-      'Roll the die and do that many repetitions together.',
-      'Let your child choose a new movement for the next roll.',
-      'For the last round, roll twice and decide whether to add or compare the numbers.'
-    ],
-    supports: 'Practises counting, quantity recognition, coordination, and body awareness.',
-    easier: 'Use only numbers 1–3 by treating larger rolls as 3.',
-    harder: 'Roll two dice and add the numbers or create movement combinations.',
-    silly: 'Every roll of six turns both players into chickens for ten seconds.',
-    safety: 'Choose movements appropriate for the space and avoid slippery surfaces.',
-    parentEffort: 'low',
-  },
-  {
-    id: 'emotion-weather',
-    title: 'Emotion Weather',
-    summary: 'Describe feelings as weather to make them easier to talk about.',
-    ageMin: 5,
-    ageMax: 8,
-    duration: 5,
-    locations: ['home', 'car', 'waiting'],
-    materials: ['none'],
-    skills: ['emotional-regulation', 'language'],
-    energy: 'calm',
-    challenge: 1,
-    setupMinutes: 0,
-    instructions: [
-      'Ask: “If your feeling right now were weather, what would it be?”',
-      'Share your own answer too: sunny, windy, stormy, foggy, mixed.',
-      'Ask what might help the weather change a little, if your child wants it to.',
-      'End by choosing one tiny helpful action together.'
-    ],
-    supports: 'Supports emotional vocabulary, noticing internal states, and thinking about simple regulation strategies.',
-    easier: 'Offer two or three weather choices.',
-    harder: 'Ask whether different parts of the day had different “weather.”',
-    silly: 'Invent impossible weather such as spaghetti rain or tickle thunderstorms.',
-    parentEffort: 'low',
-  },
-  {
-    id: 'toy-rescue-plan',
-    title: 'Toy Rescue Plan',
-    summary: 'Rescue a toy using only a few household objects and a plan.',
-    ageMin: 5,
-    ageMax: 8,
-    duration: 15,
-    locations: ['home'],
-    materials: ['toys', 'paper', 'cups'],
-    skills: ['problem-solving', 'creativity', 'social'],
-    energy: 'medium',
-    challenge: 3,
-    setupMinutes: 2,
-    instructions: [
-      'Place a toy somewhere slightly awkward but safe to reach, such as behind a cushion barrier.',
-      'Give your child 2–4 objects they may use to help with the rescue.',
-      'Ask for a plan before touching anything.',
-      'Try the plan, then improve it together if needed.'
-    ],
-    supports: 'Practises planning, testing ideas, adapting after failure, and explaining a strategy.',
-    easier: 'Make the obstacle simple and allow unlimited objects.',
-    harder: 'Limit the number of objects or add a “no hands past this line” rule.',
-    silly: 'The toy is a famous explorer who sends dramatic rescue messages.',
-    safety: 'Keep all objects at floor level and avoid climbing, strings around the neck, or unstable furniture.',
-    parentEffort: 'medium',
-  },
-  {
-    id: 'mirror-monster',
-    title: 'Mirror Monster',
-    summary: 'Copy slow, strange movements as precisely as possible.',
-    ageMin: 4,
-    ageMax: 8,
-    duration: 5,
-    locations: ['home', 'outside', 'waiting'],
-    materials: ['none'],
-    skills: ['attention', 'movement', 'body-awareness', 'social'],
-    energy: 'medium',
-    challenge: 1,
-    setupMinutes: 0,
-    instructions: [
-      'Face each other.',
-      'One person moves slowly while the other mirrors the movement.',
-      'Switch leader after about 30 seconds.',
-      'Try to move smoothly enough that it becomes hard to tell who is leading.'
-    ],
-    supports: 'Practises visual attention, coordination, body awareness, and social synchrony.',
-    easier: 'Use only hands and arms.',
-    harder: 'Add whole-body movements or change leader without speaking.',
-    silly: 'Transform into a mirror monster with the world’s strangest dance.',
-    parentEffort: 'low',
-  },
-  {
-    id: 'what-changed',
-    title: 'What Changed?',
-    summary: 'Study a tiny scene, look away, then spot what changed.',
-    ageMin: 4,
-    ageMax: 8,
-    duration: 10,
-    locations: ['home', 'waiting'],
-    materials: ['toys', 'kitchen-objects'],
-    skills: ['attention', 'memory'],
-    energy: 'calm',
-    challenge: 2,
-    setupMinutes: 1,
-    instructions: [
-      'Place 4–6 familiar objects where your child can see them.',
-      'Give ten seconds to study the scene.',
-      'Ask your child to close their eyes while you move, remove, or swap one object.',
-      'They open their eyes and guess what changed. Then swap roles.'
-    ],
-    supports: 'Practises visual attention, noticing detail, and short-term memory.',
-    easier: 'Use three objects and remove one completely.',
-    harder: 'Move two objects or change a subtle detail.',
-    silly: 'Blame every change on an invisible, extremely clumsy squirrel.',
-    parentEffort: 'low',
-  }
-]
+const SKILLS={
+ memory:{label:'Memory',emoji:'🧠',color:'#bba9d8'},attention:{label:'Attention',emoji:'🎯',color:'#e3cd69'},problem:{label:'Problem-solving',emoji:'🧩',color:'#9fc8d5'},language:{label:'Language',emoji:'💬',color:'#dd9db7'},creativity:{label:'Creativity',emoji:'🎨',color:'#eabf9d'},spatial:{label:'Spatial reasoning',emoji:'🧭',color:'#9ed4d3'},movement:{label:'Movement & coordination',emoji:'🤸',color:'#a8d3b1'},selfcontrol:{label:'Self-control',emoji:'✋',color:'#9fbea9'}
+};
+const GAMES=[
+{id:'cup-slalom',name:'Cup Slalom',emoji:'🚲',ageMin:5,ageMax:8,min:10,max:20,duration:15,locations:['outside'],materials:['Plastic cups','Bike or scooter'],skills:{spatial:35,problem:25,attention:20,movement:20},summary:'Ride a simple zig-zag course around plastic cups.',steps:['Place several plastic cups in a line with generous gaps.','Ask your child to ride around them in a zig-zag.','Repeat the route in the opposite direction.','Let your child rearrange the course for you.'],easier:'Move the cups farther apart.',harder:'Bring the cups closer or ask your child to remember a route.',variation:'Give different cup colours different movement rules.',safety:'Use a flat, traffic-free area and a helmet.',tags:['active','low-prep']},
+{id:'memory-tray',name:'Memory Tray',emoji:'🧠',ageMin:4,ageMax:8,min:5,max:15,duration:10,locations:['home','waiting'],materials:['5–8 small objects','Towel'],skills:{memory:45,attention:35,language:20},summary:'Look, cover, and remember what was on the tray.',steps:['Place several familiar objects on a tray or table.','Give your child 20 seconds to look.','Cover the objects with a towel.','Take turns naming everything you remember.'],easier:'Use three very different objects.',harder:'Remove one object secretly and ask what changed.',variation:'Let your child prepare the tray for you.',safety:'Avoid very small objects with younger children.',tags:['calm','low-prep']},
+{id:'three-thing-story',name:'Three-Thing Story',emoji:'📚',ageMin:4,ageMax:8,min:5,max:20,duration:10,locations:['home','outside','car','waiting'],materials:['None'],skills:{language:45,creativity:35,memory:10,attention:10},summary:'Create a story using three things you can see.',steps:['Choose three things you can both see.','Start a story using the first object.','Take turns adding one sentence.','Make sure all three objects appear before the ending.'],easier:'Use only two objects.',harder:'Add an emotion or surprise ending.',variation:'Every third sentence needs a silly sound effect.',safety:'No special safety note.',tags:['no-materials','calm']},
+{id:'copy-my-clap',name:'Copy My Clap',emoji:'👏',ageMin:4,ageMax:8,min:5,max:10,duration:5,locations:['home','outside','waiting'],materials:['None'],skills:{memory:35,attention:30,movement:25,selfcontrol:10},summary:'Copy growing clap-and-tap patterns.',steps:['Make a simple two-action rhythm.','Your child copies it.','Add one action each round.','Swap roles and copy your child.'],easier:'Use only two actions.',harder:'Add pauses or cross-body movements.',variation:'Add animal noises or funny poses.',safety:'Choose movements suitable for the space.',tags:['no-materials','active']},
+{id:'cup-code',name:'Cup Code',emoji:'🥤',ageMin:5,ageMax:8,min:10,max:20,duration:10,locations:['home'],materials:['Plastic or paper cups'],skills:{spatial:35,problem:30,attention:20,memory:15},summary:'Copy, extend, and remember cup patterns.',steps:['Use 4–8 cups.','Build a small arrangement and ask your child to copy it.','Create a repeating pattern with cup positions.','Let your child create a code for you.'],easier:'Copy a line of three cups.',harder:'Show the model briefly, then cover it.',variation:'Pretend the cups are houses in a tiny city.',safety:'Use plastic or paper cups rather than glass.',tags:['calm','low-prep']},
+{id:'red-light',name:'Red Light, Wiggle Light',emoji:'🚦',ageMin:4,ageMax:7,min:5,max:10,duration:5,locations:['home','outside'],materials:['None'],skills:{selfcontrol:40,attention:30,movement:30},summary:'Move, freeze, and switch rules on cue.',steps:['Green means move and red means freeze.','Play several quick rounds.','Add yellow for slow motion.','Later swap the rules.'],easier:'Use only move and freeze.',harder:'Reverse the rules or add a fourth cue.',variation:'Move like robots or penguins.',safety:'Use a clear area away from sharp furniture or traffic.',tags:['active','no-materials']},
+{id:'category-chain',name:'Category Chain',emoji:'🔗',ageMin:5,ageMax:8,min:5,max:20,duration:10,locations:['car','waiting','home'],materials:['None'],skills:{language:35,memory:30,selfcontrol:20,attention:15},summary:'Keep a spoken category going without repeating.',steps:['Choose a category such as animals or foods.','Take turns naming one item.','No repeats allowed.','Change categories when someone gets stuck.'],easier:'Use a very familiar category.',harder:'Require each answer to begin with the last letter of the previous one.',variation:'Use ridiculous categories like things a dragon would eat.',safety:'Passenger play only in the car.',tags:['no-materials','calm']},
+{id:'mystery-bag',name:'Mystery Bag',emoji:'🎒',ageMin:4,ageMax:8,min:10,max:20,duration:10,locations:['home'],materials:['Bag','4–6 safe household objects'],skills:{language:30,attention:25,memory:20,creativity:15,selfcontrol:10},summary:'Guess hidden objects using touch and clues.',steps:['Place several safe objects in a bag.','Without looking, your child feels one object.','Ask them to describe what they notice.','Guess, reveal, and swap roles.'],easier:'Use very different objects.',harder:'Describe without saying the object category.',variation:'Invent a story about each mystery object.',safety:'Use blunt, clean, child-safe objects.',tags:['calm','sensory']},
+{id:'cushion-fort',name:'Cushion Fort',emoji:'🏕️',ageMin:4,ageMax:8,min:15,max:30,duration:20,locations:['home'],materials:['Cushions','Blanket','Chairs'],skills:{creativity:30,problem:25,spatial:25,movement:10,selfcontrol:10},summary:'Plan and build a small fort together.',steps:['Choose a safe area.','Ask what the fort needs before building.','Build using cushions, blankets, and sturdy furniture.','Test it and improve anything that falls.'],easier:'Build a tiny reading den.',harder:'Set a rule such as using only one blanket.',variation:'Turn it into a shop, spaceship, or animal hospital.',safety:'Avoid unstable furniture and never cover heat sources.',tags:['creative','home']},
+{id:'nature-colour-hunt',name:'Nature Colour Hunt',emoji:'🍃',ageMin:4,ageMax:8,min:10,max:30,duration:15,locations:['outside'],materials:['None'],skills:{attention:35,language:20,creativity:15,spatial:15,movement:15},summary:'Find natural things that match different colours.',steps:['Choose a colour.','Walk together and find something natural that matches.','Describe each find without picking living plants.','Change colours and continue.'],easier:'Use common colours.',harder:'Find different shades or two features at once.',variation:'Make a rainbow order from your discoveries.',safety:'Stay in a safe walking area and avoid unknown plants.',tags:['outside','no-materials']},
+{id:'treasure-route',name:'Treasure Route',emoji:'🗺️',ageMin:5,ageMax:8,min:10,max:30,duration:15,locations:['home','outside'],materials:['Small toy or note'],skills:{spatial:30,memory:25,problem:25,attention:20},summary:'Follow and remember simple route clues to a treasure.',steps:['Hide a small object.','Give two or three route clues.','Let your child follow them in order.','Swap roles and let your child hide the treasure.'],easier:'Use one clue at a time.',harder:'Give all clues before starting.',variation:'Draw a tiny map instead of speaking clues.',safety:'Keep routes away from stairs, roads, and hazards.',tags:['active','adventure']},
+{id:'draw-and-guess',name:'Draw & Guess',emoji:'✏️',ageMin:4,ageMax:8,min:10,max:30,duration:15,locations:['home','waiting'],materials:['Paper','Pencil or crayons'],skills:{creativity:35,language:25,attention:20,spatial:20},summary:'Take turns drawing simple things for the other person to guess.',steps:['Choose a simple object secretly.','Draw it without writing letters.','The other person guesses.','Swap roles each round.'],easier:'Choose from a small list of familiar objects.',harder:'Draw actions or emotions instead of objects.',variation:'Draw with your non-dominant hand.',safety:'Use age-appropriate drawing materials.',tags:['creative','calm']},
+{id:'pattern-builder',name:'Pattern Builder',emoji:'🔶',ageMin:4,ageMax:8,min:5,max:20,duration:10,locations:['home','waiting'],materials:['Blocks, buttons, or coloured objects'],skills:{problem:30,spatial:25,attention:20,memory:15,creativity:10},summary:'Make, copy, and extend visual patterns.',steps:['Create a simple repeating pattern.','Ask what should come next.','Let your child copy it.','Then let them invent one for you.'],easier:'Use two alternating colours.',harder:'Use three features such as colour, size, and direction.',variation:'Build a pattern that represents a silly secret code.',safety:'Avoid choking hazards for younger children.',tags:['calm','low-prep']},
+{id:'opposites-game',name:'Opposites Game',emoji:'↔️',ageMin:4,ageMax:8,min:5,max:15,duration:10,locations:['car','waiting','home'],materials:['None'],skills:{language:40,selfcontrol:25,attention:20,creativity:15},summary:'Answer with the opposite — then make the rules trickier.',steps:['Say a simple word like hot.','Your child answers cold.','Take turns giving words.','Later add actions: when you say stand, they sit.'],easier:'Use familiar adjective pairs.',harder:'Mix words and movement rules.',variation:'Invent funny opposites that do not really exist.',safety:'Keep movement versions suitable for the space.',tags:['no-materials','calm']},
+{id:'ball-target',name:'Ball Target Challenge',emoji:'🎯',ageMin:4,ageMax:8,min:10,max:30,duration:15,locations:['outside','home'],materials:['Soft ball','Targets such as boxes or chalk circles'],skills:{movement:35,attention:25,spatial:25,selfcontrol:15},summary:'Aim a soft ball at targets with changing rules.',steps:['Set one or more safe targets.','Throw or roll the ball toward them.','Change the distance after a few turns.','Add a rule such as aiming for colours in a certain order.'],easier:'Use a large close target.',harder:'Use smaller targets or a remembered sequence.',variation:'Assign silly sound effects to each target.',safety:'Use a soft ball and clear the throwing area.',tags:['active','outside']},
+{id:'restaurant-detective',name:'Restaurant Detective',emoji:'🔎',ageMin:4,ageMax:8,min:5,max:20,duration:10,locations:['waiting'],materials:['None'],skills:{attention:40,language:30,problem:15,selfcontrol:15},summary:'Spot tiny details around you without leaving the table.',steps:['Set a challenge: find three round things or two blue things.','Take turns choosing challenges.','Describe a clue without pointing.','Guess what the other person found.'],easier:'Use obvious colours or shapes.',harder:'Combine two properties in one clue.',variation:'Pretend you are solving a very silly mystery.',safety:'Stay seated or within the waiting area.',tags:['waiting','no-materials']},
+{id:'build-creature',name:'Build a Creature',emoji:'👾',ageMin:4,ageMax:8,min:15,max:30,duration:20,locations:['home'],materials:['LEGO, blocks, or craft materials'],skills:{creativity:40,spatial:25,problem:20,language:15},summary:'Invent and build a creature with a purpose.',steps:['Decide what kind of creature you need.','Choose two or three features it must have.','Build it together.','Give it a name and explain what each feature does.'],easier:'Copy a simple animal shape.',harder:'Give the creature a problem it must solve.',variation:'Build a habitat for it too.',safety:'Use age-appropriate construction pieces.',tags:['creative','building']},
+{id:'follow-the-leader-rules',name:'Follow the Rule',emoji:'👣',ageMin:4,ageMax:8,min:5,max:20,duration:10,locations:['home','outside'],materials:['None'],skills:{attention:30,selfcontrol:30,movement:25,memory:15},summary:'Follow movement rules that change every round.',steps:['Choose one rule such as copy every movement.','Lead for a short round.','Change the rule: copy everything except clapping.','Swap leader.'],easier:'Use one simple copy rule.',harder:'Remember two rules at once.',variation:'Lead as different animals or characters.',safety:'Use movements that fit the space.',tags:['active','no-materials']},
+{id:'number-hunt',name:'Number Hunt',emoji:'🔢',ageMin:4,ageMax:8,min:5,max:20,duration:10,locations:['outside','car','waiting'],materials:['None'],skills:{attention:35,problem:25,memory:20,language:20},summary:'Find numbers around you and turn them into mini challenges.',steps:['Look for a number you can both see.','Say what comes before or after it.','Find another number and compare which is bigger.','Create a small challenge from the numbers you find.'],easier:'Simply name and recognise numbers.',harder:'Add or subtract two small numbers you see.',variation:'Make a target number and search for ways to reach it.',safety:'Passenger play only in the car.',tags:['no-materials','travel']},
+{id:'emotion-charades',name:'Emotion Charades',emoji:'🎭',ageMin:4,ageMax:8,min:10,max:20,duration:10,locations:['home','waiting'],materials:['None'],skills:{language:30,creativity:25,attention:20,selfcontrol:15,memory:10},summary:'Act out emotions and guess what the other person is showing.',steps:['Choose an emotion secretly.','Show it using face and body without saying it.','Guess the emotion.','Talk briefly about a situation where someone might feel that way.'],easier:'Use happy, sad, angry, surprised.',harder:'Use mixed feelings such as nervous-excited.',variation:'Act the emotion as an animal or robot.',safety:'Keep the tone playful and do not force personal disclosures.',tags:['social','no-materials']},
+{id:'whats-missing',name:"What's Missing?",emoji:'👀',ageMin:4,ageMax:8,min:5,max:15,duration:10,locations:['home','waiting'],materials:['4–8 small objects'],skills:{memory:45,attention:35,problem:20},summary:'Spot which object disappeared.',steps:['Place several objects where everyone can see them.','Look for 20 seconds.','Ask your child to close their eyes while you remove one.','Open eyes and guess what is missing.'],easier:'Use three very different objects.',harder:'Move the objects around as well as removing one.',variation:'Remove two objects or swap one for something new.',safety:'Use safe, age-appropriate objects.',tags:['calm','low-prep']},
+{id:'silly-instructions',name:'Silly Instructions',emoji:'🤪',ageMin:5,ageMax:8,min:5,max:15,duration:10,locations:['home','outside','waiting'],materials:['None'],skills:{memory:30,selfcontrol:30,attention:25,language:15},summary:'Remember multi-step instructions with a silly twist.',steps:['Give a two-step instruction such as clap twice then touch your knee.','Add a funny action.','Increase to three steps when ready.','Swap roles.'],easier:'Use one or two actions.',harder:'Add a rule such as doing the opposite of one cue.',variation:'Use ridiculous voices or imaginary missions.',safety:'Choose safe actions for the space.',tags:['no-materials','quick']},
+{id:'cooperative-tower',name:'Cooperative Tower',emoji:'🧱',ageMin:4,ageMax:8,min:10,max:30,duration:15,locations:['home'],materials:['Blocks, cups, or boxes'],skills:{problem:30,spatial:25,selfcontrol:20,creativity:15,attention:10},summary:'Build one tower together while taking turns.',steps:['Choose a shared goal for the tower.','Take turns adding one piece.','Before each turn, say where you think the next piece should go.','If it falls, decide together what to change.'],easier:'Build a short wide tower.',harder:'Add a height or material rule.',variation:'Build a tower for a toy character.',safety:'Use lightweight pieces and build away from breakables.',tags:['cooperative','building']},
+{id:'sound-map',name:'Sound Map',emoji:'👂',ageMin:5,ageMax:8,min:10,max:20,duration:10,locations:['outside','home'],materials:['Paper and pencil optional'],skills:{attention:40,spatial:20,memory:20,language:20},summary:'Listen carefully and locate sounds around you.',steps:['Sit quietly for 20 seconds.','Name every sound you noticed.','Point to where each sound came from.','Repeat and see if you notice anything new.'],easier:'Name only the loudest sounds.',harder:'Remember the order in which sounds appeared.',variation:'Draw a simple sound map around yourself.',safety:'Choose a calm, safe place to stop and listen.',tags:['calm','sensory']}
+];
+const PRESETS={cards:{name:'Card Game',emoji:'🃏',skills:{attention:35,problem:25,memory:20,selfcontrol:20}},lego:{name:'LEGO / Building',emoji:'🧱',skills:{spatial:35,problem:30,creativity:20,attention:15}},puzzle:{name:'Puzzle',emoji:'🧩',skills:{spatial:35,problem:30,attention:25,memory:10}},drawing:{name:'Drawing',emoji:'🎨',skills:{creativity:45,attention:20,spatial:20,movement:15}},movement:{name:'Movement & Coordination',emoji:'🤸',skills:{movement:45,spatial:20,attention:20,selfcontrol:15}},reading:{name:'Reading / Story',emoji:'📚',skills:{language:40,attention:25,memory:20,creativity:15}}};
 
-const skills={attention:'Attention & focus',memory:'Working memory','self-control':'Self-control','problem-solving':'Problem-solving',language:'Language & storytelling',spatial:'Spatial reasoning',numbers:'Number sense & patterns',movement:'Movement & coordination','body-awareness':'Body awareness','emotional-regulation':'Emotional regulation',social:'Cooperation & turn-taking',creativity:'Creativity & flexible thinking'};
-const skillEmoji={attention:'🎯',memory:'🧠','self-control':'✋','problem-solving':'🧩',language:'💬',spatial:'🧭',numbers:'🔢',movement:'🤸','body-awareness':'🧍','emotional-regulation':'🌿',social:'🤝',creativity:'🎨'};
-const skillDesc={attention:'Staying with a task and noticing relevant details.',memory:'Holding and using information for a short time.','self-control':'Pausing, stopping, or switching a response when needed.','problem-solving':'Planning, testing ideas, and adapting.',language:'Using words, descriptions, sequences and stories.',spatial:'Understanding positions, shapes, routes and arrangements.',numbers:'Noticing quantity, counting, comparing and patterns.',movement:'Planning and coordinating purposeful movement.','body-awareness':'Sensing where the body is and how it is moving.','emotional-regulation':'Noticing feelings and trying simple responses.',social:'Taking turns, listening and cooperating.',creativity:'Generating ideas and trying different approaches.'};
-const locs={home:'At home',outside:'Outside',car:'In the car',waiting:'Waiting / restaurant'};
-const mats={paper:'Paper',cups:'Cups',socks:'Socks',ball:'Ball',crayons:'Crayons',dice:'Dice',cushions:'Cushions',toys:'Toys','kitchen-objects':'Kitchen objects',none:'Nothing needed'};
-const matEmoji={paper:'📄',cups:'🥤',socks:'🧦',ball:'⚽',crayons:'🖍️',dice:'🎲',cushions:'🛋️',toys:'🧸','kitchen-objects':'🥄'};
-const challenge={1:'Easy start',2:'Just right',3:'A challenge'};const energy={calm:'Calm',medium:'Balanced',active:'Active'};
-const storage='playpocket:prototype:v3';
-let state=JSON.parse(localStorage.getItem(storage)||'null')||{profiles:[{id:'child-1',name:'',age:5,interests:[],preferredEnergy:'mixed',challengePreference:2}],activeProfileId:'child-1',favourites:[],history:[]};
-let filters={age:profile().age,duration:10,location:'home',materials:[],skill:'',energy:'',quietOnly:false};let current=null;let savedQuery='';
-function profile(){return state.profiles.find(p=>p.id===state.activeProfileId)||state.profiles[0]}
-function save(){localStorage.setItem(storage,JSON.stringify(state))}
-function el(id){return document.getElementById(id)}
-function nav(active='play'){let p=profile();return `<nav class="nav"><button class="${active==='play'?'active':''}" onclick="home()">✦<span>Play</span></button><button class="${active==='saved'?'active':''}" onclick="saved()">♡<span>Saved</span></button><button class="${active==='profile'?'active':''}" onclick="profileScreen()"><span class="avatar">${p.name?p.name[0].toUpperCase():p.age}</span><span>Profile</span></button></nav>`}
-function render(content,active='play'){el('app').innerHTML=content+nav(active);window.scrollTo(0,0)}
-function score(g,f=filters){let p=profile(),h=state.history.filter(x=>x.profileId===p.id),s=0,reasons=[];if(f.age>=g.ageMin&&f.age<=g.ageMax){s+=9;reasons.push(`good fit for age ${f.age}`)}else s-=8*Math.min(Math.abs(f.age-g.ageMin),Math.abs(f.age-g.ageMax));if(g.duration===f.duration){s+=6;reasons.push(`fits ${g.duration} minutes`)}else if(g.duration<f.duration)s+=2;else s-=4;if(g.locations.includes(f.location)){s+=7;reasons.push('works in this setting')}else s-=14;if(g.materials.includes('none')){s+=f.materials.length?3:5;reasons.push('no materials needed')}else if(f.materials.length&&g.materials.some(m=>f.materials.includes(m))){s+=5;reasons.push('uses what you have')}else s-=f.materials.length?6:2;if(f.skill&&g.skills.includes(f.skill)){s+=9;reasons.push('matches your skill focus')}if(f.energy&&g.energy===f.energy){s+=4;reasons.push(`${g.energy} energy`)}if(f.quietOnly&&g.energy==='active')s-=7;s+=4-Math.abs(g.challenge-p.challengePreference)*3;if(g.challenge===p.challengePreference)reasons.push('matched challenge level');if(p.preferredEnergy!=='mixed'&&g.energy===p.preferredEnergy)s+=2;if(h.slice(0,5).some(x=>x.gameId===g.id))s-=5;h.filter(x=>x.gameId===g.id).slice(0,4).forEach(x=>{if(x.feedback==='not-for-us')s-=20;if(x.feedback==='lost-interest')s-=7;if(x.feedback==='loved')s+=2;if(x.feedback==='play-again')s+=5;if(x.feedback==='too-hard')s-=3});return {g,s,reasons,why:(reasons.slice(0,2).join(' and ')||'a balanced match for this play moment')+'.'}}
-function recs(f=filters,n=3,exclude=''){return games.filter(g=>g.id!==exclude).map(g=>score(g,f)).filter(x=>x.s>0).sort((a,b)=>b.s-a.s).slice(0,n)}
-function recentSkills(){let c={};state.history.filter(x=>x.profileId===profile().id).slice(0,8).forEach(r=>{let g=games.find(x=>x.id===r.gameId);if(g)g.skills.forEach(s=>c[s]=(c[s]||0)+1)});return Object.keys(c).sort((a,b)=>c[b]-c[a]).slice(0,4)}
-function weeklySkills(){let c={};state.history.filter(x=>x.profileId===profile().id).slice(0,20).forEach(r=>{let g=games.find(x=>x.id===r.gameId);if(g)g.skills.forEach(s=>c[s]=(c[s]||0)+1)});return Object.keys(skills).sort((a,b)=>(c[a]||0)-(c[b]||0)).slice(0,3)}
-function home(){let p=profile(),recent=recentSkills();render(`<div class="brand"><div class="mark">☺</div><span class="brandname">PlayPocket</span><button class="profilepill" onclick="profileScreen()"><span>${p.name?p.name[0].toUpperCase():p.age}</span>${p.name||`Age ${p.age}`}</button></div><section class="hero"><span class="eyebrow">Screen-free play</span><h1>Simple games that help children <em>practise useful skills.</em></h1><p>Pick a short game based on your child’s age, the time you have, and the skill you want to practise — using things you already have at home.</p><div class="pillrow"><span class="pill">🧠 Memory</span><span class="pill">🎯 Attention</span><span class="pill">💬 Language</span></div><div class="actions"><button class="primary" onclick="setup()">Find a game</button><button class="secondary" onclick="playNow()">Surprise me</button></div><div class="trust">No tests, scores, or big promises. Just practical games to play together.</div></section><section class="quicknow"><div class="quickicon">✨</div><div><span class="eyebrow">Quick pick</span><h2>${p.name?`A game for ${p.name}`:'A game for right now'}</h2><p class="muted">Uses the saved age and play preferences.</p></div><button class="roundbtn" onclick="playNow()">→</button></section><section class="section"><div class="sectionhead"><div><span class="eyebrow">Skill areas</span><h2>What would you like to practise?</h2></div><button class="smalllink" onclick="setup()">See all →</button></div><div class="skillstrip">${['attention','memory','self-control','problem-solving','language','creativity'].map(s=>`<button class="skillchip" onclick="playNow('${s}')"><b>${skillEmoji[s]} ${skills[s]}</b><span>${skillDesc[s]}</span></button>`).join('')}</div></section><section class="panel"><span class="eyebrow">Why these games are here</span><h2>Games built around useful everyday skills.</h2><div class="skillmix"><div><strong>🎯 Attention</strong><span>Notice details and stay with the task.</span></div><div><strong>🧠 Working memory</strong><span>Hold instructions in mind for a few seconds.</span></div><div><strong>✋ Self-control</strong><span>Pause, switch, and respond with intention.</span></div></div><p class="muted">The app uses simple skill tags to help match each game to what you want to work on.</p></section>${recent.length?`<section class="panel"><span class="eyebrow">Recently practised</span><h2>Recently practised</h2><div class="skillmix">${recent.map(s=>`<div><strong>${skillEmoji[s]} ${skills[s]}</strong><span>${skillDesc[s]}</span></div>`).join('')}</div><p class="muted">Just a simple view of the skills that came up in recent games.</p></section>`:''}<section class="panel weekly"><span class="eyebrow">Try something different</span><h2>Three areas to mix in next</h2><p class="muted">Based on what you have played recently.</p><div class="weeklylist">${weeklySkills().map(s=>`<button onclick="playNow('${s}')"><span class="label">${skillEmoji[s]} ${skills[s]}</span><b>→</b></button>`).join('')}</div></section><section class="section"><div class="sectionhead"><div><span class="eyebrow">Fast options</span><h2>Minimal-setup favourites</h2></div></div><div class="quickgrid">${games.filter(g=>g.duration===5).slice(0,3).map(g=>`<button class="mini" onclick="openGame('${g.id}')"><div class="topline"><span class="miniemoji">${skillEmoji[g.skills[0]]}</span><span class="eyebrow">5 min</span></div><strong>${g.title}</strong><small>${g.summary}</small><span class="miniskill">${skillEmoji[g.skills[0]]} ${skills[g.skills[0]]}</span></button>`).join('')}</div></section><section class="reassure"><div>🌱</div><div><strong>Keep it simple.</strong><p class="muted">These are simple games to play together. They are not tests, treatment, or a measure of your child’s development.</p></div></section>`)}
-function playNow(skill=''){let p=profile(),f={age:p.age,duration:10,location:'home',materials:[],skill,energy:p.preferredEnergy==='mixed'?'':p.preferredEnergy,quietOnly:false},r=recs(f,1)[0];filters=f;if(r)openGame(r.g.id);else setup()}
-function q(title,sub,content){return `<section class="q"><h2>${title}</h2>${sub?`<p class="qsub">${sub}</p>`:''}${content}</section>`}
-function setup(){let p=profile();filters.age=p.age;render(`<div class="topbar"><button class="iconbtn" onclick="home()">‹</button><span>Find a game</span><span></span></div><main class="page"><section class="intro"><span class="eyebrow">Find the right game</span><h1>Choose what fits right now.</h1><p class="muted">Tell us how much time you have, where you are, and what you want to practise. We’ll suggest a few good options.</p></section><div class="presets"><button onclick="preset('nothing')">No materials</button><button onclick="preset('quiet')">Quiet</button><button onclick="preset('active')">Active</button><button onclick="preset('waiting')">Waiting room</button></div>${q('Who is playing?','Switch or edit profiles anytime.',`<button class="profilesummary" onclick="profileScreen()"><span class="avatar">${p.name?p.name[0].toUpperCase():p.age}</span><span><strong>${p.name||`Child age ${p.age}`}</strong><small>${challenge[p.challengePreference]} · ${p.preferredEnergy==='mixed'?'Mixed energy':energy[p.preferredEnergy]+' play'}</small></span><span>⚙</span></button>`)}${q('What would you like to practise?','Optional — choose one focus, or let us balance the mix.',`<div class="skillgrid"><button class="skillchoice wide ${!filters.skill?'sel':''}" onclick="filters.skill='';setup()"><span class="skillicon">✨</span><span><strong>Balanced mix</strong><small>Let us choose a balanced mix.</small></span></button>${Object.keys(skills).map(s=>`<button class="skillchoice ${filters.skill===s?'sel':''}" onclick="filters.skill='${s}';setup()"><span class="skillicon">${skillEmoji[s]}</span><span><strong>${skills[s]}</strong><small>${skillDesc[s]}</small></span></button>`).join('')}</div>`)}${q('How much time do you have?','',`<div class="grid four">${[5,10,15,30].map(x=>`<button class="choice ${filters.duration===x?'sel':''}" onclick="filters.duration=${x};setup()">${x}<br>min</button>`).join('')}</div>`)}${q('Where are you?','',`<div class="grid two">${Object.keys(locs).map(k=>`<button class="choice ${filters.location===k?'sel':''}" onclick="filters.location='${k}';setup()">${locs[k]}</button>`).join('')}</div>`)}${q('What energy fits right now?','Optional.',`<div class="grid four"><button class="choice ${!filters.energy?'sel':''}" onclick="filters.energy='';filters.quietOnly=false;setup()">Any</button>${['calm','medium','active'].map(e=>`<button class="choice ${filters.energy===e?'sel':''}" onclick="filters.energy='${e}';filters.quietOnly=false;setup()">${energy[e]}</button>`).join('')}</div>`)}${q('What do you have nearby?','Optional. Nothing selected prioritises no-material games.',`<div class="materialgrid">${Object.keys(mats).filter(m=>m!=='none').map(m=>`<button class="material ${filters.materials.includes(m)?'sel':''}" onclick="toggleMat('${m}')"><span>${matEmoji[m]}</span>${mats[m]}</button>`).join('')}</div>`)}<button class="primary full" onclick="results()">Show 3 games</button></main>`)}
-function preset(t){if(t==='nothing')filters.materials=[];if(t==='quiet'){filters.energy='calm';filters.quietOnly=true}if(t==='active'){filters.energy='active';filters.quietOnly=false;if(filters.location==='waiting')filters.location='home'}if(t==='waiting'){filters.location='waiting';filters.materials=[];filters.energy='calm';filters.quietOnly=true}setup()}
-function toggleMat(m){filters.materials=filters.materials.includes(m)?filters.materials.filter(x=>x!==m):[...filters.materials,m];setup()}
-function results(){let p=profile(),r=recs();render(`<div class="topbar"><button class="iconbtn" onclick="setup()">‹</button><span>Your games</span><span></span></div><main class="page"><section class="intro"><span class="eyebrow">Matched for ${p.name||`age ${p.age}`}</span><h1>Three games that fit this moment.</h1><p class="muted">Each game shows what it practises, what you need, and how to make it easier or harder.</p></section><div class="match"><div><span>Focus</span><strong>${filters.skill?skills[filters.skill]:'Balanced mix'}</strong></div><div><span>Challenge</span><strong>${challenge[p.challengePreference]}</strong></div><div><span>Time</span><strong>${filters.duration} min</strong></div></div><div class="cards">${r.length?r.map((x,i)=>card(x,i+1)).join(''):`<div class="empty">No strong match yet. Try fewer constraints or choose Any energy.</div>`}</div><button class="textbtn full" onclick="setup()">Adjust choices</button></main>`)}
-function card(x,i=0){let g=x.g||x;let reasons=x.reasons||[`${g.duration} min`,challenge[g.challenge]],why=x.why||`Saved for easy repeat play. Practises ${skills[g.skills[0]].toLowerCase()}.`;return `<article class="card"><div class="cardtop"><span class="rank">${skillEmoji[g.skills[0]]}</span><span class="cardlabel">Skill-focused play</span><button class="heart" onclick="event.stopPropagation();fav('${g.id}')">${state.favourites.includes(g.id)?'♥':'♡'}</button></div><div class="metainline"><span>${challenge[g.challenge]}</span><span>${energy[g.energy]}</span><span>${g.setupMinutes===0?'Ready now':g.setupMinutes+' min setup'}</span></div><h2>${g.title}</h2><p class="muted">${g.summary}</p><div class="skillblock"><span class="skilllabel">Practises</span><div class="tags">${g.skills.slice(0,3).map(s=>`<span class="skilltag">${skillEmoji[s]} ${skills[s]}</span>`).join('')}</div></div><div class="why"><strong>Why it fits:</strong> ${why}</div><div class="tags">${reasons.slice(0,3).map(r=>`<span class="softtag">${r}</span>`).join('')}</div><button class="cardaction" onclick="openGame('${g.id}')"><span>Open play guide</span><span>→</span></button></article>`}
-function openGame(id){current=games.find(g=>g.id===id);let g=current;render(`<div class="topbar"><button class="iconbtn" onclick="results()">‹</button><span>How to play</span><button class="iconbtn" onclick="fav('${g.id}')">${state.favourites.includes(g.id)?'♥':'♡'}</button></div><main class="page"><section class="gamehero"><div class="gameicon">${skillEmoji[g.skills[0]]}</div><span class="eyebrow">Skill-focused play · ${g.ageMin}–${g.ageMax} years</span><h1>${g.title}</h1><p class="muted">${g.summary}</p><div class="metagrid"><div class="metabox"><span>Challenge</span><strong>${challenge[g.challenge]}</strong></div><div class="metabox"><span>Energy</span><strong>${energy[g.energy]}</strong></div><div class="metabox"><span>Ready in</span><strong>${g.setupMinutes===0?'Seconds':g.setupMinutes+' min'}</strong></div><div class="metabox"><span>Parent effort</span><strong>${g.parentEffort==='low'?'Very low':'A little help'}</strong></div></div></section><section class="skillpanel"><span class="eyebrow">What it practises</span><h2>Skills in this game</h2><div class="tags">${g.skills.map(s=>`<span class="skilltag">${skillEmoji[s]} ${skills[s]}</span>`).join('')}</div><p class="muted">${g.supports}</p></section><section class="info"><h2>You need</h2><p>${g.materials.includes('none')?'Nothing at all.':g.materials.map(m=>mats[m]).join(', ')}</p><small class="muted">Setup: ${g.setupMinutes===0?'ready almost immediately':`about ${g.setupMinutes} minute${g.setupMinutes===1?'':'s'}`}.</small>${g.materials.includes('none')?'':`<br><button class="inlineaction" onclick="alternative('${g.id}')">I don’t have this — suggest another</button>`}</section><section class="info"><h2>How to play</h2><ol class="steps">${g.instructions.map((s,i)=>`<li><span class="num">${i+1}</span><span>${s}</span></li>`).join('')}</ol></section><div class="variations"><div class="variation"><strong>Make it easier</strong><p>${g.easier}</p></div><div class="variation"><strong>Make it harder</strong><p>${g.harder}</p></div><div class="variation wide"><strong>Make it playful</strong><p>${g.silly}</p></div></div>${g.safety?`<p class="muted"><strong>Safety:</strong> ${g.safety}</p>`:''}<div class="evidence">🌱 <span>These games are for play, not assessment. They can help children practise skills, but they do not diagnose or measure development.</span></div><section class="feedback"><span class="eyebrow">After you play</span><h2>How did it feel?</h2><p>This quietly improves future recommendations — without scoring your child.</p><div class="feedbackgrid">${[['loved','Loved it'],['play-again','Play again'],['too-easy','Too easy'],['too-hard','Too hard'],['lost-interest','Lost interest'],['not-for-us','Not for us']].map(x=>`<button onclick="played('${x[0]}')">${x[1]}</button>`).join('')}</div></section></main>`)}
-function alternative(id){let g=games.find(x=>x.id===id),f={...filters,age:profile().age,skill:g.skills[0],materials:[]},r=recs(f,1,id)[0];if(r)openGame(r.g.id);else setup()}
-function fav(id){state.favourites=state.favourites.includes(id)?state.favourites.filter(x=>x!==id):[...state.favourites,id];save();if(current&&current.id===id)openGame(id);else saved()}
-function played(feedback){let p=profile(),delta=feedback==='too-easy'?1:feedback==='too-hard'?-1:0;if(delta)p.challengePreference=Math.max(1,Math.min(3,p.challengePreference+delta));state.history.unshift({gameId:current.id,profileId:p.id,playedAt:new Date().toISOString(),feedback});state.history=state.history.slice(0,150);save();home()}
-function saved(){let q=savedQuery.toLowerCase(),list=games.filter(g=>state.favourites.includes(g.id)&&(!q||(g.title+' '+g.summary+' '+g.skills.map(s=>skills[s]).join(' ')).toLowerCase().includes(q)));render(`<div class="topbar"><button class="iconbtn" onclick="home()">‹</button><span>Saved games</span><span></span></div><main class="page"><section class="intro"><span class="eyebrow">Your play toolkit</span><h1>Games worth repeating.</h1><p class="muted">Repeat favourites, then use the harder version when the challenge feels comfortable.</p></section><label class="search">⌕&nbsp;<input placeholder="Search saved games or skills" value="${savedQuery}" oninput="savedQuery=this.value;saved()"></label><div class="cards">${list.length?list.map(g=>card(g)).join(''):`<div class="empty">${savedQuery?'No saved match. Try another search.':'Nothing saved yet. Tap the heart on games you want to keep.'}</div>`}</div></main>`,'saved')}
-function profileScreen(){let p=profile();render(`<div class="topbar"><button class="iconbtn" onclick="home()">‹</button><span>Child profile</span><button class="iconbtn" onclick="addProfile()">＋</button></div><main class="page"><section class="intro"><span class="eyebrow">Child profile</span><h1>Help us suggest better games.</h1><p class="muted">A few simple preferences help us suggest better games. Nothing here is a score or assessment.</p></section>${state.profiles.length>1?`<div class="profileswitch">${state.profiles.map(x=>`<button class="${x.id===p.id?'sel':''}" onclick="switchProfile('${x.id}')">${x.name||`Age ${x.age}`}</button>`).join('')}</div>`:''}${q('What should we call them?','Optional — this stays on this device in the MVP.',`<input class="textinput" value="${p.name}" placeholder="e.g. Maya" oninput="updateName(this.value)">`)}${q('Age','',`<div class="age">${[4,5,6,7,8].map(a=>`<button class="choice ${p.age===a?'sel':''}" onclick="updateProfile('age',${a})">${a}</button>`).join('')}</div>`)}${q('Preferred play energy','A gentle nudge, not a fixed rule.',`<div class="grid four">${['mixed','calm','medium','active'].map(e=>`<button class="choice ${p.preferredEnergy===e?'sel':''}" onclick="updateProfile('preferredEnergy','${e}')">${e==='mixed'?'Mixed':energy[e]}</button>`).join('')}</div>`)}<div class="profileinsight">◫ <div><strong>Current difficulty: ${challenge[p.challengePreference]}</strong><p class="muted">This changes when you mark games as too easy or too hard.</p></div></div></main>`,'profile')}
-function updateName(v){profile().name=v.slice(0,24);save()}
-function updateProfile(k,v){profile()[k]=v;filters.age=profile().age;save();profileScreen()}
-function switchProfile(id){state.activeProfileId=id;filters.age=profile().age;save();profileScreen()}
-function addProfile(){let id='child-'+Date.now();state.profiles.push({id,name:'',age:5,interests:[],preferredEnergy:'mixed',challengePreference:2});state.activeProfileId=id;filters.age=5;save();profileScreen()}
-home();
-</script></body></html>
+const PRODUCTS=[
+{id:'memory-tiere',name:'Ravensburger memory® Tiere',emoji:'🐾',ageMin:4,ageMax:8,likes:['animals','cards','puzzles'],skills:{memory:50,attention:35,selfcontrol:15}},
+{id:'obstgarten',name:'HABA Obstgarten',emoji:'🍎',ageMin:4,ageMax:6,likes:['animals','pretend','social'],skills:{selfcontrol:35,attention:25,problem:20,memory:20}},
+{id:'sprech-hexe',name:'Ravensburger Die freche Sprech-Hexe',emoji:'🧙',ageMin:4,ageMax:8,likes:['stories','words','pretend'],skills:{language:55,attention:20,memory:15,selfcontrol:10}},
+{id:'zicke-zacke',name:'Zicke Zacke Hühnerkacke',emoji:'🐔',ageMin:4,ageMax:8,likes:['animals','movement','cards'],skills:{memory:40,attention:30,selfcontrol:20,movement:10}},
+{id:'ghost-hunters',name:'SmartGames Ghost Hunters',emoji:'👻',ageMin:6,ageMax:8,likes:['puzzles','pretend'],skills:{problem:45,spatial:30,attention:25}},
+{id:'three-piggies',name:'SmartGames Three Little Piggies',emoji:'🐷',ageMin:4,ageMax:8,likes:['puzzles','stories','animals'],skills:{problem:40,spatial:35,attention:15,creativity:10}},
+{id:'sum-swamp',name:'Learning Resources Sum Swamp',emoji:'🐊',ageMin:5,ageMax:8,likes:['numbers','animals','board'],skills:{problem:40,attention:25,memory:20,selfcontrol:15}},
+{id:'dobble-kids',name:'Dobble Kids',emoji:'🔍',ageMin:4,ageMax:8,likes:['animals','cards','quick'],skills:{attention:55,selfcontrol:20,memory:15,problem:10}},
+{id:'concept-kids',name:'Concept Kids Animals',emoji:'🦁',ageMin:4,ageMax:8,likes:['animals','words','social'],skills:{language:40,problem:25,attention:20,creativity:15}},
+{id:'story-cubes',name:"Rory's Story Cubes Classic",emoji:'🎲',ageMin:6,ageMax:8,likes:['stories','pretend','words'],skills:{creativity:45,language:40,memory:10,attention:5}},
+{id:'rush-hour-jr',name:'Rush Hour Junior',emoji:'🚗',ageMin:5,ageMax:8,likes:['puzzles','vehicles'],skills:{problem:50,spatial:35,attention:15}},
+{id:'logic-case',name:'HABA Logic! CASE Starter Set 5+',emoji:'💡',ageMin:5,ageMax:8,likes:['puzzles','solo'],skills:{problem:50,attention:30,memory:20}},
+{id:'funkelschatz',name:'HABA Funkelschatz',emoji:'💎',ageMin:5,ageMax:8,likes:['pretend','board','sparkly'],skills:{problem:30,selfcontrol:25,attention:25,spatial:20}},
+{id:'monza',name:'HABA Monza',emoji:'🏎️',ageMin:5,ageMax:8,likes:['vehicles','board','numbers'],skills:{problem:40,attention:30,spatial:20,selfcontrol:10}},
+{id:'schnappt-hubi',name:'Ravensburger Schnappt Hubi!',emoji:'🏚️',ageMin:5,ageMax:8,likes:['pretend','puzzles','social'],skills:{problem:35,memory:30,attention:25,selfcontrol:10}},
+{id:'catan-junior',name:'CATAN Junior',emoji:'🏴‍☠️',ageMin:6,ageMax:8,likes:['pretend','building','board'],skills:{problem:40,selfcontrol:25,spatial:20,attention:15}},
+{id:'dragomino',name:'Dragomino',emoji:'🐉',ageMin:5,ageMax:8,likes:['animals','pretend','puzzles'],skills:{spatial:40,problem:35,attention:15,selfcontrol:10}},
+{id:'kakerlakak',name:'Ravensburger Kakerlakak',emoji:'🪳',ageMin:5,ageMax:8,likes:['movement','board','quick'],skills:{attention:45,problem:25,selfcontrol:20,movement:10}},
+{id:'sagaland',name:'Ravensburger Sagaland',emoji:'🏰',ageMin:6,ageMax:8,likes:['stories','memory','board'],skills:{memory:45,attention:25,problem:20,selfcontrol:10}},
+{id:'schule',name:'Ravensburger Wir spielen Schule',emoji:'🎒',ageMin:5,ageMax:8,likes:['words','numbers','school'],skills:{language:30,memory:25,problem:25,attention:20}}
+];
+const DISCOVER_LIKES={building:['🧱','Building'],stories:['📚','Stories'],animals:['🐾','Animals'],art:['🎨','Drawing & making'],movement:['🤸','Movement'],puzzles:['🧩','Puzzles'],numbers:['🔢','Numbers'],pretend:['🎭','Pretend play'],cards:['🃏','Card games'],vehicles:['🚗','Vehicles'],words:['💬','Words & talking'],board:['🎲','Board games']};
+const DEFAULT={profile:{name:'',age:5,goal:120},sessions:[],library:['cards','lego','puzzle','drawing','movement'],screen:'home',mixPeriod:'week',play:{duration:10,location:'home',players:'two',mode:'balance',skills:[]},log:null,discover:{likes:[],skills:[]}};
+let state=load();
+let planChooserOpen=false;
+function load(){try{let x=JSON.parse(localStorage.getItem('playpocket:v3'));x.library=(x.library||DEFAULT.library).map(id=>id==='uno'?'cards':id);return {...structuredClone(DEFAULT),...x,profile:{...DEFAULT.profile,...(x.profile||{})},play:{...DEFAULT.play,...(x.play||{})},discover:{...DEFAULT.discover,...(x.discover||{})}}}catch(e){return structuredClone(DEFAULT)}}
+function save(){localStorage.setItem('playpocket:v3',JSON.stringify(state))}
+function periodStart(period='week'){const d=new Date();d.setHours(0,0,0,0);if(period==='week'){const day=(d.getDay()+6)%7;d.setDate(d.getDate()-day)}else if(period==='month'){d.setDate(1)}else if(period==='year'){d.setMonth(0,1)}return d}
+function sessionsFor(period='week'){const start=periodStart(period);return state.sessions.filter(s=>{const d=new Date(s.date||0);return !Number.isNaN(d.getTime())&&d>=start})}
+function togetherMinutes(period='week'){return sessionsFor(period).reduce((a,s)=>a+(s.together||0),0)}
+function weekSessions(){return sessionsFor('week').length}
+function allTimeTogether(){return state.sessions.reduce((a,s)=>a+(s.together||0),0)}
+function allTimeSessions(){return state.sessions.length}
+function mixRaw(period='week'){let r={};Object.keys(SKILLS).forEach(k=>r[k]=0);sessionsFor(period).forEach(s=>{Object.entries(s.skills||{}).forEach(([k,w])=>{if(r[k]!==undefined)r[k]+=(s.together||0)*(w/100)})});return r}
+function mixPct(period='week'){const r=mixRaw(period),sum=Object.values(r).reduce((a,b)=>a+b,0);let p={};Object.keys(SKILLS).forEach(k=>p[k]=sum?Math.round(r[k]/sum*100):0);return p}
+function leastSkills(period='week'){const r=mixRaw(period);return Object.keys(SKILLS).sort((a,b)=>r[a]-r[b])}
+
+function warmHomeInsight(){
+  const t=togetherMinutes('week');
+  const goal=Math.max(1,state.profile.goal||120);
+  const pct=Math.round((t/goal)*100);
+  const raw=mixRaw('week');
+  const active=Object.values(raw).filter(v=>v>=2).length;
+  const sessions=weekSessions();
+
+  if(t===0) return "A little play goes a long way. You’ve got this.";
+  if(pct>=100 && active>=5) return "You did it — time together and a lovely mix of play this week ❤️";
+  if(pct>=100) return "You reached your weekly goal. That’s real time you made for each other ❤️";
+  if(active>=6 && pct>=60) return "Such a nice mix this week — lots of different ways to think and play.";
+  if(pct>=80) return "You’re almost there — one more little play session could do it.";
+  if(pct>=50 && active>=4) return "You’re making lovely time together this week — and keeping it nicely varied.";
+  if(pct>=50) return "You’ve got a good rhythm going. Keep enjoying the little moments together.";
+  if(sessions>=2) return "Nice start this week — you’re building a lovely little rhythm together.";
+  return "Lovely start. A few more playful moments and your week will begin to take shape.";
+}
+
+function skillChips(skills,limit=3){return Object.entries(skills).sort((a,b)=>b[1]-a[1]).slice(0,limit).map(([k])=>`<span class="chip">${SKILLS[k]?.emoji||''} ${SKILLS[k]?.label||k}</span>`).join('')}
+function nav(active){return `<nav class="nav">${[['home','🏠','Home'],['play','🎲','Find'],['log','➕','Log'],['milestones','🏆','Milestones'],['discover','🎁','Gifts']].map(([id,ic,lab])=>`<button class="${active===id?'active':''}" onclick="go('${id}')"><b>${ic}</b>${lab}</button>`).join('')}</nav>`}
+function header(){return `<header class="top"><div class="logo">✦</div><div class="brandcopy"><b>SmartParent</b><span>Your kid has fun while you take care of his cognitive development</span></div><button class="avatar" onclick="go('profile')"><i>👤</i>${state.profile.name||'Profile'}</button></header>`}
+function go(s){state.screen=s;save();render();window.scrollTo(0,0)}
+function setMixPeriod(p){state.mixPeriod=p;save();render()}
+function home(){const t=togetherMinutes('week'),goal=state.profile.goal,pct=Math.min(100,Math.round(t/goal*100)),period=state.mixPeriod||'week',mix=mixPct(period),emptyWeek=sessionsFor('week').length===0,emptyPeriod=sessionsFor(period).length===0;const next=nextMilestone();const rec=recommend()[0]||GAMES[0];return `${header()}<main class="page">
+<section class="card hero"><span class="eyebrow">This week</span><div class="big">${t} <small>/ ${goal} min together</small></div><div class="goal-label">Your weekly play goal</div><div class="progress"><span style="width:${pct}%"></span></div><div class="mini-stats"><span><b>${weekSessions()}</b> shared play ${weekSessions()===1?'session':'sessions'}</span><span>${pct}% of weekly goal</span></div>${emptyWeek?`<p class="muted" style="font-size:12px;margin-bottom:15px">Let’s start</p>`:''}<div class="home-actions"><button class="btn primary" onclick="startLog()">＋ Log a game</button><button class="btn secondary" onclick="go('play')">🎲 Find a game</button></div></section>
+<section class="section card mix"><div class="section-head"><div><span class="eyebrow">Make the time count</span><h2>Cognitive Mix</h2></div><button class="link" onclick="go('weekly')">See plan →</button></div><div class="period-tabs">${[['week','Week'],['month','Month'],['year','Year']].map(([p,l])=>`<button class="${period===p?'sel':''}" onclick="setMixPeriod('${p}')">${l}</button>`).join('')}</div>${mixRows(mix,false)}${period==='week'?`<div class="insight">${warmHomeInsight()}</div>`:''}</section>
+<section class="section card recommend"><span class="eyebrow">${emptyWeek?'Let us suggest a fun activity to start with':'A good fit next'}</span><h2>${rec.emoji} ${rec.name}</h2><p class="muted">${rec.summary}</p><div class="chips">${skillChips(rec.skills)}</div><div class="why">${emptyWeek?'A simple, fun activity to get your week started.':whyGame(rec)}</div><button class="btn primary full" onclick="openGame('${rec.id}')">See game</button></section>
+<section class="section card milestone-preview" onclick="go('milestones')"><div class="badge">❤️</div><div><span class="eyebrow">Parent milestone</span><h3>${next.title}</h3><p class="muted">${next.subtitle}</p></div><div>→</div></section>
+</main>${nav('home')}`}
+function mixRows(mix,example){let data=example?{memory:24,attention:31,problem:19,language:12,creativity:7,spatial:7}:mix;return Object.entries(data).filter(([k])=>SKILLS[k]).map(([k,v])=>`<div class="mix-row"><div class="mix-icon" style="background:${SKILLS[k].color}33">${SKILLS[k].emoji}</div><div><div class="mix-label">${SKILLS[k].label}</div><div class="mix-track"><span style="width:${v}%;background:${SKILLS[k].color}"></span></div></div><div class="pct">${v}%</div></div>`).join('')+(example?`<div class="muted" style="font-size:10px;margin-top:12px">Example only — your real mix replaces this after your first log.</div>`:'')}
+const GAME_PLAYERS={
+'cup-slalom':['solo','two','group'],'memory-tray':['solo','two','group'],'three-thing-story':['two','group'],'copy-my-clap':['two','group'],'cup-code':['solo','two'],'red-light':['solo','two','group'],'category-chain':['two','group'],'mystery-bag':['two','group'],'cushion-fort':['two','group'],'nature-colour-hunt':['solo','two','group'],'treasure-route':['solo','two','group'],'draw-and-guess':['two','group'],'pattern-builder':['solo','two','group'],'opposites-game':['two','group'],'ball-target':['solo','two','group'],'cooperative-tower':['two','group'],'sound-map':['solo','two','group']};
+function supportsPlayers(g){return (GAME_PLAYERS[g.id]||['two']).includes(state.play.players||'two')}
+function playerLabel(v){return v==='solo'?'Kid solo':v==='group'?'Group':'2 players'}
+function scoreGame(g){if(state.profile.age<g.ageMin||state.profile.age>g.ageMax)return -999;if(!g.locations.includes(state.play.location)&&state.play.location!=='anywhere')return -200;if(!supportsPlayers(g))return -150;if(state.play.duration<g.min||state.play.duration>g.max)return -100;let score=20;if(state.play.mode==='skills'&&state.play.skills.length){score+=state.play.skills.reduce((a,k)=>a+(g.skills[k]||0),0)}else{leastSkills().slice(0,3).forEach((k,i)=>score+=(g.skills[k]||0)*(3-i));}return score}
+function recommend(){return [...GAMES].sort((a,b)=>scoreGame(b)-scoreGame(a)).filter(g=>scoreGame(g)>-100).slice(0,3)}
+function whyGame(g){if(state.play.mode==='skills'&&state.play.skills.length){return `Strong match for ${state.play.skills.map(k=>SKILLS[k].label.toLowerCase()).join(', ')}.`}const k=leastSkills()[0];return `${SKILLS[k].label} has had less play this week, so this adds more of it.`}
+function play(){const recs=recommend();return `${header()}<main class="page"><div class="screen-head"><span class="eyebrow">Find a game</span><h1>What works right now?</h1><p class="muted">A few quick choices, then we’ll suggest three good fits.</p></div><section class="card panel"><div class="filter-label">How much time?</div><div class="filter-row">${[5,10,15,30].map(n=>`<button class="${state.play.duration===n?'sel':''}" onclick="setPlay('duration',${n})">${n} min</button>`).join('')}</div><div class="filter-label">Where?</div><div class="filter-row">${[['home','Home'],['outside','Outside'],['car','Car'],['waiting','Waiting'],['anywhere','Anywhere']].map(([v,l])=>`<button class="${state.play.location===v?'sel':''}" onclick="setPlay('location','${v}')">${l}</button>`).join('')}</div><div class="filter-label">Play with</div><div class="filter-row">${[['solo','Kid solo'],['two','2 players'],['group','Group']].map(([v,l])=>`<button class="${(state.play.players||'two')===v?'sel':''}" onclick="setPlay('players','${v}')">${l}</button>`).join('')}</div><div class="filter-label">Balance my week</div><button class="balance ${state.play.mode==='balance'?'sel':''}" onclick="balanceMode()"><span><b>✨ Let SmartParent choose</b><small>Based on cognitive skills that have had less play this week.</small></span><span>→</span></button><div class="filter-label">Cognitive skills <span style="font-size:10px;color:var(--muted);font-weight:650">Choose up to 3</span></div><div class="skill-grid">${Object.entries(SKILLS).map(([k,s])=>`<button class="skill ${state.play.skills.includes(k)?'sel':''}" onclick="toggleSkill('${k}')"><span class="em">${s.emoji}</span><span>${s.label}</span></button>`).join('')}</div><div class="counter">${state.play.skills.length}/3 selected</div><button class="btn primary full" style="margin-top:16px" onclick="renderRecommendations()">Show me ideas</button></section><div id="recs">${recCards(recs)}</div></main>${nav('play')}`}
+function setPlay(k,v){state.play[k]=v;save();render()}
+function balanceMode(){state.play.mode='balance';state.play.skills=[];save();render()}
+function toggleSkill(k){let a=state.play.skills;if(a.includes(k))a=a.filter(x=>x!==k);else{if(a.length>=3)return;a=[...a,k]}state.play.skills=a;state.play.mode=a.length?'skills':'balance';save();render()}
+function renderRecommendations(){render();setTimeout(()=>document.getElementById('recs')?.scrollIntoView({behavior:'smooth'}),20)}
+function recCards(recs){return `<div class="section-head" style="margin-top:17px"><div><span class="eyebrow">Suggestions</span><h2>Three good fits</h2></div></div><div class="rec-list">${recs.map((g,i)=>`<section class="card game-card"><div class="game-top"><div class="game-emoji">${g.emoji}</div><div class="rank">${i===0?'Best fit':i===1?'Another option':'Something different'}</div></div><h2>${g.name}</h2><p class="muted">${g.duration} min · ${g.locations[0][0].toUpperCase()+g.locations[0].slice(1)} · ${playerLabel(state.play.players||'two')} · ${g.materials.join(', ')}</p><div class="chips">${skillChips(g.skills)}</div><div class="why">${whyGame(g)}</div><button class="btn primary full" onclick="openGame('${g.id}')">See game</button></section>`).join('')}</div>`}
+function openGame(id){state.currentGame=id;state.screen='game';save();render();window.scrollTo(0,0)}
+function gameDetail(){const g=GAMES.find(x=>x.id===state.currentGame)||GAMES[0];return `${header()}<main class="page"><button class="link" onclick="go('play')">← Back</button><section class="card activity-detail"><div class="game-emoji">${g.emoji}</div><h1>${g.name}</h1><p class="muted">${g.summary}</p><div class="chips"><span class="chip">⏱ ${g.duration} min</span><span class="chip">📍 ${g.locations.join(' / ')}</span></div><div class="filter-label">What you need</div><p class="muted" style="font-size:13px">${g.materials.join(' · ')}</p><div class="filter-label">How to play</div><ol class="steps">${g.steps.map(x=>`<li>${x}</li>`).join('')}</ol><div class="filter-label">Cognitive skills</div>${mixRows(g.skills,false)}<div class="note"><b>Easier:</b> ${g.easier}</div><div class="note"><b>Harder:</b> ${g.harder}</div><div class="note"><b>Fun variation:</b> ${g.variation}</div>${g.safety?`<div class="note warn"><b>Safety:</b> ${g.safety}</div>`:''}<button class="btn primary full" style="margin-top:16px" onclick="logFromGame('${g.id}')">We played this — log it</button></section></main>${nav('play')}`}
+function startLog(){state.log={stage:'choose'};state.screen='log';save();render()}
+function log(){if(!state.log)state.log={stage:'choose'};if(state.log.stage==='session')return logSession();if(state.log.stage==='analyse')return logAnalyse();if(state.log.stage==='confirm')return logConfirm();return logChoose()}
+function recentActivities(){let arr=[];state.sessions.slice(-3).reverse().forEach(s=>arr.push({name:s.name,emoji:s.emoji,skills:s.skills,source:s.source,id:s.refId}));Object.entries(PRESETS).forEach(([id,p])=>{if(!arr.some(x=>x.name===p.name))arr.push({...p,source:'preset',id})});return arr.slice(0,6)}
+function logChoose(){return `${header()}<main class="page"><div class="screen-head"><span class="eyebrow">Log a game</span><h1>What did you play?</h1><p class="muted">Add something you already played together.</p></div><section class="card panel"><div class="filter-label">Recent & familiar</div><div class="log-list">${recentActivities().map(a=>`<button class="log-item" onclick="chooseKnown('${a.source}','${a.id||''}','${esc(a.name)}')"><i>${a.emoji}</i><span><b>${a.name}</b><small>${topSkillNames(a.skills)}</small></span><span>→</span></button>`).join('')}</div><div class="filter-label">Describe another activity</div><textarea id="customText" class="input" placeholder="We built a tower with plastic cups..."></textarea><button class="btn secondary full" style="margin-top:9px" onclick="analyseCustom()">Analyse activity</button><div class="future"><b>📷 Photo recognition — later</b><br>Future version: photograph a toy, game, or setup and let an LLM-powered image wrapper suggest what it is and the likely Play Mix.</div></section></main>${nav('log')}`}
+function esc(s){return String(s||'').replaceAll("'","&#39;")}
+function topSkillNames(sk){return Object.entries(sk||{}).sort((a,b)=>b[1]-a[1]).slice(0,3).map(([k])=>SKILLS[k]?.label||k).join(' · ')}
+function chooseKnown(source,id,name){let a;if(source==='game')a=GAMES.find(g=>g.id===id);else if(source==='preset')a=PRESETS[id];else{let s=[...state.sessions].reverse().find(x=>x.name===name);a=s?{name:s.name,emoji:s.emoji,skills:s.skills}:null}if(!a)return;state.log={stage:'session',name:a.name||a.title,emoji:a.emoji||'🎲',skills:a.skills,source,refId:id,duration:a.duration||15,together:a.duration||15,custom:false};save();render()}
+function logFromGame(id){const g=GAMES.find(x=>x.id===id);state.log={stage:'session',name:g.name,emoji:g.emoji,skills:g.skills,source:'game',refId:id,duration:g.duration,together:g.duration,custom:false};state.screen='log';save();render()}
+function analyseCustom(){const text=(document.getElementById('customText')?.value||'').trim();if(!text)return;state.log={stage:'analyse',description:text,...inferActivity(text)};save();render()}
+function inferActivity(text){let t=text.toLowerCase(),skills={};function add(k,v){skills[k]=(skills[k]||0)+v}if(/lego|block|tower|build|fort|construct/.test(t)){add('spatial',30);add('problem',30);add('creativity',25);add('attention',15)}else if(/draw|paint|craft|colour|color/.test(t)){add('creativity',40);add('attention',20);add('spatial',20);add('language',20)}else if(/story|read|book|pretend/.test(t)){add('language',40);add('creativity',30);add('memory',15);add('attention',15)}else if(/ball|bike|scooter|run|jump|dance/.test(t)){add('movement',40);add('attention',20);add('spatial',25);add('selfcontrol',15)}else{add('attention',30);add('problem',25);add('creativity',25);add('language',20)}let name=text.length>32?text.slice(0,29)+'…':text;return {name,emoji:'✨',skills,custom:true}}
+function logAnalyse(){const l=state.log;return `${header()}<main class="page"><button class="link" onclick="startLog()">← Back</button><section class="card activity-detail"><span class="eyebrow">Estimated from your description</span><h1>${l.emoji} ${l.name}</h1><p class="muted">“${l.description}”</p><div class="filter-label">Estimated Play Mix</div>${mixRows(l.skills,false)}<div class="note">These percentages describe the activity, not your child.</div><div class="two" style="margin-top:14px"><button class="btn ghost" onclick="startLog()">Adjust</button><button class="btn primary" onclick="acceptAnalysis()">Looks right</button></div></section></main>${nav('log')}`}
+function acceptAnalysis(){state.log.stage='session';state.log.duration=15;state.log.together=15;state.log.source='custom';save();render()}
+function logSession(){const l=state.log;return `${header()}<main class="page"><button class="link" onclick="startLog()">← Back</button><div class="screen-head"><span class="eyebrow">Log a game</span><h1>${l.emoji} ${l.name}</h1><p class="muted">A quick check-in, then your Home screen updates.</p></div><section class="card session"><div class="filter-label">Cognitive skills</div><div class="chips">${skillChips(l.skills,4)}</div><div class="filter-label">How long did you play?</div><div class="duration-grid">${[5,10,15,20,30].map(n=>`<button class="${l.duration===n?'sel':''}" onclick="setDuration(${n})">${n} min</button>`).join('')}<button onclick="customDuration()">Custom</button></div><div class="filter-label">Time together</div><div class="together"><div class="muted" style="font-size:11px">How much of that time were you actively playing together?</div><div class="stepper"><button onclick="stepTogether(-5)">−</button><strong>${l.together} min</strong><button onclick="stepTogether(5)">+</button></div><div class="shortcuts"><button onclick="setTogether('all')">All</button><button onclick="setTogether('half')">Half</button><button onclick="setTogether('none')">None</button></div></div><button class="btn primary full" style="margin-top:16px" onclick="saveSession()">Save play</button></section></main>${nav('log')}`}
+function setDuration(n){state.log.duration=n;state.log.together=Math.min(state.log.together,n);if(state.log.together===0)state.log.together=n;save();render()}
+function customDuration(){let n=parseInt(prompt('Minutes played?','20'),10);if(!n||n<1)return;state.log.duration=n;state.log.together=Math.min(state.log.together||n,n);save();render()}
+function stepTogether(d){state.log.together=Math.max(0,Math.min(state.log.duration,state.log.together+d));save();render()}
+function setTogether(x){state.log.together=x==='all'?state.log.duration:x==='half'?Math.round(state.log.duration/2):0;save();render()}
+function saveSession(){const l=state.log;state.sessions.push({id:Date.now(),name:l.name,emoji:l.emoji,skills:l.skills,total:l.duration,together:l.together,source:l.source,refId:l.refId||'',date:new Date().toISOString()});state.log={...l,stage:'confirm',milestone:nextMilestone(true)};save();render()}
+function logConfirm(){const l=state.log;return `${header()}<main class="page"><section class="card confirm"><div class="confirm-icon">❤️</div><span class="eyebrow">Play logged</span><h1>${l.together} minutes together added</h1><p class="muted">Your weekly time and Cognitive Mix have been updated.</p>${l.milestone?.justUnlocked?`<div class="note" style="margin:16px 0"><b>🎉 ${l.milestone.title}</b><br>${l.milestone.subtitle}</div>`:''}${l.custom?`<button class="btn secondary full" style="margin-bottom:9px" onclick="saveCustomLibrary()">Save ${l.name} to Library</button>`:''}<button class="btn primary full" onclick="finishLog()">Back home</button><button class="btn ghost full" style="margin-top:9px" onclick="startLog()">Log another</button></section></main>${nav('log')}`}
+function finishLog(){state.log=null;state.screen='home';save();render();window.scrollTo(0,0)}
+function saveCustomLibrary(){const key='custom:'+Date.now();PRESETS[key]={name:state.log.name,emoji:state.log.emoji,skills:state.log.skills};state.library.push(key);state.log.custom=false;save();render()}
+function nextMilestone(checkUnlock=false){const t=allTimeTogether(),s=allTimeSessions(),mix=mixRaw('week'),areas=Object.values(mix).filter(v=>v>=5).length;const ms=[{title:'First 60 minutes together',value:t,target:60,subtitle:'A milestone for the time you make together.'},{title:'5 shared play sessions',value:s,target:5,subtitle:'Celebrating the moments you showed up.'},{title:'First varied week',value:areas,target:5,subtitle:'Explore 5 different cognitive areas together.'},{title:'5 hours together',value:t,target:300,subtitle:'Five hours of intentional play together.'},{title:'20 shared sessions',value:s,target:20,subtitle:'Twenty shared play moments.'}];let m=ms.find(x=>x.value<x.target)||ms[ms.length-1];if(checkUnlock){let unlocked=ms.filter(x=>x.value>=x.target);let latest=unlocked[unlocked.length-1];if(latest&&((latest.target===60&&t-state.log.together<60)||(latest.target===5&&s-1<5)||(latest.target===300&&t-state.log.together<300)||(latest.target===20&&s-1<20))){return {...latest,justUnlocked:true}}}return m}
+function planFocusSkills(){const raw=mixRaw('week'),keys=Object.keys(SKILLS),hasPlay=Object.values(raw).some(v=>v>0);return hasPlay?keys.sort((a,b)=>raw[a]-raw[b]).slice(0,3):['language','attention','creativity']}
+function weeklyProgressScore(){const goal=Math.max(1,state.profile.goal||120),timeScore=Math.min(1,togetherMinutes()/goal),raw=mixRaw('week'),active=Object.values(raw).filter(v=>v>0).length,varietyScore=Math.min(1,active/6);return Math.round((timeScore*.6+varietyScore*.4)*100)}
+function planSummary(){const mins=togetherMinutes(),goal=state.profile.goal||120,sessions=weekSessions(),raw=mixRaw('week'),variety=Object.values(raw).filter(v=>v>0).length,p=mins/goal;if(mins===0)return "A fresh week ahead. One small playful moment is all it takes to get things moving.";if(p>=1&&variety>=5)return "Beautiful week so far — you’ve made time for each other and kept play nicely varied.";if(p>=.8)return "You’re very close to your weekly goal. One more easy play moment could round things out nicely.";if(sessions>=2&&variety>=4)return "You’ve built a lovely rhythm already. A little more variety can make the week feel even richer.";if(p>=.35)return "You’re well on your way. Keep following the moments that feel easy and fun.";return "Lovely start. A few more playful moments and your week will begin to take shape."}
+function planLibraryRanked(focus){let items=state.library.map(id=>({id,...(PRESETS[id]||{})})).filter(x=>x.name&&x.skills);if(!items.length)items=Object.entries(PRESETS).slice(0,3).map(([id,p])=>({id,...p}));items.sort((a,b)=>focus.reduce((n,k)=>n+(b.skills[k]||0),0)-focus.reduce((n,k)=>n+(a.skills[k]||0),0));return items}
+function planLibraryPick(focus){return planLibraryRanked(focus)[0]||null}
+function togglePlanChooser(){planChooserOpen=!planChooserOpen;render()}
+function planChooser(focus,own){if(!planChooserOpen)return '';const items=planLibraryRanked(focus).filter(x=>!own||x.id!==own.id);return `<div style="margin-top:12px"><span class="eyebrow">Choose another</span><div style="display:grid;gap:8px;margin-top:8px">${items.map((g,i)=>`<button class="btn ghost full" style="text-align:left;height:auto;padding:12px 14px" onclick="useLibraryFromPlan('${g.id}')"><b>${g.emoji} ${g.name}</b><span class="muted" style="display:block;font-size:11px;margin-top:3px">${skillChips(g.skills,3)}</span></button>`).join('')}</div></div>`}
+function planNewPick(focus){let libNames=new Set(state.library.map(id=>(PRESETS[id]||{}).name).filter(Boolean));let candidates=GAMES.filter(g=>state.profile.age>=g.ageMin&&state.profile.age<=g.ageMax&&!libNames.has(g.name));candidates.sort((a,b)=>focus.reduce((n,k)=>n+(b.skills[k]||0),0)-focus.reduce((n,k)=>n+(a.skills[k]||0),0));return candidates[0]||GAMES[0]}
+function useLibraryFromPlan(id){chooseKnown('preset',id,(PRESETS[id]||{}).name||'');state.screen='log';save();render();window.scrollTo(0,0)}
+function weekly(){const focus=planFocusSkills(),own=planLibraryPick(focus),fresh=planNewPick(focus),score=weeklyProgressScore();return `${header()}<main class="page"><button class="link" onclick="go('home')">← Home</button><div class="screen-head"><span class="eyebrow">Your plan</span><h1>Your week</h1><p class="muted">A quick look at where you are — and what could fit nicely next.</p></div><section class="card panel"><div style="display:flex;align-items:end;justify-content:space-between;gap:12px"><div><span class="eyebrow">Weekly progress</span><div style="font-size:34px;font-weight:830;letter-spacing:-.05em;margin-top:5px">${score}% <span style="font-size:14px;color:var(--muted);font-weight:700;letter-spacing:-.01em">on track</span></div></div></div><div class="progress" style="margin-top:12px"><span style="width:${score}%"></span></div><div class="insight" style="margin-top:10px">${planSummary()}</div><p class="muted" style="font-size:10px;margin:9px 2px 0">Weekly progress combines time toward your goal with the variety of play you’ve shared.</p></section><section class="section card panel"><span class="eyebrow">What to focus on next</span><div class="chips" style="margin-top:10px">${focus.map(k=>`<span class="chip">${SKILLS[k].emoji} ${SKILLS[k].label}</span>`).join('')}</div><p class="muted" style="font-size:12px;margin:11px 0 0">These would add the most variety to your week right now.</p></section>${own?`<section class="section card game-card"><div class="game-top"><div class="game-emoji">${own.emoji}</div><div class="rank">From your games</div></div><h2>${own.name}</h2><p class="muted">This looks like a strong fit from the games you already use.</p><div class="chips">${skillChips(own.skills,3)}</div><div class="two" style="margin-top:14px"><button class="btn primary" onclick="useLibraryFromPlan('${own.id}')">Play this</button><button class="btn ghost" onclick="togglePlanChooser()">${planChooserOpen?'Hide choices':'Choose another'}</button></div>${planChooser(focus,own)}</section>`:''}<section class="section card game-card"><div class="game-top"><div class="game-emoji">${fresh.emoji}</div><div class="rank">Try something new</div></div><h2>${fresh.name}</h2><p class="muted">${fresh.duration} min · ${fresh.locations[0][0].toUpperCase()+fresh.locations[0].slice(1)} · ${fresh.materials.join(', ')}</p><div class="chips">${skillChips(fresh.skills,3)}</div><button class="btn primary full" style="margin-top:14px" onclick="openGame('${fresh.id}')">See game</button></section><button class="btn secondary full" style="margin-top:14px" onclick="findForSkills([${focus.map(k=>`'${k}'`).join(',')}])">Find another game</button></main>${nav('home')}`}
+function findForSkills(keys){state.play.mode='skills';state.play.skills=keys.slice(0,3);state.screen='play';save();render();window.scrollTo(0,0)}
+function findForSkill(k){state.play.mode='skills';state.play.skills=[k];state.screen='play';save();render()}
+
+function toggleDiscoverLike(k){const a=state.discover.likes||[];state.discover.likes=a.includes(k)?a.filter(x=>x!==k):(a.length<3?[...a,k]:a);save();render()}
+function toggleDiscoverSkill(k){const a=state.discover.skills||[];state.discover.skills=a.includes(k)?a.filter(x=>x!==k):(a.length<3?[...a,k]:a);save();render()}
+function productScore(p){const age=state.profile.age||5;if(age<p.ageMin||age>p.ageMax)return -999;let sc=10;for(const l of state.discover.likes||[])if(p.likes.includes(l))sc+=24;for(const k of state.discover.skills||[])sc+=(p.skills[k]||0)*1.2;return sc}
+function discoverProducts(){return PRODUCTS.map(p=>({...p,_score:productScore(p)})).filter(p=>p._score>-100).sort((a,b)=>b._score-a._score).slice(0,3)}
+function amazonUrl(name){return 'https://www.amazon.de/s?k='+encodeURIComponent(name)}
+function productWhy(p){const selected=(state.discover.skills||[]).filter(k=>p.skills[k]);const liked=(state.discover.likes||[]).filter(k=>p.likes.includes(k));if(liked.length&&selected.length)return `Matches ${DISCOVER_LIKES[liked[0]][1].toLowerCase()} and gives plenty of ${SKILLS[selected[0]].label.toLowerCase()} play.`;if(selected.length)return `A strong match for ${selected.slice(0,2).map(k=>SKILLS[k].label.toLowerCase()).join(' + ')}.`;if(liked.length)return `Fits their interest in ${DISCOVER_LIKES[liked[0]][1].toLowerCase()}.`;return `A well-rounded option for age ${state.profile.age}.`}
+function discover(){const likes=state.discover.likes||[],skills=state.discover.skills||[],products=discoverProducts();return `${header()}<main class="page"><div class="screen-head"><span class="eyebrow">Gifts</span><h1>Gift ideas for your child</h1><p class="muted">Thoughtful game picks based on what they enjoy and what you’d like to practise more.</p></div><section class="card panel"><div class="filter-label">What does your child enjoy?</div><div class="pref-grid">${Object.entries(DISCOVER_LIKES).map(([k,[em,l]])=>`<button class="pref ${likes.includes(k)?'sel':''}" onclick="toggleDiscoverLike('${k}')"><span class="em">${em}</span>${l}</button>`).join('')}</div><div class="discover-count">Choose up to 3 · ${likes.length}/3 selected</div><div class="filter-label">Cognitive skills</div><p class="muted" style="font-size:11px;margin:-3px 0 9px">What would you like to practise a little more?</p><div class="skill-grid">${Object.entries(SKILLS).map(([k,v])=>`<button class="skill ${skills.includes(k)?'sel':''}" onclick="toggleDiscoverSkill('${k}')"><span class="em">${v.emoji}</span><span>${v.label}</span></button>`).join('')}</div><div class="counter">Choose up to 3 · ${skills.length}/3 selected</div></section><div class="section-head" style="margin-top:18px"><div><span class="eyebrow">Picked for age ${state.profile.age}</span><h2>Thoughtful picks</h2></div></div><div class="product-list">${products.map((p,i)=>`<section class="card product-card"><div class="product-head"><div class="product-art">${p.emoji}</div><div><div class="rank">${i===0?'Best fit':'Good fit'}</div><h3>${p.name}</h3><div class="product-meta">Age ${p.ageMin}+ · Real product</div></div></div><div class="chips" style="margin-top:12px">${skillChips(p.skills,3)}</div><div class="product-why"><b>Why this could be a lovely fit</b><br>${productWhy(p)}</div><button class="btn primary full" onclick="window.open(amazonUrl('${p.name.replaceAll("'","\\'")}'),'_blank','noopener')">View on Amazon</button></section>`).join('')}</div><p class="affiliate-note">Product links currently open Amazon search results. Affiliate tracking can be added later without changing this recommendation flow.</p></main>${nav('discover')}`}
+function library(){let items=state.library.map(id=>({id,...(PRESETS[id]||{})})).filter(x=>x.name);return `${header()}<main class="page"><div class="screen-head"><span class="eyebrow">Library</span><h1>What your family already plays</h1><p class="muted">Your familiar games and saved SmartParent ideas.</p></div><div class="library-grid">${items.map(a=>`<section class="card lib-card"><div class="game-emoji">${a.emoji}</div><div><h3>${a.name}</h3><p class="muted">${topSkillNames(a.skills)}</p></div><button class="link" onclick="chooseKnown('preset','${a.id}','${esc(a.name)}');state.screen='log';render()">Log →</button></section>`).join('')}</div><button class="btn secondary full" style="margin-top:14px" onclick="startLog()">＋ Add something you play</button></main>${nav('discover')}`}
+function milestones(){const t=allTimeTogether(),s=allTimeSessions(),areas=Object.values(mixRaw('week')).filter(v=>v>=5).length;const list=[['❤️','First 60 minutes together',t,60,'Time together'],['🎲','5 shared play sessions',s,5,'Consistency'],['🌈','First varied week',areas,5,'Variety'],['⏱️','5 hours together',t,300,'Time together'],['✨','20 shared sessions',s,20,'Consistency']];const presets=[60,90,120,180];return `${header()}<main class="page"><button class="link" onclick="go('home')">← Home</button><div class="screen-head"><span class="eyebrow">Goals & milestones</span><h1>Your time together, celebrated.</h1><p class="muted">Choose a weekly goal that feels right for your family. Milestones unlock naturally as you make time to play together.</p></div><section class="card goal-card"><span class="eyebrow">Your weekly goal</span><div class="goal-current"><strong>${state.profile.goal}</strong><span>minutes together</span></div><div class="goal-options">${presets.map(n=>`<button class="${state.profile.goal===n?'sel':''}" onclick="setWeeklyGoal(${n})">${n} min</button>`).join('')}</div><div class="goal-custom"><input id="customGoal" class="input" type="number" min="15" step="5" placeholder="Custom minutes"><button class="btn secondary" onclick="applyCustomGoal()">Set</button></div><p class="muted" style="margin-top:10px">A personal target for your family — not a developmental requirement.</p></section><div class="section-head"><div><span class="eyebrow">Your progress</span><h2>Milestones</h2></div></div><div class="milestones">${list.map(([em,title,v,target,cat])=>`<section class="card ms ${v>=target?'':'locked'}"><div class="badge">${em}</div><div><span class="eyebrow">${cat}</span><h3>${title}</h3><p class="muted">${Math.min(v,target)} / ${target}${target>=60?' min':''}${v>=target?' · Unlocked':''}</p></div></section>`).join('')}</div></main>${nav('milestones')}`}
+function setWeeklyGoal(n){state.profile.goal=Math.max(15,Number(n)||120);save();render()}
+function applyCustomGoal(){const el=document.getElementById('customGoal');if(!el)return;const n=Number(el.value);if(Number.isFinite(n)&&n>=15)setWeeklyGoal(n)}
+function profile(){return `${header()}<main class="page"><button class="link" onclick="go('home')">← Home</button><div class="screen-head"><span class="eyebrow">Profile</span><h1>Your family setup</h1><p class="muted">Keep it simple. These settings help SmartParent make better suggestions.</p></div><section class="card panel"><div class="profile-row"><label>Child name (optional)</label><input class="input" value="${state.profile.name}" onchange="setProfile('name',this.value)" placeholder="Name" /></div><div class="profile-row"><label>Age</label><select class="input" onchange="setProfile('age',Number(this.value))">${[4,5,6,7,8].map(n=>`<option ${state.profile.age===n?'selected':''}>${n}</option>`).join('')}</select></div><div class="profile-row"><label>How Cognitive Mix works</label><p class="muted" style="font-size:11px;margin:0">Cognitive Mix describes the kinds of cognitive skills involved in the games you play together. It is not a measure of your child's ability or development.</p></div></section></main>${nav('home')}`}
+function setProfile(k,v){state.profile[k]=v;save();render()}
+function render(){const root=document.getElementById('app');switch(state.screen){case'play':root.innerHTML=play();break;case'log':root.innerHTML=log();break;case'discover':root.innerHTML=discover();break;case'library':root.innerHTML=library();break;case'game':root.innerHTML=gameDetail();break;case'weekly':root.innerHTML=weekly();break;case'milestones':root.innerHTML=milestones();break;case'profile':root.innerHTML=profile();break;default:root.innerHTML=home()}}
+render();
+</script>
+</body>
+</html>
