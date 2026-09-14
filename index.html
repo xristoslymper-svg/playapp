@@ -424,6 +424,55 @@
       display:grid;place-items:center;font-size:23px;margin-bottom:12px;
     }
 
+
+    .mix-action-row{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:12px}
+    .mix-result-wrap{margin-top:12px}
+    .mix-result-grid{display:grid;grid-template-columns:1fr;gap:9px}
+    .compact-rec{
+      display:grid;grid-template-columns:62px 1fr auto;gap:10px;align-items:center;
+      background:#FFFDFC;border:1px solid rgba(107,85,73,.07);border-radius:18px;padding:10px;
+      box-shadow:var(--shadow-soft)
+    }
+    .compact-rec-art{height:58px;border-radius:15px;display:grid;place-items:center;font-size:28px;background:#F5F0EA}
+    .compact-rec h3{font-size:14px;margin:0 0 3px}
+    .compact-rec p{font-size:11px;line-height:1.35;margin:0}
+    .compact-rec .btn{padding:8px 9px;font-size:10px;border-radius:12px}
+    .result-footer{display:flex;justify-content:flex-end;margin-top:10px}
+    .suggested-focus{
+      background:linear-gradient(135deg,#EAF3E8,#FFFDFC);border:1px solid #D9E9D6;
+      border-radius:22px;padding:15px
+    }
+    .focus-combo{display:flex;gap:7px;flex-wrap:wrap;margin:10px 0 11px}
+    .focus-token{
+      padding:8px 10px;border-radius:999px;background:#fff;font-size:12px;font-weight:900;
+      color:#526452;box-shadow:var(--shadow-soft)
+    }
+    .custom-focus-card{
+      background:#FFFDFC;border:1px solid rgba(107,85,73,.07);border-radius:22px;padding:15px;margin-top:12px
+    }
+    .skill-groups{display:grid;gap:14px;margin-top:14px}
+    .skill-group{
+      background:#FAF7F3;border-radius:18px;padding:12px
+    }
+    .skill-group-title{font-size:12px;font-weight:900;color:#6E655F;margin-bottom:8px}
+    .skill-options{display:flex;flex-wrap:wrap;gap:7px}
+    .skill-option{
+      border:1px solid #E8E0D9;background:#FFFDFC;border-radius:999px;padding:8px 10px;
+      font-size:11px;font-weight:850;color:#6B625D
+    }
+    .skill-option.selected{background:var(--sage);border-color:var(--sage);color:#354637}
+    .selection-status{
+      display:flex;align-items:center;justify-content:space-between;gap:10px;margin:12px 0 4px;
+      padding:9px 11px;border-radius:14px;background:var(--sage-2);font-size:11px;color:#5A6958
+    }
+    .gift-mode-row{display:flex;gap:7px;flex-wrap:wrap;margin-top:11px}
+    .gift-result-heading{margin:18px 0 10px}
+    .match-badge{
+      display:inline-block;font-size:10px;font-weight:900;padding:5px 7px;border-radius:999px;
+      background:var(--sage-2);color:#59705A;margin-bottom:6px
+    }
+    .child-name-inline{font-weight:inherit}
+
     .hide{display:none!important}
     @media (min-width:521px){
       body{padding:18px 0}
@@ -438,10 +487,12 @@
   <section id="welcome" class="welcome-screen active">
     <div class="welcome-logo"><div class="brand-mark">🌱</div>SmartParent</div>
     <div class="eyebrow">Cognitive play, made practical</div>
-    <h1 style="font-size:36px;max-width:430px">Turn everyday play into a balanced cognitive mix.</h1>
+    <h1 style="font-size:36px;max-width:430px">More than keeping them busy.</h1>
     <p style="font-size:16px;max-width:450px">
-      Build a richer cognitive mix through the games, hobbies and routines your child already loves.
-      Get personalized ideas for what to play next — using what you have or choosing something new.
+      Find games and activities that naturally exercise different cognitive and developmental skills.
+    </p>
+    <p class="mini" style="font-size:13px;max-width:440px;margin-top:-2px">
+      Personalized around your child’s age, interests and everyday activities.
     </p>
     <div class="value-pills">
       <span class="value-pill">🧠 Cognitive Mix</span>
@@ -501,7 +552,7 @@
     </div>
 
     <div class="home-greeting">
-      <div class="eyebrow">Today with Sofia</div>
+      <div class="eyebrow">Today with <span id="homeChildName">Sofia</span></div>
       <h1 id="homeHello">Good morning 👋</h1>
       <p>Today’s plans, play and one useful next idea.</p>
     </div>
@@ -533,7 +584,7 @@
         <div style="padding-right:24px">
           <div class="mini">10 min · At home</div>
           <h3 style="margin:3px 0 5px">Secret Delivery</h3>
-          <p class="mini" style="margin-bottom:9px">A memory mission selected to complement Sofia’s recent play.</p>
+          <p class="mini" style="margin-bottom:9px">A memory mission selected to complement <span id="homeSuggestionChild">Sofia</span>’s recent play.</p>
           <button class="btn btn-primary" style="padding:9px 11px;font-size:12px" onclick="openGame('secret-delivery')">Start this game</button>
         </div>
       </div>
@@ -606,8 +657,8 @@
     <div class="topbar">
       <div class="brand-row"><div class="brand"><div class="brand-mark">＋</div>Log play</div><button class="profile-pill" onclick="openProfile()">Sofia · 6 ▾</button></div>
     </div>
-    <div class="eyebrow">Add to Sofia’s activity history</div>
-    <h1>What did Sofia do?</h1>
+    <div class="eyebrow">Add to <span id="logChildName">Sofia</span>’s activity history</div>
+    <h1>What did <span id="logChildNameHeading">Sofia</span> do?</h1>
     <p>Log a game, hobby or everyday activity and SmartParent will add its cognitive contribution to the right day.</p>
 
     <div class="section" style="margin-top:16px">
@@ -657,8 +708,8 @@
       <div class="brand-row"><div class="brand"><div class="brand-mark">🌈</div>Cognitive Mix</div><button class="profile-pill" onclick="openProfile()">Sofia · 6 ▾</button></div>
     </div>
     <div class="eyebrow">Cognitive balance over time</div>
-    <h1>A clearer picture of how Sofia plays and learns.</h1>
-    <p>See which cognitive areas are exercised through her games, hobbies and everyday activities — and use that pattern to choose the next kind of play with more purpose.</p>
+    <h1>A clearer picture of how <span id="mixChildName">Sofia</span> plays and learns.</h1>
+    <p>See which cognitive areas are exercised through games, hobbies and everyday activities — and use that pattern to choose the next kind of play with more purpose.</p>
 
     <div class="tab-toggle">
       <button>Week</button><button class="active">Month</button><button>3 Months</button>
@@ -670,9 +721,13 @@
       <div class="insight insight-green">
         <div class="eyebrow">Best next opportunity</div>
         <h2 style="margin-bottom:6px">Add memory + planning into the mix</h2>
-        <p style="margin-bottom:0">Sofia’s recent activities already cover movement and imagination well. A sequence, route-planning or multi-step game would broaden the cognitive pattern nicely.</p>
+        <p id="mixOpportunityText" style="margin-bottom:0">Sofia’s recent activities already cover movement and imagination well. A sequence, route-planning or multi-step game would broaden the cognitive pattern nicely.</p>
       </div>
-      <button class="btn btn-rose btn-block" style="margin-top:11px" onclick="go('find')">Show me free ideas</button>
+      <div class="mix-action-row">
+        <button class="btn btn-sage" onclick="showMixOpportunityIdeas('free')">🎲 3 free ideas</button>
+        <button class="btn btn-soft" onclick="showMixOpportunityIdeas('products')">🎁 3 product ideas</button>
+      </div>
+      <div id="mixOpportunityResults" class="mix-result-wrap"></div>
     </div>
 
     <div class="section">
@@ -694,49 +749,53 @@
     <div class="topbar">
       <div class="brand-row"><div class="brand"><div class="brand-mark">🎁</div>Gift ideas</div><button class="profile-pill" onclick="openProfile()">Sofia · 6 ▾</button></div>
     </div>
+
     <div class="card gift-hero">
-      <div class="eyebrow">Personalized for Sofia</div>
-      <h1 style="font-size:28px">Gift ideas chosen around how she actually plays.</h1>
-      <p style="margin-bottom:0">Recommendations combine her age, interests, regular activities and current Cognitive Mix.</p>
+      <div class="eyebrow">Personalized for <span id="giftHeroChild">Sofia</span></div>
+      <h1 style="font-size:28px">Gift ideas chosen around how <span id="giftHeroChild2">Sofia</span> actually plays.</h1>
+      <p style="margin-bottom:0">SmartParent combines age, interests, regular activities and cognitive goals to build a more relevant shortlist.</p>
     </div>
 
     <div class="section">
-      <div class="personalization-card">
-        <div class="eyebrow">Why these picks feel personal</div>
-        <h3>For Sofia, age 6</h3>
-        <div class="persona-row">
-          <span class="persona-pill">🧱 Loves building</span>
-          <span class="persona-pill">📚 Enjoys stories</span>
-          <span class="persona-pill">🚲 Likes active play</span>
-          <span class="persona-pill">🧠 Current opportunity: Focus & Memory</span>
+      <div class="suggested-focus">
+        <div class="eyebrow">SmartParent’s suggested focus</div>
+        <h2 style="font-size:20px;margin-bottom:5px">A useful combination right now</h2>
+        <p class="mini" style="margin-bottom:0">Based on <span id="giftSuggestedChild">Sofia</span>’s current Cognitive Mix.</p>
+        <div class="focus-combo">
+          <span class="focus-token">Attention & focus</span>
+          <span class="focus-token">Working memory</span>
+          <span class="focus-token">Planning</span>
         </div>
+        <button class="btn btn-primary btn-block" onclick="useSuggestedGiftFocus()">Show 3 recommendations</button>
       </div>
 
-      <div class="goal-card">
-        <div class="eyebrow">Choose how to shop</div>
-        <h3 style="margin-bottom:4px">By fit, or by cognitive focus</h3>
-        <p class="mini" style="margin-bottom:0">Start with SmartParent’s picks, or choose the kind of cognitive play you want the gift to encourage.</p>
-        <div class="chips" id="giftFilters">
-          <button class="chip selected" onclick="giftFilter(this,'match')">✨ Best for Sofia</button>
-          <button class="chip" onclick="giftFilter(this,'different')">↗ Adds variety</button>
-          <button class="chip" onclick="giftFilter(this,'focus')">Focus & Memory</button>
-          <button class="chip" onclick="giftFilter(this,'thinking')">Problem Solving</button>
-          <button class="chip" onclick="giftFilter(this,'language')">Language & Imagination</button>
-          <button class="chip" onclick="giftFilter(this,'movement')">Movement & Body</button>
-          <button class="chip" onclick="giftFilter(this,'social')">Social & Cooperation</button>
-        </div>
+      <div class="custom-focus-card">
+        <div class="eyebrow">Or choose the goal yourself</div>
+        <h3 style="margin-bottom:5px">Build your own cognitive focus</h3>
+        <p class="mini" style="margin-bottom:10px">Combine up to 3 skills and SmartParent will look for products that bring them together.</p>
+        <button class="btn btn-soft btn-block" onclick="openSkillBuilder()">＋ Choose cognitive skills</button>
+        <div id="customFocusSummary" class="focus-combo" style="margin-bottom:0"></div>
+      </div>
+
+      <div class="gift-mode-row">
+        <button class="chip" onclick="showGiftMode('overall',this)">✨ Best overall fit</button>
+        <button class="chip" onclick="showGiftMode('different',this)">↗ Adds something different</button>
       </div>
     </div>
 
     <div class="section">
+      <div class="gift-result-heading">
+        <div class="eyebrow" id="giftResultEyebrow">For Sofia right now</div>
+        <h2 id="giftResultTitle">3 personalized gift ideas</h2>
+      </div>
       <div class="product-grid" id="giftGrid"></div>
     </div>
 
     <div class="section">
       <div class="card" style="background:#F8F4EF">
-        <h3>Want a free option?</h3>
-        <p class="mini">Try free activities that support the same cognitive area using things you already have at home.</p>
-        <button class="btn btn-soft btn-block" onclick="go('find')">Show free ideas instead</button>
+        <h3>Want to achieve the same goal with things at home?</h3>
+        <p class="mini">SmartParent can suggest free activities around the same cognitive focus.</p>
+        <button class="btn btn-soft btn-block" onclick="openFindForRecommendedFocus()">Show free ideas</button>
       </div>
       <div class="affiliate">Product buttons open Amazon search results. In a real release, affiliate disclosures and local marketplace handling would be added clearly.</div>
     </div>
@@ -766,7 +825,7 @@
     <div class="sheet-handle"></div>
     <button class="sheet-close" onclick="closeModal('profileModal')">×</button>
     <div class="eyebrow">Child profile</div>
-    <h2>Sofia, 6</h2>
+    <h2><span id="profileChildName">Sofia</span>, <span id="profileChildAge">6</span></h2>
     <p>A simple profile helps SmartParent tailor cognitive play ideas around your child’s age, interests and everyday routines.</p>
     <div class="filter-group"><label>Interests</label><div class="chips multi">
       <button class="chip selected">Animals</button><button class="chip selected">Building</button><button class="chip selected">Stories</button><button class="chip">Music</button><button class="chip selected">Cycling</button><button class="chip">Numbers</button>
@@ -779,6 +838,74 @@
 </div>
 
 
+
+
+<div id="skillBuilderModal" class="modal" onclick="if(event.target===this) closeModal('skillBuilderModal')">
+  <div class="sheet">
+    <div class="sheet-handle"></div>
+    <button class="sheet-close" onclick="closeModal('skillBuilderModal')">×</button>
+    <div class="eyebrow">Build a cognitive focus</div>
+    <h2>Choose up to 3 skills</h2>
+    <p class="mini">Combine the skills you want a new toy or activity to encourage. We’ll find products where those skills naturally overlap.</p>
+
+    <div class="skill-groups">
+      <div class="skill-group">
+        <div class="skill-group-title">Attention & memory</div>
+        <div class="skill-options">
+          <button class="skill-option" data-detail-skill="attention" onclick="toggleDetailedSkill(this)">Attention & focus</button>
+          <button class="skill-option" data-detail-skill="working_memory" onclick="toggleDetailedSkill(this)">Working memory</button>
+          <button class="skill-option" data-detail-skill="inhibitory_control" onclick="toggleDetailedSkill(this)">Inhibitory control</button>
+        </div>
+      </div>
+
+      <div class="skill-group">
+        <div class="skill-group-title">Thinking & problem-solving</div>
+        <div class="skill-options">
+          <button class="skill-option" data-detail-skill="planning" onclick="toggleDetailedSkill(this)">Planning</button>
+          <button class="skill-option" data-detail-skill="problem_solving" onclick="toggleDetailedSkill(this)">Problem-solving</button>
+          <button class="skill-option" data-detail-skill="spatial" onclick="toggleDetailedSkill(this)">Spatial reasoning</button>
+          <button class="skill-option" data-detail-skill="patterns" onclick="toggleDetailedSkill(this)">Number sense & patterns</button>
+        </div>
+      </div>
+
+      <div class="skill-group">
+        <div class="skill-group-title">Language & creativity</div>
+        <div class="skill-options">
+          <button class="skill-option" data-detail-skill="language" onclick="toggleDetailedSkill(this)">Language</button>
+          <button class="skill-option" data-detail-skill="storytelling" onclick="toggleDetailedSkill(this)">Storytelling</button>
+          <button class="skill-option" data-detail-skill="creativity" onclick="toggleDetailedSkill(this)">Creativity</button>
+          <button class="skill-option" data-detail-skill="flexible_thinking" onclick="toggleDetailedSkill(this)">Flexible thinking</button>
+        </div>
+      </div>
+
+      <div class="skill-group">
+        <div class="skill-group-title">Movement & body</div>
+        <div class="skill-options">
+          <button class="skill-option" data-detail-skill="motor_planning" onclick="toggleDetailedSkill(this)">Motor planning</button>
+          <button class="skill-option" data-detail-skill="coordination" onclick="toggleDetailedSkill(this)">Coordination</button>
+          <button class="skill-option" data-detail-skill="body_awareness" onclick="toggleDetailedSkill(this)">Body awareness</button>
+        </div>
+      </div>
+
+      <div class="skill-group">
+        <div class="skill-group-title">Emotional & social</div>
+        <div class="skill-options">
+          <button class="skill-option" data-detail-skill="emotional_regulation" onclick="toggleDetailedSkill(this)">Emotional regulation</button>
+          <button class="skill-option" data-detail-skill="patience" onclick="toggleDetailedSkill(this)">Patience & self-control</button>
+          <button class="skill-option" data-detail-skill="cooperation" onclick="toggleDetailedSkill(this)">Cooperation</button>
+          <button class="skill-option" data-detail-skill="turn_taking" onclick="toggleDetailedSkill(this)">Turn-taking</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="selection-status">
+      <span id="skillSelectionText">0 of 3 selected</span>
+      <button class="section-link" onclick="clearDetailedSkills()">Clear</button>
+    </div>
+    <button class="btn btn-primary btn-block" onclick="applyDetailedGiftSkills()">Find 3 matching gifts</button>
+    <button class="btn btn-soft btn-block" style="margin-top:8px" onclick="useSuggestedFocusFromBuilder()">Use SmartParent’s suggested focus instead</button>
+  </div>
+</div>
 
 <div id="homeInfoModal" class="modal" onclick="if(event.target===this) closeModal('homeInfoModal')">
   <div class="sheet">
@@ -823,7 +950,7 @@
       </div>
     </div>
     <button class="btn btn-primary btn-block" style="margin-top:14px" onclick="saveCalendarEvent()">Add to calendar</button>
-    <div class="form-note">Planned activities can later be confirmed with one tap and added to Sofia’s activity history.</div>
+    <div class="form-note">Planned activities can later be confirmed with one tap and added to the activity history.</div>
   </div>
 </div>
 
@@ -848,6 +975,34 @@ const safeStorage = {
   }
 };
 
+
+let childProfile = JSON.parse(safeStorage.getItem("smartparent_child") || "null") || {name:"Sofia",age:"6"};
+
+function getChildName(){ return (childProfile?.name || "Sofia").trim() || "Sofia"; }
+function getChildAge(){ return String(childProfile?.age || "6"); }
+
+function applyChildProfile(){
+  const name=getChildName(), age=getChildAge();
+
+  document.querySelectorAll(".profile-pill").forEach(p=>p.textContent=`${name} · ${age} ▾`);
+
+  const ids = [
+    "homeChildName","homeSuggestionChild","logChildName","logChildNameHeading",
+    "mixChildName","giftHeroChild","giftHeroChild2","giftProfileChild",
+    "giftSuggestedChild","profileChildName"
+  ];
+  ids.forEach(id=>{ const el=document.getElementById(id); if(el) el.textContent=name; });
+
+  const ageIds=["giftProfileAge","profileChildAge"];
+  ageIds.forEach(id=>{ const el=document.getElementById(id); if(el) el.textContent=age; });
+
+  const opp=document.getElementById("mixOpportunityText");
+  if(opp) opp.textContent=`${name}’s recent activities already cover movement and imagination well. A sequence, route-planning or multi-step game would broaden the cognitive pattern nicely.`;
+
+  const resultEye=document.getElementById("giftResultEyebrow");
+  if(resultEye && !resultEye.dataset.custom) resultEye.textContent=`For ${name} right now`;
+}
+
 let authMode = "signup";
 function switchAuth(mode){
   authMode = mode;
@@ -858,14 +1013,24 @@ function switchAuth(mode){
   btn.textContent = mode==="signup" ? "Start with SmartParent" : "Log in";
 }
 function enterApp(){
-  const child = document.getElementById("childNameInput")?.value.trim() || "Sofia";
-  const age = document.getElementById("childAgeInput")?.value || "6";
-  safeStorage.setItem("smartparent_child", JSON.stringify({name:child, age}));
+  const enteredName = document.getElementById("childNameInput")?.value.trim();
+  const enteredAge = document.getElementById("childAgeInput")?.value;
+
+  if(authMode==="signup"){
+    childProfile = {
+      name: enteredName || getChildName() || "Sofia",
+      age: enteredAge || getChildAge() || "6"
+    };
+    safeStorage.setItem("smartparent_child", JSON.stringify(childProfile));
+  }else{
+    childProfile = JSON.parse(safeStorage.getItem("smartparent_child") || "null") || childProfile || {name:"Sofia",age:"6"};
+  }
+
+  applyChildProfile();
   document.getElementById("welcome").classList.remove("active");
   document.getElementById("bottomNav").style.display = "grid";
   go("home");
-  document.querySelectorAll(".profile-pill").forEach(p=>p.textContent=`${child} · ${age} ▾`);
-  toast(authMode==="signup" ? "Welcome to SmartParent" : "Welcome back");
+  toast(authMode==="signup" ? `Welcome — ${getChildName()} is ready` : "Welcome back");
 }
 
 const SKILLS = {
@@ -929,18 +1094,69 @@ const games = [
 ];
 
 const products = [
-  {name:"Magnetic Building Tiles",emoji:"🧲",price:29,match:true,different:true,under25:false,siblings:true,outdoor:false,skills:["thinking","language"],
-   why:"Fits her love of building and adds more experimentation with shape, structure and open-ended design.", q:"magnetic building tiles kids"},
-  {name:"Junior Logic Puzzle",emoji:"🧩",price:19,match:true,different:true,under25:true,siblings:false,outdoor:false,skills:["focus","thinking"],
-   why:"A strong fit for the current opportunity in focus, sequencing and step-by-step reasoning.", q:"junior logic puzzle age 6"},
-  {name:"Story Cubes",emoji:"🎲",price:14,match:true,different:false,under25:true,siblings:true,outdoor:false,skills:["language","social"],
-   why:"Builds directly on her interest in stories and turns it into collaborative imaginative play.", q:"story cubes kids"},
-  {name:"Kids' Gardening Set",emoji:"🌱",price:24,match:false,different:true,under25:true,siblings:true,outdoor:true,skills:["movement","thinking"],
-   why:"Adds outdoor planning, sequencing and hands-on exploration to her usual mix.", q:"kids gardening set age 6"},
-  {name:"Balance Stepping Stones",emoji:"🪨",price:35,match:true,different:false,under25:false,siblings:true,outdoor:true,skills:["movement","focus"],
-   why:"Matches her active-play preference while adding balance, body planning and focused movement.", q:"kids balance stepping stones"},
-  {name:"Beginner Marble Run",emoji:"🟠",price:32,match:true,different:true,under25:false,siblings:true,outdoor:false,skills:["thinking","focus"],
-   why:"Combines her interest in building with prediction, testing and sustained attention.", q:"beginner marble run kids"}
+  {
+    name:"Magnetic Building Tiles",emoji:"🧲",price:29,match:true,different:true,
+    skills:["thinking","language"],
+    detailed:["spatial","problem_solving","creativity","planning"],
+    why:"Open-ended building that brings together spatial reasoning, planning and creative experimentation.",
+    q:"magnetic building tiles kids"
+  },
+  {
+    name:"Junior Logic Puzzle",emoji:"🧩",price:19,match:true,different:true,
+    skills:["focus","thinking"],
+    detailed:["attention","working_memory","planning","problem_solving"],
+    why:"A compact challenge for holding rules in mind, planning steps and solving problems.",
+    q:"junior logic puzzle age 6"
+  },
+  {
+    name:"Memory Matching Game",emoji:"🃏",price:16,match:true,different:true,
+    skills:["focus","social"],
+    detailed:["attention","working_memory","turn_taking","patience"],
+    why:"A simple way to combine sustained attention, memory and turn-taking.",
+    q:"memory matching game kids age 6"
+  },
+  {
+    name:"Story Cubes",emoji:"🎲",price:14,match:true,different:false,
+    skills:["language","social"],
+    detailed:["language","storytelling","creativity","flexible_thinking"],
+    why:"Turns a love of stories into quick, collaborative storytelling and flexible thinking.",
+    q:"story cubes kids"
+  },
+  {
+    name:"Tangram Puzzle Set",emoji:"🔷",price:18,match:true,different:true,
+    skills:["thinking","focus"],
+    detailed:["spatial","problem_solving","attention","patterns"],
+    why:"Combines visual-spatial thinking, pattern recognition and problem solving in one compact activity.",
+    q:"tangram puzzle kids age 6"
+  },
+  {
+    name:"Beginner Marble Run",emoji:"🟠",price:32,match:true,different:true,
+    skills:["thinking","focus"],
+    detailed:["planning","problem_solving","spatial","attention"],
+    why:"Encourages predicting, building, testing and rebuilding while keeping attention on a multi-step goal.",
+    q:"beginner marble run kids"
+  },
+  {
+    name:"Cooperative Board Game",emoji:"🤝",price:25,match:false,different:true,
+    skills:["social","emotions"],
+    detailed:["cooperation","turn_taking","patience","planning"],
+    why:"Builds shared planning, turn-taking and patience around a common goal.",
+    q:"cooperative board game kids age 6"
+  },
+  {
+    name:"Balance Stepping Stones",emoji:"🪨",price:35,match:true,different:false,
+    skills:["movement","focus"],
+    detailed:["motor_planning","coordination","body_awareness","attention"],
+    why:"Pairs active play with route planning, coordination and body awareness.",
+    q:"kids balance stepping stones"
+  },
+  {
+    name:"Kids' Gardening Set",emoji:"🌱",price:24,match:false,different:true,
+    skills:["movement","thinking"],
+    detailed:["planning","motor_planning","patience","body_awareness"],
+    why:"Adds hands-on sequencing, planning and patient follow-through to outdoor play.",
+    q:"kids gardening set age 6"
+  }
 ];
 
 function isoDate(d){
@@ -1007,6 +1223,7 @@ function tagsForEvent(title){
   return inferTags(title);
 }
 function renderHome(){
+  applyChildProfile();
   const hello=document.getElementById("homeHello");
   if(hello) hello.textContent=greetingForNow()+" 👋";
   const todayLabel=document.getElementById("todayDateLabel");
@@ -1075,7 +1292,7 @@ function renderHomeMix(){
   const head=document.getElementById("homeMixHeadline");
   const sub=document.getElementById("homeMixSub");
   if(head) head.textContent=`${top} is showing up strongly`;
-  if(sub) sub.textContent=`Next opportunity: ${low}`;
+  if(sub) sub.textContent=`Next opportunity for ${getChildName()}: ${low}`;
   const bars=document.getElementById("homeMiniMix");
   if(bars){
     const max=Math.max(...Object.values(scores),1);
@@ -1156,17 +1373,18 @@ function openHomeInfo(type){
   const eyebrow=document.getElementById("homeInfoEyebrow");
   const title=document.getElementById("homeInfoTitle");
   const text=document.getElementById("homeInfoText");
+  const name=getChildName();
 
   if(type==="suggestion"){
     icon.textContent="🎯";
     eyebrow.textContent="Why this fits today";
     title.textContent="A small shift in the mix";
-    text.textContent="Sofia’s recent play already includes plenty of movement and imagination. Secret Delivery brings in memory, sequencing and planning, making it a useful complement to what she has been doing lately.";
+    text.textContent=`${name}’s recent play already includes plenty of movement and imagination. Secret Delivery brings in memory, sequencing and planning, making it a useful complement to what has been happening lately.`;
   }else{
     icon.textContent="🧠";
     eyebrow.textContent="About the Cognitive Mix";
     title.textContent="A quick view of cognitive variety";
-    text.textContent="The overview combines the cognitive areas appearing across Sofia’s games, hobbies and everyday activities. SmartParent uses the pattern to spot useful opportunities for variety and personalize what to suggest next.";
+    text.textContent=`The overview combines the cognitive areas appearing across ${name}’s games, hobbies and everyday activities. SmartParent uses the pattern to spot useful opportunities for variety and personalize what to suggest next.`;
   }
   modal.classList.add("show");
 }
@@ -1179,13 +1397,13 @@ function go(id){
   if(id==="home") renderHome();
   if(id==="mix") renderMix();
   if(id==="log"){ renderDateStrip(); renderRecent(); }
-  if(id==="gifts") renderGifts("match");
+  if(id==="gifts") renderGifts();
 }
 function toast(msg){
   const t=document.getElementById("toast"); t.textContent=msg; t.classList.add("show"); setTimeout(()=>t.classList.remove("show"),1500);
 }
 function closeModal(id){document.getElementById(id).classList.remove("show")}
-function openProfile(){document.getElementById("profileModal").classList.add("show")}
+function openProfile(){applyChildProfile();document.getElementById("profileModal").classList.add("show")}
 
 function gameCard(g){
   return `<div class="game-card">
@@ -1298,6 +1516,7 @@ function selectDate(date){
   renderRecent();
 }
 function renderRecent(){
+  applyChildProfile();
   const el=document.getElementById("logRecent"); if(!el)return;
   const items=recent.filter(r=>r.date===selectedLogDate);
   el.innerHTML=items.length?items.map(r=>`<div class="recent-item"><div class="recent-icon">${r.emoji}</div><div><b>${r.name}</b><div class="mini">${r.tags.map(t=>SKILLS[t].short).join(" · ")}</div></div></div>`).join(""):`<div class="empty-note">No activities logged for this day yet.</div>`;
@@ -1315,6 +1534,7 @@ function computeMix(){
   return scores;
 }
 function renderMix(){
+  applyChildProfile();
   const scores=computeMix();
   document.getElementById("bars").innerHTML=`
     <div class="eyebrow">This month</div>
@@ -1326,13 +1546,83 @@ function renderMix(){
   document.getElementById("mixRecent").innerHTML=recent.slice(0,7).map(r=>`<div class="recent-item"><div class="recent-icon">${r.emoji}</div><div><b>${r.name}</b><div class="mini">${r.tags.map(t=>SKILLS[t].label).join(" · ")}</div></div></div>`).join("");
 }
 function updateMixSummary(){
-  const title=document.getElementById("mixSummaryTitle");
-  const text=document.getElementById("mixSummaryText");
-  if(!title || !text) return;
   const s=computeMix(); const entries=Object.entries(s).sort((a,b)=>b[1]-a[1]);
   const top=SKILLS[entries[0][0]].short; const low=SKILLS[entries[entries.length-1][0]].short;
-  title.textContent=`${top} is leading the mix`;
-  text.textContent=`Recent activities are giving Sofia plenty of ${top.toLowerCase()} experiences. Adding some ${low.toLowerCase()} play would complement the pattern well.`;
+  const title=document.getElementById("mixSummaryTitle");
+  const text=document.getElementById("mixSummaryText");
+  if(title) title.textContent=`${top} is leading the mix`;
+  if(text) text.textContent=`Recent activities are giving ${getChildName()} plenty of ${top.toLowerCase()} experiences. Adding some ${low.toLowerCase()} play would complement the pattern well.`;
+}
+
+
+function mixRecommendedGames(){
+  const priority=["focus","thinking"];
+  return [...games]
+    .map(g=>({g,score:g.tags.filter(t=>priority.includes(t)).length}))
+    .sort((a,b)=>b.score-a.score)
+    .slice(0,3)
+    .map(x=>x.g);
+}
+
+function mixRecommendedProducts(){
+  const wanted=["attention","working_memory","planning"];
+  return rankProductsForDetailedSkills(wanted).slice(0,3);
+}
+
+function compactGameRecommendation(g){
+  return `<div class="compact-rec">
+    <div class="compact-rec-art" style="background:${g.visual}">${g.emoji}</div>
+    <div>
+      <h3>${g.title}</h3>
+      <p>${g.one}</p>
+    </div>
+    <button class="btn btn-soft" onclick="openGame('${g.id}')">Open</button>
+  </div>`;
+}
+
+function compactProductRecommendation(p){
+  return `<div class="compact-rec">
+    <div class="compact-rec-art">${p.emoji}</div>
+    <div>
+      <h3>${p.name}</h3>
+      <p>${p.why}</p>
+    </div>
+    <button class="btn btn-sage" onclick="openAmazon('${p.q.replace(/'/g,"\\'")}')">View</button>
+  </div>`;
+}
+
+function showMixOpportunityIdeas(type){
+  const el=document.getElementById("mixOpportunityResults");
+  if(type==="free"){
+    const picks=mixRecommendedGames();
+    el.innerHTML=`
+      <div class="mix-results-head">
+        <div><div class="eyebrow">For this opportunity</div><h3 style="margin-bottom:0">3 free ideas for ${getChildName()}</h3></div>
+      </div>
+      <div class="mix-result-grid">${picks.map(compactGameRecommendation).join("")}</div>
+      <div class="result-footer"><button class="section-link" onclick="openFindForRecommendedFocus()">See more free ideas →</button></div>`;
+  }else{
+    const picks=mixRecommendedProducts();
+    el.innerHTML=`
+      <div class="mix-results-head">
+        <div><div class="eyebrow">For this opportunity</div><h3 style="margin-bottom:0">3 product ideas for ${getChildName()}</h3></div>
+      </div>
+      <div class="mix-result-grid">${picks.map(compactProductRecommendation).join("")}</div>
+      <div class="result-footer"><button class="section-link" onclick="openGiftsForRecommendedFocus()">Explore Gifts in detail →</button></div>`;
+  }
+}
+
+function openFindForRecommendedFocus(){
+  go("find");
+  document.querySelectorAll('[data-filter="skill"] .chip').forEach(c=>{
+    c.classList.toggle("selected",["Focus & Memory","Thinking"].includes(c.textContent.trim()));
+  });
+  renderFindResults();
+}
+
+function openGiftsForRecommendedFocus(){
+  go("gifts");
+  useSuggestedGiftFocus();
 }
 
 function renderFindResults(){
@@ -1351,26 +1641,178 @@ function renderFindResults(){
     <div class="trust-note">Pick the idea that feels most enjoyable right now—the best cognitive play still starts with genuine interest.</div>`;
 }
 
-function giftFilter(btn,key){
-  document.querySelectorAll("#giftFilters .chip").forEach(b=>b.classList.remove("selected")); btn.classList.add("selected"); renderGifts(key);
+const DETAIL_SKILL_LABELS = {
+  attention:"Attention & focus",
+  working_memory:"Working memory",
+  inhibitory_control:"Inhibitory control",
+  planning:"Planning",
+  problem_solving:"Problem-solving",
+  spatial:"Spatial reasoning",
+  patterns:"Number sense & patterns",
+  language:"Language",
+  storytelling:"Storytelling",
+  creativity:"Creativity",
+  flexible_thinking:"Flexible thinking",
+  motor_planning:"Motor planning",
+  coordination:"Coordination",
+  body_awareness:"Body awareness",
+  emotional_regulation:"Emotional regulation",
+  patience:"Patience & self-control",
+  cooperation:"Cooperation",
+  turn_taking:"Turn-taking"
+};
+
+let selectedDetailedGiftSkills = [];
+const suggestedDetailedGiftSkills = ["attention","working_memory","planning"];
+let currentGiftMode = "suggested";
+
+function rankProductsForDetailedSkills(skillList){
+  return [...products]
+    .map((p,index)=>{
+      const overlap=(p.detailed||[]).filter(s=>skillList.includes(s)).length;
+      const exactness=skillList.length ? overlap/skillList.length : 0;
+      const profileBonus=p.match ? 0.35 : 0;
+      return {p,score:overlap*3+exactness+profileBonus-index*0.001};
+    })
+    .sort((a,b)=>b.score-a.score)
+    .map(x=>x.p);
 }
-function renderGifts(key="match"){
-  const skillKeys=["focus","thinking","language","movement","emotions","social"];
-  let arr;
-  if(skillKeys.includes(key)) arr=products.filter(p=>(p.skills||[]).includes(key));
-  else arr=products.filter(p=>key==="match"?p.match:p[key]);
-  if(arr.length<4) arr=[...arr,...products.filter(p=>!arr.includes(p))];
-  const reasonLabel = skillKeys.includes(key) ? `Selected for ${SKILLS[key].label}` : (key==="match" ? "Personalized for Sofia" : "Chosen to broaden her current mix");
-  document.getElementById("giftGrid").innerHTML=arr.slice(0,6).map(p=>`
-    <div class="product-card">
-      <div class="product-visual">${p.emoji}</div>
-      <div class="gift-reason">${reasonLabel}</div>
-      <div class="price">€${p.price}</div>
-      <h3 style="margin:3px 0 6px">${p.name}</h3>
-      <div class="why">${p.why}</div>
-      <div class="tag-row">${(p.skills||[]).map(t=>`<span class="tag green">${SKILLS[t].short}</span>`).join("")}</div>
-      <button class="btn btn-sage btn-block" style="margin-top:6px;padding:9px 8px;font-size:11px" onclick="openAmazon('${p.q.replace(/'/g,"\'")}')">View on Amazon</button>
-    </div>`).join("");
+
+function giftProductCard(p, selectedSkills=[]){
+  const overlap=(p.detailed||[]).filter(s=>selectedSkills.includes(s));
+  let badge="Personalized pick";
+  if(selectedSkills.length){
+    if(overlap.length>=Math.min(2,selectedSkills.length)) badge="Excellent match";
+    else if(overlap.length>=1) badge="Strong match";
+    else badge="Good complementary fit";
+  }
+  const shown=(overlap.length?overlap:(p.detailed||[]).slice(0,2)).slice(0,3);
+
+  return `<div class="product-card">
+    <div class="product-visual">${p.emoji}</div>
+    <div class="match-badge">${badge}</div>
+    <div class="price">€${p.price}</div>
+    <h3 style="margin:3px 0 6px">${p.name}</h3>
+    <div class="why">${p.why}</div>
+    <div class="tag-row">${shown.map(s=>`<span class="tag green">${DETAIL_SKILL_LABELS[s]||s}</span>`).join("")}</div>
+    <button class="btn btn-sage btn-block" style="margin-top:6px;padding:9px 8px;font-size:11px" onclick="openAmazon('${p.q.replace(/'/g,"\'")}')">View on Amazon</button>
+  </div>`;
+}
+
+function renderGiftResults(productsToShow, title, eyebrow, selectedSkills=[]){
+  const grid=document.getElementById("giftGrid");
+  if(!grid)return;
+  document.getElementById("giftResultTitle").textContent=title;
+  const eye=document.getElementById("giftResultEyebrow");
+  eye.textContent=eyebrow;
+  eye.dataset.custom="1";
+  grid.innerHTML=productsToShow.slice(0,3).map(p=>giftProductCard(p,selectedSkills)).join("");
+}
+
+function useSuggestedGiftFocus(){
+  currentGiftMode="suggested";
+  const ranked=rankProductsForDetailedSkills(suggestedDetailedGiftSkills);
+  renderGiftResults(
+    ranked,
+    "3 recommendations for this focus",
+    `Suggested for ${getChildName()}: attention + memory + planning`,
+    suggestedDetailedGiftSkills
+  );
+}
+
+function showGiftMode(mode,btn){
+  currentGiftMode=mode;
+  document.querySelectorAll(".gift-mode-row .chip").forEach(c=>c.classList.remove("selected"));
+  if(btn) btn.classList.add("selected");
+
+  if(mode==="overall"){
+    const arr=[...products].sort((a,b)=>(b.match?1:0)-(a.match?1:0));
+    renderGiftResults(arr,"3 best overall fits",`Personalized for ${getChildName()}`,[]);
+  }else{
+    const arr=[...products].sort((a,b)=>(b.different?1:0)-(a.different?1:0));
+    renderGiftResults(arr,"3 ideas that add something different",`Broaden ${getChildName()}’s play`,[]);
+  }
+}
+
+function openSkillBuilder(){
+  document.querySelectorAll("[data-detail-skill]").forEach(btn=>{
+    btn.classList.toggle("selected",selectedDetailedGiftSkills.includes(btn.dataset.detailSkill));
+  });
+  updateSkillSelectionStatus();
+  document.getElementById("skillBuilderModal").classList.add("show");
+}
+
+function toggleDetailedSkill(btn){
+  const skill=btn.dataset.detailSkill;
+  const idx=selectedDetailedGiftSkills.indexOf(skill);
+  if(idx>=0){
+    selectedDetailedGiftSkills.splice(idx,1);
+    btn.classList.remove("selected");
+  }else{
+    if(selectedDetailedGiftSkills.length>=3){
+      toast("Choose up to 3 skills");
+      return;
+    }
+    selectedDetailedGiftSkills.push(skill);
+    btn.classList.add("selected");
+  }
+  updateSkillSelectionStatus();
+}
+
+function updateSkillSelectionStatus(){
+  const el=document.getElementById("skillSelectionText");
+  if(el) el.textContent=`${selectedDetailedGiftSkills.length} of 3 selected`;
+}
+
+function clearDetailedSkills(){
+  selectedDetailedGiftSkills=[];
+  document.querySelectorAll("[data-detail-skill]").forEach(btn=>btn.classList.remove("selected"));
+  updateSkillSelectionStatus();
+}
+
+function useSuggestedFocusFromBuilder(){
+  closeModal("skillBuilderModal");
+  useSuggestedGiftFocus();
+  window.setTimeout(()=>document.getElementById("giftGrid")?.scrollIntoView({behavior:"smooth",block:"start"}),80);
+}
+
+function applyDetailedGiftSkills(){
+  if(!selectedDetailedGiftSkills.length){
+    toast("Choose at least 1 skill");
+    return;
+  }
+  currentGiftMode="custom";
+  const ranked=rankProductsForDetailedSkills(selectedDetailedGiftSkills);
+  const labels=selectedDetailedGiftSkills.map(s=>DETAIL_SKILL_LABELS[s]);
+  renderGiftResults(
+    ranked,
+    "3 matches for your cognitive focus",
+    labels.join(" + "),
+    selectedDetailedGiftSkills
+  );
+  renderCustomFocusSummary();
+  closeModal("skillBuilderModal");
+  window.setTimeout(()=>document.getElementById("giftGrid")?.scrollIntoView({behavior:"smooth",block:"start"}),80);
+}
+
+function renderCustomFocusSummary(){
+  const el=document.getElementById("customFocusSummary");
+  if(!el)return;
+  if(!selectedDetailedGiftSkills.length){
+    el.innerHTML="";
+    return;
+  }
+  el.innerHTML=selectedDetailedGiftSkills.map(s=>`<span class="focus-token">${DETAIL_SKILL_LABELS[s]}</span>`).join("");
+}
+
+function renderGifts(){
+  applyChildProfile();
+  if(currentGiftMode==="custom" && selectedDetailedGiftSkills.length){
+    const ranked=rankProductsForDetailedSkills(selectedDetailedGiftSkills);
+    renderGiftResults(ranked,"3 matches for your cognitive focus",selectedDetailedGiftSkills.map(s=>DETAIL_SKILL_LABELS[s]).join(" + "),selectedDetailedGiftSkills);
+  }else{
+    useSuggestedGiftFocus();
+  }
 }
 function openAmazon(q){
   window.open("https://www.amazon.de/s?k="+encodeURIComponent(q),"_blank","noopener");
@@ -1385,12 +1827,9 @@ document.addEventListener("click",e=>{
   }
 });
 
-const savedChild = JSON.parse(safeStorage.getItem("smartparent_child") || "null");
-if(savedChild){
-  document.querySelectorAll(".profile-pill").forEach(p=>p.textContent=`${savedChild.name} · ${savedChild.age} ▾`);
-}
+applyChildProfile();
 
-renderHomeGames(); renderDateStrip(); renderRecent(); renderMix(); renderGifts(); updateMixSummary(); renderHome();
+renderHomeGames(); renderDateStrip(); renderRecent(); renderMix(); renderGifts(); updateMixSummary(); renderHome(); applyChildProfile();
 </script>
 </body>
 </html>
