@@ -197,6 +197,9 @@
   .swipe-stamp.nope{left:18px;color:#b76f80;transform:rotate(-8deg)}
   .amazon-link{display:inline-flex;align-items:center;justify-content:center;gap:7px;border-radius:12px;padding:8px 10px;background:#fff1c9;color:#3b352d;font-size:11px;font-weight:900;border:1px solid #eddca7}
   .amazon-link.big{min-height:46px;border-radius:16px;padding:12px 15px;font-size:13px}
+
+  .secondary-actions.single{grid-template-columns:1fr}
+  .secondary-actions.single button{width:100%}
   .playroom-overview{padding:18px}
   .existing-section{margin-top:14px}
   .existing-title{font-size:12px;text-transform:uppercase;letter-spacing:.08em;font-weight:900;color:#8f877f;margin-bottom:9px}
@@ -661,16 +664,16 @@
     discoverEl.innerHTML=`
       <div class="discover-head simple"><div class="eyebrow">Personalized for ${escapeHtml(state.profile.name||'your child')}</div><h1>Find their next favorite.</h1><p class="subtle">Swipe left to skip or right to save. Every choice sharpens the next match.</p></div>
       <article class="card product-card${hintClass}" id="productCard" data-product="${p.id}">
-        <div class="product-visual"><div class="match-badge">SmartRoom match</div><div class="amazon-badge">Amazon</div><div class="swipe-stamp nope" id="nopeStamp">Skip</div><div class="swipe-stamp like" id="likeStamp">Wish</div><img src="${p.image}" alt="${escapeHtml(p.name)}" onerror="this.style.display='none';this.nextElementSibling.style.display='grid'"><div class="product-fallback">${p.emoji}</div></div>
+        <div class="product-visual"><div class="match-badge">SmartRoom match</div><div class="swipe-stamp nope" id="nopeStamp">Skip</div><div class="swipe-stamp like" id="likeStamp">Wish</div><img src="${p.image}" alt="${escapeHtml(p.name)}" onerror="this.style.display='none';this.nextElementSibling.style.display='grid'"><div class="product-fallback">${p.emoji}</div></div>
         <div class="product-body">
           <div class="product-title-row"><div><div class="product-name">${escapeHtml(p.name)}</div><div class="product-meta">${escapeHtml(p.desc)} · Ages ${p.age[0]}–${p.age[1]} · ~€${p.price}</div></div></div>
           <div class="reason-box"><div class="reason-label">Why ${escapeHtml(state.profile.name||'they')} may love it</div><div class="reason-text">${escapeHtml(loveReason(p))}</div></div>
           <div class="reason-box" style="background:var(--sage)"><div class="reason-label">Why SmartRoom matched it</div><div class="reason-text">${escapeHtml(recommendationReason(p))}</div></div>
           <div>${skillPills(p.skills,3)}</div>
           <div class="action-row"><button class="btn btn-skip" id="skipProduct">✕ Skip</button><button class="btn btn-wish" id="saveProduct">♡ Add to Wishes</button></div>
-          <div class="secondary-actions"><button id="ownProduct">Already own it</button><a class="amazon-link" href="${p.amazon}" target="_blank" rel="noopener">Buy on Amazon ↗</a></div>
+          <div class="secondary-actions single"><button id="ownProduct">Already own it</button></div>
           ${state.seenSwipeHint?'':'<div class="swipe-cue">← skip &nbsp;&nbsp; swipe &nbsp;&nbsp; save →</div>'}
-          <div class="retailer-note">Indicative demo price. Amazon availability and price may vary.</div>
+          
         </div>
       </article>`;
   }
@@ -793,10 +796,9 @@
     sharingWishId=productId; shareMethod='email';
     document.getElementById('shareWishTitle').textContent=isAll?'Share all Wishes':`Share ${p.name}`;
     const content=document.getElementById('shareWishContent');
-    const message=isAll?allWishesShareMessage():wishShareMessage(p);
     content.innerHTML=`<p class="subtle">Choose email or text message. SmartRoom will open your device’s app with ${isAll?'the whole list':'the gift idea'} ready to send.</p>
       <div class="share-choice"><button class="share-method selected" data-share-method="email"><div style="font-size:24px">✉️</div><strong>Email</strong><span>Send it to an email address.</span></button><button class="share-method" data-share-method="sms"><div style="font-size:24px">💬</div><strong>Text message</strong><span>Send it to a phone number.</span></button></div>
-      <div class="share-fields"><label id="shareRecipientLabel" for="shareRecipient">Email address</label><input id="shareRecipient" type="text" inputmode="email" placeholder="name@example.com"><div class="share-preview">${escapeHtml(message)}</div><div style="height:12px"></div><button class="btn btn-soft" id="sendWishShare" style="width:100%">Open email</button></div>`;
+      <div class="share-fields"><label id="shareRecipientLabel" for="shareRecipient">Email address</label><input id="shareRecipient" type="text" inputmode="email" placeholder="name@example.com"><div style="height:12px"></div><button class="btn btn-soft" id="sendWishShare" style="width:100%">Open email</button></div>`;
     bindShareWishDialog();
   }
 
