@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<!-- SmartRoom MVP v6: Discover contains no Amazon links or buy controls -->
 <title>SmartRoom — MVP</title>
 <style>
   :root{
@@ -183,7 +184,6 @@
   .product-visual{height:250px;background:linear-gradient(180deg,#fff,#faf7f2);overflow:hidden}
   .product-visual img{width:100%;height:100%;object-fit:contain;padding:18px;display:block}
   .product-fallback{display:none;width:100%;height:100%;place-items:center;font-size:84px}
-  .amazon-badge{position:absolute;top:14px;right:14px;background:#fff7dc;border:1px solid #efdfaf;padding:8px 11px;border-radius:999px;font-size:12px;font-weight:900}
   .swipe-cue{text-align:center;color:var(--muted);font-size:12px;font-weight:750;margin:10px 0 0}
   @keyframes swipeNudge{
     0%,100%{transform:translateX(0) rotate(0)}
@@ -473,17 +473,17 @@
   };
 
   const products = [
-    {id:'outfoxed',name:'Outfoxed!',emoji:'🦊',desc:'Cooperative whodunit board game',age:[5,8],price:25,group:'cooperative-board',interests:['Animals','Puzzles','Stories'],skills:{cooperation:5,problemSolving:5,attention:4,planning:3,workingMemory:3},image:'https://www.steamrocket.co.uk/cdn/shop/products/outfoxed-cooperative-kids-family-game-gamewright-boxcopy_300x.jpg?v=1619746478',amazon:'https://www.amazon.de/s?k=Gamewright+Outfoxed+board+game'},
-    {id:'dobblekids',name:'Dobble Kids',emoji:'🔎',desc:'Fast visual matching card game',age:[4,8],price:14,group:'visual-card',interests:['Animals','Puzzles'],skills:{attention:5,workingMemory:3,inhibition:3,patterns:3},image:'https://cdn.svc.asmodee.net/production-asmodeeit/uploads/image-converter/2022/09/DOKI_SETUP_20231113-1024x627.webp',amazon:'https://www.amazon.de/s?k=Dobble+Kids+Asmodee'},
-    {id:'squirrels',name:'Squirrels Go Nuts!',emoji:'🐿️',desc:'Single-player sliding logic puzzle',age:[6,8],price:18,group:'logic',interests:['Animals','Puzzles'],skills:{planning:5,problemSolving:5,spatial:4,attention:4,workingMemory:2},image:'https://mp-sellers-files.danubehome.com/sellers/KLUG-TOYS/pi/179900097876/image_1727281269237.jpeg',amazon:'https://www.amazon.de/s?k=SmartGames+Squirrels+Go+Nuts'},
-    {id:'rushhourjr',name:'Rush Hour Junior',emoji:'🚗',desc:'Traffic-jam logic game by ThinkFun',age:[5,8],price:25,group:'logic',interests:['Cars','Puzzles'],skills:{planning:5,problemSolving:5,spatial:5,attention:4,workingMemory:3},image:'https://m.media-amazon.com/images/I/81DVjxytyLL._AC_SL1500_.jpg',amazon:'https://www.amazon.de/s?k=ThinkFun+Rush+Hour+Junior'},
-    {id:'animaluponanimal',name:'Animal Upon Animal',emoji:'🐊',desc:'Wooden stacking game by HABA',age:[4,8],price:25,group:'dexterity',interests:['Animals'],skills:{fineMotor:5,coordination:4,planning:3,patience:4,inhibition:2},image:'https://www.bellalunatoys.com/cdn/shop/files/games-animal-upon-animal-3678-ls1_7193e17e-3ef5-40ba-b72a-631f6f42b21f.jpg?v=1743540453&width=1000',amazon:'https://www.amazon.de/s?k=HABA+Animal+Upon+Animal'},
-    {id:'ticketfirst',name:'Ticket to Ride: First Journey',emoji:'🚂',desc:'Junior route-building strategy game',age:[6,8],price:30,group:'strategy-board',interests:['Cars','Stories','Puzzles'],skills:{planning:5,workingMemory:3,patterns:3,attention:3,problemSolving:3},image:'https://cdn.svc.asmodee.net/production-asmodeeca/uploads/image-converter/2022/01/EN-TICKET_TO_RIDE-FIRST_JOURNEY-EUROPE-L.webp',amazon:'https://www.amazon.de/s?k=Ticket+to+Ride+First+Journey+Europe'},
-    {id:'zingo',name:'Zingo!',emoji:'🔤',desc:'Picture-and-word matching game',age:[4,8],price:25,group:'language-game',interests:['Stories','Numbers'],skills:{language:5,attention:4,patterns:4,inhibition:3,workingMemory:3},image:'https://www.bigw.com.au/medias/sys_master/images/images/hb7/h95/138157100171294.jpg',amazon:'https://www.amazon.de/s?k=ThinkFun+Zingo'},
-    {id:'storycubes',name:"Rory's Story Cubes Classic",emoji:'🎲',desc:'Storytelling dice for open-ended imagination',age:[6,8],price:15,group:'storytelling',interests:['Stories','Pretend play'],skills:{storytelling:5,language:5,creativity:5,flexibility:4,cooperation:2},image:'https://cdn.svc.asmodee.net/production-asmodeeca/uploads/image-converter/2022/01/ML-RSC-CLASSIC-L.webp',amazon:'https://www.amazon.de/s?k=Rory%27s+Story+Cubes+Classic'},
-    {id:'iqpuzzler',name:'IQ Puzzler Pro',emoji:'🧠',desc:'120 compact 2D and 3D logic challenges',age:[6,8],price:15,group:'logic',interests:['Puzzles','Numbers'],skills:{planning:5,problemSolving:5,spatial:5,attention:5,workingMemory:3},image:'https://smartgamesusa.com/sites/default/files/smartgames-product-banner_IQ-Puzzler-Pro_0.jpg',amazon:'https://www.amazon.de/s?k=SmartGames+IQ+Puzzler+Pro'},
-    {id:'juniorlabyrinth',name:'Junior Labyrinth',emoji:'🌀',desc:'Ravensburger shifting-maze strategy game',age:[5,8],price:22,group:'strategy-board',interests:['Puzzles','Stories'],skills:{planning:4,spatial:5,problemSolving:4,attention:4,workingMemory:2},image:'https://m.media-amazon.com/images/I/61V+zdyHLQL._AC_SL1024_.jpg',amazon:'https://www.amazon.de/Ravensburger-Kinderspiele-21210-Junior-Labyrinth/dp/B0000TZ4VG'},
-    {id:'conceptkids',name:'Concept Kids: Animals',emoji:'🐯',desc:'Cooperative animal guessing game',age:[4,8],price:28,group:'cooperative-board',interests:['Animals','Stories'],skills:{language:5,cooperation:5,flexibility:4,attention:3,problemSolving:3},image:'https://shop.steamda.com/cdn/shop/files/CONC02-image2_2000_720x_1089ba4b-8c0f-458f-a35f-2b19bbd5b05b.webp?v=1705118599&width=1445',amazon:'https://www.amazon.de/s?k=Concept+Kids+Animals+Asmodee'}
+    {id:'outfoxed',name:'Outfoxed!',emoji:'🦊',desc:'Cooperative whodunit board game',age:[5,8],price:25,group:'cooperative-board',interests:['Animals','Puzzles','Stories'],themes:['Animals','Mystery'],mechanics:['Deduction','Clue finding','Shared decision-making'],socialStyle:'Cooperative',pace:'Calm',structure:'Rule-based',experience:'Players work together as detectives, revealing clues one by one to identify the fox before it escapes.',appealHooks:['solve an animal mystery together','reveal clues and rule out suspects','win or lose as one team'],skills:{cooperation:5,problemSolving:5,attention:4,planning:3,workingMemory:3},image:'https://www.steamrocket.co.uk/cdn/shop/products/outfoxed-cooperative-kids-family-game-gamewright-boxcopy_300x.jpg?v=1619746478',amazon:'https://www.amazon.de/s?k=Gamewright+Outfoxed+board+game'},
+    {id:'dobblekids',name:'Dobble Kids',emoji:'🔎',desc:'Fast visual matching card game',age:[4,8],price:14,group:'visual-card',interests:['Animals','Puzzles'],themes:['Animals'],mechanics:['Visual matching','Quick spotting','Pattern recognition'],socialStyle:'Competitive',pace:'Fast',structure:'Rule-based',experience:'Each round is a quick visual hunt to spot the one matching animal before everyone else.',appealHooks:['race to spot matching animals','play very short energetic rounds','notice tiny visual differences quickly'],skills:{attention:5,workingMemory:3,inhibition:3,patterns:3},image:'https://cdn.svc.asmodee.net/production-asmodeeit/uploads/image-converter/2022/09/DOKI_SETUP_20231113-1024x627.webp',amazon:'https://www.amazon.de/s?k=Dobble+Kids+Asmodee'},
+    {id:'squirrels',name:'Squirrels Go Nuts!',emoji:'🐿️',desc:'Single-player sliding logic puzzle',age:[6,8],price:18,group:'logic',interests:['Animals','Puzzles'],themes:['Animals','Nature'],mechanics:['Sliding puzzle','Sequencing','Logic challenges'],socialStyle:'Solo',pace:'Calm',structure:'Challenge-based',experience:'The child slides squirrels around the board to work out how to drop every acorn into the right hole.',appealHooks:['solve compact animal logic challenges','work through increasingly tricky levels','physically move pieces while thinking ahead'],skills:{planning:5,problemSolving:5,spatial:4,attention:4,workingMemory:2},image:'https://mp-sellers-files.danubehome.com/sellers/KLUG-TOYS/pi/179900097876/image_1727281269237.jpeg',amazon:'https://www.amazon.de/s?k=SmartGames+Squirrels+Go+Nuts'},
+    {id:'rushhourjr',name:'Rush Hour Junior',emoji:'🚗',desc:'Traffic-jam logic game by ThinkFun',age:[5,8],price:25,group:'logic',interests:['Cars','Puzzles'],themes:['Cars','Traffic'],mechanics:['Sliding puzzle','Sequencing','Logic challenges'],socialStyle:'Solo',pace:'Calm',structure:'Challenge-based',experience:'The child rearranges cars and trucks step by step until the red car can escape the traffic jam.',appealHooks:['solve a hands-on traffic puzzle','move vehicles to clear a path','see a clear goal after every sequence of moves'],skills:{planning:5,problemSolving:5,spatial:5,attention:4,workingMemory:3},image:'https://m.media-amazon.com/images/I/81DVjxytyLL._AC_SL1500_.jpg',amazon:'https://www.amazon.de/s?k=ThinkFun+Rush+Hour+Junior'},
+    {id:'animaluponanimal',name:'Animal Upon Animal',emoji:'🐊',desc:'Wooden stacking game by HABA',age:[4,8],price:25,group:'dexterity',interests:['Animals'],themes:['Animals'],mechanics:['Stacking','Dexterity','Risk-taking'],socialStyle:'Competitive',pace:'Medium',structure:'Rule-based',experience:'Players balance chunky wooden animals into an increasingly wobbly tower and try not to bring it down.',appealHooks:['build a funny tower of wooden animals','combine suspense with hands-on play','take small risks as the stack gets wobblier'],skills:{fineMotor:5,coordination:4,planning:3,patience:4,inhibition:2},image:'https://www.bellalunatoys.com/cdn/shop/files/games-animal-upon-animal-3678-ls1_7193e17e-3ef5-40ba-b72a-631f6f42b21f.jpg?v=1743540453&width=1000',amazon:'https://www.amazon.de/s?k=HABA+Animal+Upon+Animal'},
+    {id:'ticketfirst',name:'Ticket to Ride: First Journey',emoji:'🚂',desc:'Junior route-building strategy game',age:[6,8],price:30,group:'strategy-board',interests:['Cars','Stories','Puzzles'],themes:['Travel','Trains','Maps'],mechanics:['Route building','Set collection','Planning'],socialStyle:'Competitive',pace:'Medium',structure:'Rule-based',experience:'Players collect cards and decide which train routes to claim as they connect cities across a colorful map.',appealHooks:['build routes across a map','make simple strategic choices with a visible goal','watch a transport network grow turn by turn'],skills:{planning:5,workingMemory:3,patterns:3,attention:3,problemSolving:3},image:'https://cdn.svc.asmodee.net/production-asmodeeca/uploads/image-converter/2022/01/EN-TICKET_TO_RIDE-FIRST_JOURNEY-EUROPE-L.webp',amazon:'https://www.amazon.de/s?k=Ticket+to+Ride+First+Journey+Europe'},
+    {id:'zingo',name:'Zingo!',emoji:'🔤',desc:'Picture-and-word matching game',age:[4,8],price:25,group:'language-game',interests:['Stories','Numbers'],themes:['Words','Pictures'],mechanics:['Matching','Recognition','Quick response'],socialStyle:'Competitive',pace:'Fast',structure:'Rule-based',experience:'A tactile tile dispenser reveals pictures and words, and players race to match them to spaces on their cards.',appealHooks:['slide the tile dispenser and reveal new pictures','race to recognize matching words or images','get frequent small wins during short rounds'],skills:{language:5,attention:4,patterns:4,inhibition:3,workingMemory:3},image:'https://www.bigw.com.au/medias/sys_master/images/images/hb7/h95/138157100171294.jpg',amazon:'https://www.amazon.de/s?k=ThinkFun+Zingo'},
+    {id:'storycubes',name:"Rory's Story Cubes Classic",emoji:'🎲',desc:'Storytelling dice for open-ended imagination',age:[6,8],price:15,group:'storytelling',interests:['Stories','Pretend play'],themes:['Stories','Imagination'],mechanics:['Story creation','Prompt interpretation','Improvisation'],socialStyle:'Flexible',pace:'Calm',structure:'Open-ended',experience:'Nine picture dice provide unexpected prompts that can be connected into a completely new story every time.',appealHooks:['invent a different story every round','turn random pictures into imaginative connections','play alone or build a story together'],skills:{storytelling:5,language:5,creativity:5,flexibility:4,cooperation:2},image:'https://cdn.svc.asmodee.net/production-asmodeeca/uploads/image-converter/2022/01/ML-RSC-CLASSIC-L.webp',amazon:'https://www.amazon.de/s?k=Rory%27s+Story+Cubes+Classic'},
+    {id:'iqpuzzler',name:'IQ Puzzler Pro',emoji:'🧠',desc:'120 compact 2D and 3D logic challenges',age:[6,8],price:15,group:'logic',interests:['Puzzles','Numbers'],themes:['Logic','Shapes'],mechanics:['Spatial puzzle','Pattern completion','Sequencing'],socialStyle:'Solo',pace:'Calm',structure:'Challenge-based',experience:'Compact pieces are arranged to complete 2D and 3D challenges that become progressively more demanding.',appealHooks:['work through many short logic challenges','handle colorful pieces while testing possibilities','move from simple puzzles to harder 3D problems'],skills:{planning:5,problemSolving:5,spatial:5,attention:5,workingMemory:3},image:'https://smartgamesusa.com/sites/default/files/smartgames-product-banner_IQ-Puzzler-Pro_0.jpg',amazon:'https://www.amazon.de/s?k=SmartGames+IQ+Puzzler+Pro'},
+    {id:'juniorlabyrinth',name:'Junior Labyrinth',emoji:'🌀',desc:'Ravensburger shifting-maze strategy game',age:[5,8],price:22,group:'strategy-board',interests:['Puzzles','Stories'],themes:['Maze','Treasure','Fantasy'],mechanics:['Tile shifting','Route planning','Spatial navigation'],socialStyle:'Competitive',pace:'Medium',structure:'Rule-based',experience:'The maze changes every turn, so players keep finding new routes to reach their treasures before someone else does.',appealHooks:['change the maze itself as you play','hunt for treasures through shifting paths','adapt when another player changes the route'],skills:{planning:4,spatial:5,problemSolving:4,attention:4,workingMemory:2},image:'https://m.media-amazon.com/images/I/61V+zdyHLQL._AC_SL1024_.jpg',amazon:'https://www.amazon.de/Ravensburger-Kinderspiele-21210-Junior-Labyrinth/dp/B0000TZ4VG'},
+    {id:'conceptkids',name:'Concept Kids: Animals',emoji:'🐯',desc:'Cooperative animal guessing game',age:[4,8],price:28,group:'cooperative-board',interests:['Animals','Stories'],themes:['Animals','Guessing'],mechanics:['Clue giving','Categorization','Guessing'],socialStyle:'Cooperative',pace:'Medium',structure:'Rule-based',experience:'Children use illustrated icons to describe an animal without naming it while everyone works together to guess correctly.',appealHooks:['describe animals without saying their names','give visual clues for others to interpret','work together rather than compete'],skills:{language:5,cooperation:5,flexibility:4,attention:3,problemSolving:3},image:'https://shop.steamda.com/cdn/shop/files/CONC02-image2_2000_720x_1089ba4b-8c0f-458f-a35f-2b19bbd5b05b.webp?v=1705118599&width=1445',amazon:'https://www.amazon.de/s?k=Concept+Kids+Animals+Asmodee'}
   ];
 
   const defaults = {
@@ -580,6 +580,9 @@
     s-=similarCount*6;
     const savedGroups=state.wishes.map(id=>products.find(x=>x.id===id)?.group).filter(Boolean);
     if(savedGroups.includes(p.group)) s+=2;
+    const prefs=preferenceSignals();
+    (p.mechanics||[]).forEach(m=>{ s += Math.max(-2.5,Math.min(3,prefs.mechanics[m]||0)); });
+    if(p.socialStyle) s += Math.max(-2,Math.min(2,prefs.social[p.socialStyle]||0));
     s += (p.skills.cooperation||0)*0.3;
     return s;
   }
@@ -607,11 +610,48 @@
     return `Adds a different kind of play while still fitting ${state.profile.name||'your child'}’s interests.`;
   }
 
+  function preferenceSignals(){
+    const signals={mechanics:{},social:{},pace:{},structure:{}};
+    const add=(bucket,key,amount)=>{ if(!key) return; bucket[key]=(bucket[key]||0)+amount; };
+    const ingest=(id,amount)=>{
+      const p=products.find(x=>x.id===id); if(!p) return;
+      (p.mechanics||[]).forEach(m=>add(signals.mechanics,m,amount));
+      add(signals.social,p.socialStyle,amount);
+      add(signals.pace,p.pace,amount*0.6);
+      add(signals.structure,p.structure,amount*0.6);
+    };
+    (state.wishes||[]).forEach(id=>ingest(id,2));
+    (state.skipped||[]).slice(-8).forEach(id=>ingest(id,-0.7));
+    return signals;
+  }
+
+  function strongestPositive(obj,allowed=[]){
+    return Object.entries(obj||{}).filter(([k,v])=>v>0.8 && (!allowed.length||allowed.includes(k))).sort((a,b)=>b[1]-a[1])[0]?.[0]||null;
+  }
+
   function loveReason(p){
-    const matches=p.interests.filter(i=>(state.profile.interests||[]).includes(i));
-    if(matches.length===0) return 'A different format that still suits this age and play stage.';
-    if(matches.length===1) return `Matches an interest in ${matches[0].toLowerCase()}.`;
-    return `Connects ${matches[0].toLowerCase()} with ${matches[1].toLowerCase()}.`;
+    const childInterests=state.profile.interests||[];
+    const matches=(p.interests||[]).filter(i=>childInterests.includes(i));
+    const prefs=preferenceSignals();
+    const preferredMechanic=strongestPositive(prefs.mechanics,p.mechanics||[]);
+    const preferredSocial=(prefs.social?.[p.socialStyle]||0)>1.2?p.socialStyle:null;
+    const hook=(p.appealHooks||[])[0]||p.desc;
+
+    if(matches.length>=2){
+      const secondHook=(p.appealHooks||[])[1];
+      return `${p.experience} It connects ${matches[0].toLowerCase()} with ${matches[1].toLowerCase()}${secondHook?`, with the fun coming from ${secondHook}`:''}.`;
+    }
+    if(matches.length===1){
+      const mechanic=(p.mechanics||[])[0]?.toLowerCase();
+      return `${p.experience} It builds on an existing interest in ${matches[0].toLowerCase()}${mechanic?` through ${mechanic}`:''}.`;
+    }
+    if(preferredSocial){
+      return `${p.experience} You’ve been saving more ${preferredSocial.toLowerCase()} games, so this matches a play style that already seems to appeal.`;
+    }
+    if(preferredMechanic){
+      return `${p.experience} Its ${preferredMechanic.toLowerCase()} format is similar to the kinds of games you’ve been saving.`;
+    }
+    return `${p.experience} The main appeal is ${hook}.`;
   }
 
   function renderOnboarding(){
@@ -667,7 +707,7 @@
         <div class="product-visual"><div class="match-badge">SmartRoom match</div><div class="swipe-stamp nope" id="nopeStamp">Skip</div><div class="swipe-stamp like" id="likeStamp">Wish</div><img src="${p.image}" alt="${escapeHtml(p.name)}" onerror="this.style.display='none';this.nextElementSibling.style.display='grid'"><div class="product-fallback">${p.emoji}</div></div>
         <div class="product-body">
           <div class="product-title-row"><div><div class="product-name">${escapeHtml(p.name)}</div><div class="product-meta">${escapeHtml(p.desc)} · Ages ${p.age[0]}–${p.age[1]} · ~€${p.price}</div></div></div>
-          <div class="reason-box"><div class="reason-label">Why ${escapeHtml(state.profile.name||'they')} may love it</div><div class="reason-text">${escapeHtml(loveReason(p))}</div></div>
+          <div class="reason-box"><div class="reason-label">Why ${escapeHtml(state.profile.name||'they')} may enjoy it</div><div class="reason-text">${escapeHtml(loveReason(p))}</div></div>
           <div class="reason-box" style="background:var(--sage)"><div class="reason-label">Why SmartRoom matched it</div><div class="reason-text">${escapeHtml(recommendationReason(p))}</div></div>
           <div>${skillPills(p.skills,3)}</div>
           <div class="action-row"><button class="btn btn-skip" id="skipProduct">✕ Skip</button><button class="btn btn-wish" id="saveProduct">♡ Add to Wishes</button></div>
