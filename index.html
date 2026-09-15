@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<!-- SmartRoom MVP v6: Discover contains no Amazon links or buy controls -->
+<!-- SmartRoom MVP v22: bundle budget slider and smart swap suggestions -->
 <title>SmartRoom — MVP</title>
 <style>
   :root{
@@ -66,7 +66,7 @@
   .step-dot.active{background:var(--ink)}
   .form-card{padding:18px}
   label{display:block;font-size:13px;font-weight:800;margin-bottom:7px}
-  input[type="text"],input[type="number"],select{width:100%;border:1px solid var(--border);background:#fff;border-radius:14px;padding:13px 14px;color:var(--ink);font-size:16px;outline:none}
+  input[type="text"],input[type="number"],input[type="password"],select{width:100%;border:1px solid var(--border);background:#fff;border-radius:14px;padding:13px 14px;color:var(--ink);font-size:16px;outline:none}
   input:focus,select:focus{border-color:#a9bda1;box-shadow:0 0 0 3px rgba(111,138,104,.12)}
   .chip-grid{display:flex;flex-wrap:wrap;gap:8px}
   .chip{border:1px solid var(--border);background:#fff;border-radius:999px;padding:10px 12px;font-weight:700;color:var(--ink)}
@@ -215,6 +215,14 @@
   .feature-action strong{display:block;font-size:15px;margin-bottom:3px}
   .feature-action span{display:block;font-size:12px;color:var(--muted);line-height:1.35}
   .feature-chevron{margin-left:auto;color:#a59b94;font-size:22px}
+  .bundle-feature{width:100%;border:1px solid #b9cbaa;background:linear-gradient(135deg,#eef5e9 0%,#fbf4e8 55%,#f0e5ef 100%);border-radius:26px;padding:19px 18px;display:flex;align-items:center;gap:14px;text-align:left;box-shadow:0 16px 34px rgba(82,101,72,.14);color:var(--ink);position:relative;overflow:hidden}
+  .bundle-feature::after{content:'';position:absolute;right:-34px;top:-34px;width:110px;height:110px;border-radius:50%;background:rgba(255,255,255,.48)}
+  .bundle-feature .bundle-icon{width:54px;height:54px;border-radius:18px;background:#fff;display:grid;place-items:center;font-size:26px;flex:0 0 auto;border:1px solid rgba(185,203,170,.85);z-index:1}
+  .bundle-feature .bundle-copy{min-width:0;flex:1;z-index:1}
+  .bundle-feature .bundle-kicker{display:inline-block;font-size:10px;letter-spacing:.08em;text-transform:uppercase;font-weight:900;color:var(--sage-deep);margin-bottom:5px}
+  .bundle-feature strong{display:block;font-size:17px;letter-spacing:-.015em;margin-bottom:4px}
+  .bundle-feature .bundle-sub{display:block;font-size:12px;line-height:1.4;color:#655f5a}
+  .bundle-feature .feature-chevron{z-index:1;font-size:25px;color:#7e8f76}
   .playmap{margin-top:14px}
   .next-skills{margin-top:9px}
   .modal-choice-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
@@ -294,6 +302,1599 @@
   .wm-alt-main{min-width:0;flex:1}.wm-alt-name{font-size:12px;font-weight:850}.wm-alt-copy{font-size:11px;color:var(--muted);margin-top:2px}
   @media(max-width:360px){.wishes-footer-actions{grid-template-columns:1fr 1fr}.wishes-footer-actions .feature-action{padding:12px;min-height:104px}.wishes-footer-actions .feature-icon{display:none}.wishes-footer-actions .feature-chevron{display:none}}
 
+
+
+  /* v9 — visual welcome / product explanation */
+  .welcome-wrap-v9{
+    padding:26px 18px 44px;min-height:100vh;
+    background:
+      radial-gradient(circle at 86% 6%,rgba(219,230,213,.88),transparent 28%),
+      radial-gradient(circle at 8% 33%,rgba(234,209,214,.62),transparent 24%),
+      linear-gradient(180deg,#fffaf7 0%,#f7f3ee 100%);
+  }
+  .welcome-v9-brand{display:flex;align-items:center;gap:10px;font-weight:900;letter-spacing:-.035em;font-size:23px;margin-bottom:28px}
+  .welcome-v9-mark{width:44px;height:44px;border-radius:15px;background:linear-gradient(135deg,var(--rose),var(--sage));display:grid;place-items:center;font-size:22px;box-shadow:0 10px 24px rgba(76,61,51,.08)}
+  .welcome-v9-title{font-size:43px;line-height:.99;letter-spacing:-.057em;margin:0 0 12px;max-width:420px}
+  .welcome-v9-punch{font-size:19px;line-height:1.25;font-weight:900;letter-spacing:-.02em;margin:0 0 9px;max-width:400px}
+  .welcome-v9-copy{font-size:15.5px;line-height:1.5;color:#6d6661;max-width:410px;margin-bottom:20px}
+  .welcome-v9-visual{position:relative;margin:12px 0 20px;padding:18px 14px 16px;border:1px solid rgba(232,224,217,.9);border-radius:28px;background:rgba(255,253,250,.78);box-shadow:0 16px 42px rgba(68,55,45,.07);overflow:hidden}
+  .welcome-v9-visual::before{content:'';position:absolute;width:170px;height:170px;border-radius:50%;background:rgba(219,230,213,.42);right:-82px;top:110px;pointer-events:none}
+  .visual-kicker{text-align:center;text-transform:uppercase;letter-spacing:.09em;font-size:10px;font-weight:900;color:#8b837d;margin-bottom:10px}
+  .input-cloud{display:flex;justify-content:center;flex-wrap:wrap;gap:7px;max-width:360px;margin:0 auto}
+  .input-token{display:inline-flex;align-items:center;gap:6px;padding:7px 9px;border:1px solid var(--border);border-radius:999px;background:#fff;font-size:11px;font-weight:850;box-shadow:0 5px 12px rgba(68,55,45,.04);animation:tokenFloat 4.2s ease-in-out infinite}
+  .input-token:nth-child(2){animation-delay:.35s}.input-token:nth-child(3){animation-delay:.7s}.input-token:nth-child(4){animation-delay:1.05s}.input-token:nth-child(5){animation-delay:1.4s}.input-token:nth-child(6){animation-delay:1.75s}
+  @keyframes tokenFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+  .flow-arrow{height:34px;display:grid;place-items:center;position:relative;margin:2px 0}
+  .flow-arrow::before{content:'';width:1px;height:22px;background:linear-gradient(#d7cec7,#9fb595);position:absolute;top:3px}
+  .flow-arrow::after{content:'⌄';position:absolute;bottom:-1px;color:#78906f;font-weight:900;font-size:18px}
+  .radar-heading{text-align:center;margin:0 0 1px;font-size:15px;font-weight:950;letter-spacing:-.02em}
+  .radar-caption{text-align:center;font-size:11px;color:var(--muted);margin-bottom:2px}
+  .welcome-radar{display:block;width:100%;max-width:350px;margin:0 auto;overflow:visible}
+  .radar-grid{fill:none;stroke:#e9e1db;stroke-width:1}
+  .radar-axis{stroke:#e5ddd6;stroke-width:1}
+  .radar-shape{fill:rgba(164,190,151,.36);stroke:#718d68;stroke-width:2.4;transform-origin:160px 132px;animation:radarBloom 1.15s cubic-bezier(.2,.8,.25,1) both}
+  .radar-dot{fill:#718d68;stroke:#fff;stroke-width:2}
+  .radar-label{font-size:10px;font-weight:850;fill:#5c5652}
+  .radar-small{font-size:9px;font-weight:750;fill:#8b837d}
+  @keyframes radarBloom{0%{transform:scale(.08);opacity:.15}100%{transform:scale(1);opacity:1}}
+  .next-variety{display:flex;justify-content:center;gap:7px;flex-wrap:wrap;margin-top:7px}
+  .next-variety span{background:var(--sage);border:1px solid #c8d7c0;border-radius:999px;padding:7px 9px;font-size:10.5px;font-weight:850}
+  .next-variety span::before{content:'+';margin-right:4px;color:var(--sage-deep)}
+  .welcome-v9-actions{margin-top:16px}
+  .welcome-v9-primary{width:100%;min-height:54px;border:0;border-radius:17px;background:var(--ink);color:#fff;font-weight:900;font-size:16px;box-shadow:0 10px 20px rgba(46,43,42,.12)}
+  .welcome-v9-signin{text-align:center;margin-top:13px;font-size:13px;color:var(--muted)}
+  .welcome-v9-signin button{border:0;background:transparent;color:var(--ink);font-weight:900;padding:5px;text-decoration:underline;text-underline-offset:3px}
+  .welcome-balance-note{text-align:center;font-size:10.5px;color:#918981;margin-top:12px;line-height:1.4}
+  .signin-form{display:grid;gap:12px;margin-top:16px}
+  .signin-note{font-size:11px;color:var(--muted);line-height:1.4;margin-top:12px;background:#f5f0eb;border-radius:12px;padding:10px 11px}
+  @media(max-width:360px){
+    .welcome-v9-title{font-size:37px}.welcome-v9-punch{font-size:17px}.welcome-v9-copy{font-size:14.5px}.welcome-v9-visual{padding:15px 9px}.radar-label{font-size:9px}.input-token{font-size:10px;padding:6px 8px}
+  }
+  @media(prefers-reduced-motion:reduce){.input-token,.radar-shape{animation:none}}
+
+
+  /* ===== SmartRoom v10 cinematic welcome ===== */
+  .welcome-wrap-v9{
+    padding:24px 18px 44px;
+    min-height:100vh;
+    background:
+      radial-gradient(circle at 86% 4%, rgba(219,230,213,.92), transparent 27%),
+      radial-gradient(circle at 8% 28%, rgba(234,209,214,.68), transparent 25%),
+      linear-gradient(180deg,#fffaf7 0%,#f7f3ee 100%);
+  }
+  .welcome-v9-brand{margin-bottom:24px}
+  .welcome-v9-title{font-size:44px}
+  .welcome-v9-copy{margin-bottom:16px}
+
+  .welcome-v10-visual{
+    position:relative;
+    margin:10px 0 20px;
+    padding:18px 12px 17px;
+    border-radius:31px;
+    overflow:hidden;
+    color:#f8f7f4;
+    background:
+      radial-gradient(circle at 50% 38%, rgba(153,186,141,.18), transparent 27%),
+      radial-gradient(circle at 78% 32%, rgba(202,183,226,.12), transparent 24%),
+      linear-gradient(145deg,#272725 0%,#1f201f 46%,#262623 100%);
+    border:1px solid rgba(255,255,255,.08);
+    box-shadow:
+      0 22px 48px rgba(37,32,29,.16),
+      inset 0 1px 0 rgba(255,255,255,.06);
+    isolation:isolate;
+  }
+  .welcome-v10-visual::before,
+  .welcome-v10-visual::after{
+    content:'';
+    position:absolute;
+    border-radius:50%;
+    filter:blur(4px);
+    pointer-events:none;
+    z-index:-1;
+  }
+  .welcome-v10-visual::before{
+    width:190px;height:190px;
+    right:-70px;top:82px;
+    background:radial-gradient(circle,rgba(141,173,128,.21),transparent 66%);
+    animation:v10OrbA 7s ease-in-out infinite;
+  }
+  .welcome-v10-visual::after{
+    width:155px;height:155px;
+    left:-70px;bottom:45px;
+    background:radial-gradient(circle,rgba(194,169,218,.17),transparent 67%);
+    animation:v10OrbB 8s ease-in-out infinite;
+  }
+  @keyframes v10OrbA{0%,100%{transform:translate3d(0,0,0) scale(1)}50%{transform:translate3d(-20px,10px,0) scale(1.13)}}
+  @keyframes v10OrbB{0%,100%{transform:translate3d(0,0,0) scale(1)}50%{transform:translate3d(18px,-12px,0) scale(1.08)}}
+
+  .v10-topline{
+    display:flex;align-items:center;justify-content:space-between;gap:10px;
+    margin:0 4px 10px;
+  }
+  .v10-kicker{
+    text-transform:uppercase;
+    letter-spacing:.12em;
+    font-size:9.5px;
+    font-weight:950;
+    color:rgba(255,255,255,.58);
+  }
+  .v10-live{
+    display:inline-flex;align-items:center;gap:6px;
+    font-size:9px;font-weight:900;color:#dcebd4;
+    letter-spacing:.06em;text-transform:uppercase;
+  }
+  .v10-live::before{
+    content:'';
+    width:7px;height:7px;border-radius:50%;
+    background:#a8c596;
+    box-shadow:0 0 0 0 rgba(168,197,150,.5);
+    animation:v10PulseDot 1.9s ease-out infinite;
+  }
+  @keyframes v10PulseDot{
+    0%{box-shadow:0 0 0 0 rgba(168,197,150,.45)}
+    70%{box-shadow:0 0 0 8px rgba(168,197,150,0)}
+    100%{box-shadow:0 0 0 0 rgba(168,197,150,0)}
+  }
+
+  .v10-input-cloud{
+    display:flex;justify-content:center;flex-wrap:wrap;gap:7px;
+    margin:0 auto 3px;max-width:370px;position:relative;z-index:4;
+  }
+  .v10-token{
+    display:inline-flex;align-items:center;gap:6px;
+    padding:7px 9px;border-radius:999px;
+    font-size:10px;font-weight:850;
+    color:#f2efec;
+    background:rgba(255,255,255,.075);
+    border:1px solid rgba(255,255,255,.1);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.05);
+    backdrop-filter:blur(8px);
+    animation:v10TokenFloat 5s ease-in-out infinite;
+  }
+  .v10-token:nth-child(2){animation-delay:.55s}
+  .v10-token:nth-child(3){animation-delay:1.1s}
+  .v10-token:nth-child(4){animation-delay:1.65s}
+  .v10-token:nth-child(5){animation-delay:2.2s}
+  .v10-token:nth-child(6){animation-delay:2.75s}
+  @keyframes v10TokenFloat{
+    0%,100%{transform:translateY(0) rotate(0)}
+    50%{transform:translateY(-4px) rotate(.7deg)}
+  }
+
+  .v10-stream{
+    height:30px;
+    position:relative;
+    display:grid;place-items:center;
+    margin:3px 0 1px;
+  }
+  .v10-stream::before{
+    content:'';
+    width:2px;height:23px;
+    border-radius:2px;
+    background:linear-gradient(180deg,rgba(255,255,255,.08),rgba(168,197,150,.9));
+    box-shadow:0 0 12px rgba(168,197,150,.22);
+    animation:v10Stream 1.8s ease-in-out infinite;
+  }
+  .v10-stream::after{
+    content:'';
+    position:absolute;bottom:1px;
+    width:7px;height:7px;border-right:2px solid #a8c596;border-bottom:2px solid #a8c596;
+    transform:rotate(45deg);
+  }
+  @keyframes v10Stream{0%,100%{opacity:.45;transform:scaleY(.75)}50%{opacity:1;transform:scaleY(1)}}
+
+  .v10-map-head{text-align:center;margin-top:0;position:relative;z-index:3}
+  .v10-map-title{margin:0;font-size:17px;font-weight:950;letter-spacing:-.02em;color:#fff}
+  .v10-map-caption{margin:3px auto 0;max-width:290px;font-size:10.5px;line-height:1.35;color:rgba(255,255,255,.56)}
+
+  .v10-stage{
+    position:relative;
+    width:min(100%,390px);
+    height:292px;
+    margin:2px auto 0;
+    perspective:900px;
+    transform-style:preserve-3d;
+  }
+  .v10-stage::before{
+    content:'';
+    position:absolute;left:50%;top:49%;
+    width:210px;height:210px;border-radius:50%;
+    transform:translate(-50%,-50%);
+    background:radial-gradient(circle,rgba(159,189,146,.15),rgba(159,189,146,.035) 52%,transparent 70%);
+    filter:blur(8px);
+    animation:v10Core 4.8s ease-in-out infinite;
+  }
+  @keyframes v10Core{0%,100%{opacity:.52;transform:translate(-50%,-50%) scale(.96)}50%{opacity:1;transform:translate(-50%,-50%) scale(1.06)}}
+
+  .v10-radar-tilt{
+    position:absolute;inset:3px 4px 0;
+    transform-style:preserve-3d;
+    animation:v10Tilt 8s ease-in-out infinite;
+    transform-origin:50% 53%;
+    will-change:transform;
+  }
+  @keyframes v10Tilt{
+    0%,100%{transform:rotateX(8deg) rotateY(-7deg) rotateZ(-.5deg)}
+    33%{transform:rotateX(4deg) rotateY(6deg) rotateZ(.5deg)}
+    66%{transform:rotateX(10deg) rotateY(2deg) rotateZ(-.3deg)}
+  }
+
+  .v10-radar{display:block;width:100%;height:100%;overflow:visible;filter:drop-shadow(0 12px 14px rgba(0,0,0,.25))}
+  .v10-grid{fill:rgba(255,255,255,.012);stroke:rgba(255,255,255,.10);stroke-width:1}
+  .v10-grid-outer{stroke:rgba(255,255,255,.18);stroke-width:1.25}
+  .v10-axis{stroke:rgba(255,255,255,.09);stroke-width:1}
+  .v10-depth{fill:rgba(122,152,110,.08);stroke:rgba(122,152,110,.12);stroke-width:2.2}
+  .v10-shape-shadow{fill:rgba(91,122,82,.12);stroke:rgba(134,164,121,.18);stroke-width:3}
+  .v10-shape{fill:url(#v10MapGradient);stroke:#b7d7a7;stroke-width:2.2;filter:url(#v10Glow);transform-origin:160px 132px}
+  .v10-shape-edge{fill:none;stroke:rgba(222,244,213,.7);stroke-width:1.15;stroke-dasharray:2 5;animation:v10Dash 5s linear infinite}
+  @keyframes v10Dash{to{stroke-dashoffset:-60}}
+  .v10-dot{fill:#d9f0cf;stroke:#6e8765;stroke-width:2;filter:url(#v10DotGlow);animation:v10Dot 2.6s ease-in-out infinite}
+  .v10-dot:nth-of-type(2n){animation-delay:.55s}
+  .v10-dot:nth-of-type(3n){animation-delay:1.1s}
+  @keyframes v10Dot{0%,100%{r:3.5;opacity:.85}50%{r:5;opacity:1}}
+
+  .v10-label{
+    position:absolute;z-index:6;
+    font-size:9px;line-height:1.15;font-weight:900;letter-spacing:.01em;
+    color:#f3f0ec;text-shadow:0 2px 8px rgba(0,0,0,.35);
+    background:rgba(255,255,255,.045);
+    border:1px solid rgba(255,255,255,.07);
+    border-radius:10px;padding:4px 6px;
+    backdrop-filter:blur(6px);white-space:nowrap;
+  }
+  .v10-l1{top:3px;left:50%;transform:translateX(-50%)}
+  .v10-l2{top:66px;right:1px}
+  .v10-l3{right:0;bottom:47px}
+  .v10-l4{bottom:1px;left:50%;transform:translateX(-50%)}
+  .v10-l5{left:0;bottom:47px}
+  .v10-l6{left:0;top:66px}
+
+  .v10-insight{position:relative;z-index:5;margin:-3px auto 0;max-width:340px;display:flex;align-items:center;justify-content:center;gap:7px;flex-wrap:wrap}
+  .v10-insight-title{width:100%;text-align:center;font-size:9px;font-weight:900;text-transform:uppercase;letter-spacing:.12em;color:rgba(255,255,255,.48);margin-bottom:1px}
+  .v10-insight span{display:inline-flex;align-items:center;gap:5px;color:#eaf3e5;border:1px solid rgba(168,197,150,.18);background:rgba(129,159,116,.14);border-radius:999px;padding:6px 8px;font-size:9.5px;font-weight:900}
+  .v10-insight span::before{content:'+';color:#c9e4bd;font-size:11px}
+
+  .welcome-v9-actions{margin-top:14px}
+  .welcome-v9-primary{background:linear-gradient(135deg,#2f322d,#1f211e);box-shadow:0 12px 28px rgba(32,31,28,.18), inset 0 1px 0 rgba(255,255,255,.06)}
+  .welcome-v9-primary:active{transform:translateY(1px)}
+
+  @media(max-width:360px){
+    .v10-stage{height:270px}
+    .v10-label{font-size:8px;padding:4px 5px}
+    .v10-radar-tilt{inset:2px -3px 0}
+  }
+  @media(prefers-reduced-motion:reduce){
+    .v10-token,.v10-live::before,.v10-stream::before,.v10-stage::before,
+    .v10-radar-tilt,.v10-shape-edge,.v10-dot,.welcome-v10-visual::before,.welcome-v10-visual::after{animation:none!important}
+  }
+
+
+  /* ===== SmartRoom v11 soft playful welcome ===== */
+  .welcome-wrap-v9{
+    padding:24px 18px 40px;
+    min-height:100vh;
+    background:
+      radial-gradient(circle at 90% 8%, rgba(220,233,214,.75), transparent 25%),
+      radial-gradient(circle at 8% 24%, rgba(240,217,221,.7), transparent 22%),
+      linear-gradient(180deg,#fffaf7 0%,#f7f3ee 100%);
+  }
+  .welcome-v9-brand{
+    margin-bottom:18px;
+    display:flex;align-items:center;gap:10px;
+    color:#5c544d;font-size:15px;font-weight:950;letter-spacing:-.01em;
+  }
+  .welcome-v9-mark{
+    width:34px;height:34px;border-radius:12px;display:grid;place-items:center;
+    background:linear-gradient(135deg,#dfead8,#f5dfe4);color:#584f49;
+    box-shadow:0 6px 16px rgba(72,61,55,.08);
+  }
+  .welcome-v9-title{
+    margin:0 0 10px;
+    font-size:40px;line-height:1.04;letter-spacing:-.04em;color:#322b27;
+    max-width:340px;
+  }
+  .welcome-v9-punch{
+    margin:0 0 10px;
+    font-size:17px;line-height:1.35;font-weight:850;color:#4b433d;
+  }
+  .welcome-v9-copy{
+    margin:0 0 18px;
+    font-size:14px;line-height:1.48;color:#6a625d;
+    max-width:344px;
+  }
+
+  .welcome-soft-visual{
+    position:relative;
+    background:linear-gradient(180deg,#fffdfb 0%,#fff9f6 100%);
+    border:1px solid rgba(103,88,79,.07);
+    border-radius:30px;
+    padding:18px 14px 16px;
+    box-shadow:0 18px 32px rgba(76,63,55,.08);
+    overflow:hidden;
+    margin-bottom:16px;
+  }
+  .welcome-soft-visual::before{
+    content:'';
+    position:absolute;inset:auto -34px -40px auto;
+    width:150px;height:150px;border-radius:50%;
+    background:radial-gradient(circle, rgba(220,233,214,.7), transparent 67%);
+    pointer-events:none;
+  }
+  .welcome-soft-visual::after{
+    content:'';
+    position:absolute;left:-40px;top:-30px;
+    width:120px;height:120px;border-radius:50%;
+    background:radial-gradient(circle, rgba(244,221,227,.6), transparent 68%);
+    pointer-events:none;
+  }
+
+  .soft-kicker{
+    text-transform:uppercase;
+    letter-spacing:.12em;
+    font-size:9px;font-weight:950;color:#9a8f88;
+    margin-bottom:10px;
+  }
+  .soft-flow{
+    display:grid;
+    grid-template-columns:1fr 30px 1fr 30px 1fr;
+    align-items:center;
+    gap:4px;
+    margin-bottom:16px;
+  }
+  .soft-mini-card{
+    background:#fff;
+    border:1px solid rgba(103,88,79,.07);
+    border-radius:19px;
+    padding:12px 10px;
+    min-height:100px;
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+    justify-content:space-between;
+    box-shadow:0 8px 18px rgba(74,61,56,.05);
+  }
+  .soft-mini-card h3{
+    margin:0;font-size:13px;line-height:1.15;color:#37302b;
+  }
+  .soft-mini-card p{
+    margin:0;font-size:10px;line-height:1.35;color:#837973;
+  }
+  .soft-chip-row{
+    display:flex;flex-wrap:wrap;gap:6px;
+  }
+  .soft-chip{
+    display:inline-flex;align-items:center;gap:5px;
+    padding:6px 8px;border-radius:999px;
+    font-size:9.5px;font-weight:850;color:#5d544e;
+    background:#f8f4ef;border:1px solid rgba(103,88,79,.06);
+    animation:softFloat 4.4s ease-in-out infinite;
+  }
+  .soft-chip:nth-child(2){animation-delay:.5s}
+  .soft-chip:nth-child(3){animation-delay:1.1s}
+  .soft-chip:nth-child(4){animation-delay:1.6s}
+  @keyframes softFloat{
+    0%,100%{transform:translateY(0)}
+    50%{transform:translateY(-3px)}
+  }
+  .soft-arrow{
+    display:grid;place-items:center;
+    color:#b5aaa2;font-size:18px;font-weight:700;
+  }
+
+  .soft-map{
+    position:relative;
+    background:linear-gradient(180deg,#fbfaf7 0%,#f8f5f0 100%);
+    border-radius:22px;
+    padding:12px;
+    border:1px dashed rgba(116,101,91,.12);
+  }
+  .soft-map-center{
+    position:relative;
+    width:118px;height:118px;border-radius:50%;
+    margin:10px auto;
+    background:linear-gradient(135deg,#dbe9d5,#f4e2e7);
+    display:grid;place-items:center;text-align:center;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.6), 0 10px 20px rgba(66,56,51,.08);
+    color:#3f3833;
+    animation:softPulse 5s ease-in-out infinite;
+  }
+  @keyframes softPulse{
+    0%,100%{transform:scale(1)}
+    50%{transform:scale(1.03)}
+  }
+  .soft-map-center strong{
+    display:block;font-size:15px;line-height:1.1;
+  }
+  .soft-map-center span{
+    display:block;font-size:10px;line-height:1.25;color:#655d57;margin-top:4px;
+    padding:0 8px;
+  }
+  .soft-petal{
+    position:absolute;
+    min-width:88px;
+    padding:8px 9px;
+    border-radius:16px;
+    background:#fff;
+    border:1px solid rgba(103,88,79,.07);
+    box-shadow:0 8px 18px rgba(74,61,56,.05);
+    text-align:center;
+    font-size:10px;
+    color:#695f58;
+    line-height:1.2;
+  }
+  .soft-petal strong{
+    display:block;font-size:10.5px;color:#3e3732;margin-bottom:2px;
+  }
+  .soft-p1{top:-3px;left:50%;transform:translateX(-50%)}
+  .soft-p2{top:19px;right:-4px}
+  .soft-p3{bottom:19px;right:-4px}
+  .soft-p4{bottom:-3px;left:50%;transform:translateX(-50%)}
+  .soft-p5{bottom:19px;left:-4px}
+  .soft-p6{top:19px;left:-4px}
+
+  .soft-map-note{
+    margin-top:12px;
+    text-align:center;
+    font-size:11px;line-height:1.4;color:#6f6660;
+  }
+  .soft-next{
+    margin-top:14px;
+    border-radius:18px;
+    background:linear-gradient(135deg,#eef5ea,#fbf8f4);
+    border:1px solid rgba(130,154,118,.18);
+    padding:11px 12px;
+  }
+  .soft-next-kicker{
+    font-size:9px;font-weight:950;letter-spacing:.11em;text-transform:uppercase;color:#8aa07f;
+    margin-bottom:6px;
+  }
+  .soft-badges{display:flex;justify-content:center;flex-wrap:wrap;gap:6px}
+  .soft-badge{
+    padding:6px 8px;border-radius:999px;
+    background:#fff;border:1px solid rgba(130,154,118,.12);
+    font-size:9.5px;font-weight:850;color:#4d5f49;
+  }
+
+  .welcome-v9-actions{margin-top:10px}
+  .welcome-v9-primary{
+    width:100%;border:0;border-radius:18px;padding:15px 16px;
+    background:linear-gradient(135deg,#8faf7f,#7d9c70);
+    color:#fff;font-size:16px;font-weight:950;
+    box-shadow:0 12px 24px rgba(125,156,112,.26);
+  }
+  .welcome-v9-signin{
+    margin-top:14px;text-align:center;font-size:13px;color:#7a716b;
+  }
+  .welcome-v9-signin button{
+    border:0;background:none;color:#5d7b53;font-weight:900;
+  }
+  .welcome-balance-note{
+    margin-top:12px;
+    font-size:11px;line-height:1.4;color:#8a807a;text-align:center;
+  }
+
+  @media (max-width:390px){
+    .soft-flow{grid-template-columns:1fr 22px 1fr 22px 1fr}
+    .soft-mini-card{padding:10px 8px;min-height:96px}
+    .soft-petal{min-width:80px;font-size:9.5px}
+  }
+
+
+  /* ===== SmartRoom v12 simple playful hero ===== */
+  .welcome-wrap-v9{
+    padding:22px 18px 36px;
+    min-height:100vh;
+    background:
+      radial-gradient(circle at 88% 8%, rgba(220,233,214,.78), transparent 26%),
+      radial-gradient(circle at 12% 24%, rgba(243,220,226,.72), transparent 23%),
+      linear-gradient(180deg,#fffaf7 0%,#f7f3ee 100%);
+  }
+  .welcome-v9-brand{
+    margin:0 0 18px;
+    display:flex;align-items:center;gap:9px;
+    font-size:20px;font-weight:950;letter-spacing:-.03em;color:#312c29;
+  }
+  .welcome-v9-mark{
+    width:38px;height:38px;border-radius:13px;
+    display:grid;place-items:center;
+    background:linear-gradient(135deg,#dce9d6,#f3dfe4);
+    box-shadow:0 8px 18px rgba(75,62,55,.08);
+    color:#4f4945;
+  }
+  .welcome-v9-title{
+    margin:0 0 9px;
+    font-size:42px;line-height:1.02;letter-spacing:-.055em;
+    color:#2f2a27;max-width:350px;
+  }
+  .welcome-v9-punch{display:none}
+  .welcome-v9-copy{
+    margin:0 0 18px;
+    font-size:14.5px;line-height:1.42;color:#6e6660;max-width:352px;
+  }
+
+  .v12-hero{
+    position:relative;
+    min-height:420px;
+    margin:4px 0 16px;
+    border-radius:32px;
+    overflow:hidden;
+    background:
+      radial-gradient(circle at 50% 44%, rgba(255,255,255,.92), rgba(255,255,255,.58) 48%, rgba(255,255,255,.28) 72%),
+      linear-gradient(145deg,#f7ebe7 0%,#f2f6ee 52%,#eee9f7 100%);
+    border:1px solid rgba(106,91,82,.06);
+    box-shadow:0 18px 34px rgba(77,63,55,.07);
+  }
+  .v12-hero::before,
+  .v12-hero::after{
+    content:'';
+    position:absolute;border-radius:50%;filter:blur(2px);pointer-events:none;
+  }
+  .v12-hero::before{
+    width:170px;height:170px;right:-45px;top:-35px;
+    background:radial-gradient(circle,#dfead9 0%,rgba(223,234,217,.35) 52%,transparent 70%);
+  }
+  .v12-hero::after{
+    width:150px;height:150px;left:-40px;bottom:-40px;
+    background:radial-gradient(circle,#f0dce3 0%,rgba(240,220,227,.35) 52%,transparent 70%);
+  }
+
+  .v12-scene{
+    position:absolute;inset:0;
+  }
+  .v12-caption{
+    position:absolute;left:0;right:0;text-align:center;
+    font-size:10px;font-weight:950;letter-spacing:.1em;text-transform:uppercase;color:#968a83;
+  }
+  .v12-cap1{top:18px}
+  .v12-cap2{top:194px}
+  .v12-cap3{bottom:20px}
+
+  .v12-icon{
+    position:absolute;
+    width:58px;height:58px;border-radius:19px;
+    display:grid;place-items:center;
+    font-size:29px;
+    background:rgba(255,255,255,.92);
+    border:1px solid rgba(93,78,69,.06);
+    box-shadow:0 10px 22px rgba(70,58,52,.08);
+    animation:v12Float 4.8s ease-in-out infinite;
+    z-index:3;
+  }
+  .v12-icon small{
+    position:absolute;top:62px;left:50%;transform:translateX(-50%);
+    font-size:9px;white-space:nowrap;font-weight:850;color:#7f756e;
+  }
+  .v12-i1{left:10%;top:54px;animation-delay:0s}
+  .v12-i2{left:37%;top:44px;animation-delay:.6s}
+  .v12-i3{right:34%;top:54px;animation-delay:1.2s}
+  .v12-i4{right:9%;top:44px;animation-delay:1.8s}
+  @keyframes v12Float{
+    0%,100%{transform:translateY(0) rotate(0deg)}
+    50%{transform:translateY(-7px) rotate(1.5deg)}
+  }
+
+  .v12-drop{
+    position:absolute;left:50%;top:120px;width:3px;height:48px;transform:translateX(-50%);
+    border-radius:3px;
+    background:linear-gradient(180deg,rgba(150,164,142,.10),rgba(139,166,126,.65));
+    animation:v12Drop 2.1s ease-in-out infinite;
+  }
+  .v12-drop::after{
+    content:'';
+    position:absolute;left:50%;bottom:-4px;transform:translateX(-50%);
+    width:8px;height:8px;border-radius:50%;
+    background:#aac29f;
+    box-shadow:0 0 0 0 rgba(170,194,159,.32);
+    animation:v12Ping 2.1s ease-out infinite;
+  }
+  @keyframes v12Drop{
+    0%,100%{opacity:.25;transform:translateX(-50%) scaleY(.65)}
+    50%{opacity:1;transform:translateX(-50%) scaleY(1)}
+  }
+  @keyframes v12Ping{
+    0%{box-shadow:0 0 0 0 rgba(170,194,159,.38)}
+    80%{box-shadow:0 0 0 10px rgba(170,194,159,0)}
+    100%{box-shadow:0 0 0 0 rgba(170,194,159,0)}
+  }
+
+  .v12-map{
+    position:absolute;left:50%;top:176px;transform:translateX(-50%);
+    width:178px;height:178px;
+  }
+  .v12-core{
+    position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+    width:82px;height:82px;border-radius:50%;
+    display:grid;place-items:center;text-align:center;
+    background:linear-gradient(145deg,#ffffff,#f8f7f3);
+    box-shadow:0 12px 24px rgba(71,59,53,.10);
+    z-index:4;
+    font-size:13px;line-height:1.05;font-weight:950;color:#3e3833;
+  }
+  .v12-core span{display:block;font-size:9px;font-weight:800;color:#8a8079;margin-top:4px}
+  .v12-petal{
+    position:absolute;width:74px;height:74px;border-radius:25px;
+    display:grid;place-items:center;text-align:center;
+    padding:7px;
+    font-size:9px;line-height:1.08;font-weight:900;color:#564d47;
+    border:1px solid rgba(101,88,79,.05);
+    box-shadow:0 8px 18px rgba(72,60,54,.07);
+    animation:v12Petal 5.6s ease-in-out infinite;
+  }
+  .v12-petal b{display:block;font-size:11px}
+  .v12-p1{left:52px;top:-2px;background:#edf4e8;animation-delay:0s}
+  .v12-p2{right:-2px;top:42px;background:#f5e9dc;animation-delay:.45s}
+  .v12-p3{right:10px;bottom:6px;background:#eeeaf7;animation-delay:.9s}
+  .v12-p4{left:52px;bottom:-8px;background:#e9f2f4;animation-delay:1.35s}
+  .v12-p5{left:0;bottom:12px;background:#f6e6ea;animation-delay:1.8s}
+  .v12-p6{left:-6px;top:42px;background:#f1efdc;animation-delay:2.25s}
+  @keyframes v12Petal{
+    0%,100%{transform:scale(1)}
+    50%{transform:scale(1.045)}
+  }
+
+  .v12-next{
+    position:absolute;left:50%;bottom:46px;transform:translateX(-50%);
+    display:flex;gap:12px;align-items:center;justify-content:center;
+  }
+  .v12-next-card{
+    width:64px;height:64px;border-radius:20px;
+    display:grid;place-items:center;
+    font-size:30px;
+    background:#fff;
+    border:1px solid rgba(93,78,69,.06);
+    box-shadow:0 10px 20px rgba(70,58,52,.08);
+    animation:v12Next 5s ease-in-out infinite;
+  }
+  .v12-next-card:nth-child(2){animation-delay:.7s}
+  .v12-next-card:nth-child(3){animation-delay:1.4s}
+  @keyframes v12Next{
+    0%,100%{transform:translateY(0)}
+    50%{transform:translateY(-5px)}
+  }
+  .v12-next-arrow{
+    font-size:18px;color:#93a88b;font-weight:900;
+  }
+
+  .welcome-v9-actions{margin-top:8px}
+  .welcome-v9-primary{
+    width:100%;min-height:54px;border:0;border-radius:18px;
+    background:linear-gradient(135deg,#88a878,#769768);
+    color:#fff;font-weight:950;font-size:16px;
+    box-shadow:0 12px 24px rgba(118,151,104,.24);
+  }
+  .welcome-v9-signin{text-align:center;margin-top:13px;font-size:13px;color:#7b716b}
+  .welcome-v9-signin button{border:0;background:transparent;color:#5c7952;font-weight:900}
+  .welcome-balance-note{display:none}
+
+  @media(max-width:360px){
+    .welcome-v9-title{font-size:37px}
+    .v12-hero{min-height:400px}
+    .v12-icon{width:52px;height:52px;font-size:26px}
+    .v12-map{transform:translateX(-50%) scale(.94)}
+    .v12-next-card{width:58px;height:58px}
+  }
+  @media(prefers-reduced-motion:reduce){
+    .v12-icon,.v12-drop,.v12-drop::after,.v12-petal,.v12-next-card{animation:none!important}
+  }
+
+
+  /* ===== SmartRoom v13 — clean animated story ===== */
+  .welcome-wrap-v9{
+    padding:22px 18px 36px;
+    min-height:100vh;
+    background:
+      radial-gradient(circle at 88% 7%,rgba(220,233,214,.72),transparent 26%),
+      radial-gradient(circle at 8% 24%,rgba(243,220,226,.62),transparent 23%),
+      linear-gradient(180deg,#fffaf7 0%,#f8f4ef 100%);
+  }
+  .welcome-v9-brand{
+    margin:0 0 18px;
+    display:flex;align-items:center;gap:9px;
+    font-size:20px;font-weight:950;letter-spacing:-.035em;color:#302b28;
+  }
+  .welcome-v9-mark{
+    width:36px;height:36px;border-radius:12px;
+    display:grid;place-items:center;
+    background:linear-gradient(135deg,#dce9d6,#f2dde3);
+    box-shadow:0 7px 17px rgba(75,62,55,.08);
+    font-size:18px;
+  }
+  .welcome-v9-title{
+    margin:0 0 10px;
+    font-size:42px;line-height:1.01;letter-spacing:-.055em;
+    color:#2f2a27;max-width:360px;
+  }
+  .welcome-v9-punch{display:none!important}
+  .welcome-v9-copy{
+    margin:0 0 17px;
+    font-size:14.5px;line-height:1.46;color:#6e6660;max-width:360px;
+  }
+
+  .v13-story{
+    position:relative;
+    height:330px;
+    margin:4px 0 16px;
+    overflow:hidden;
+    border-radius:30px;
+    background:
+      radial-gradient(circle at 50% 46%,rgba(255,255,255,.96),rgba(255,255,255,.66) 49%,rgba(255,255,255,.38) 74%),
+      linear-gradient(145deg,#f8ebe8 0%,#eef5eb 51%,#efebf6 100%);
+    border:1px solid rgba(102,88,79,.06);
+    box-shadow:0 17px 34px rgba(76,63,55,.07);
+  }
+  .v13-scene{
+    position:absolute;inset:0;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    padding:26px 22px 36px;
+    opacity:0;
+    transform:translateY(12px) scale(.985);
+    pointer-events:none;
+  }
+  
+  .v13-s1{animation:v13Scene1 18s ease-in-out infinite}
+  .v13-s2{animation:v13Scene2 18s ease-in-out infinite}
+  .v13-s3{animation:v13Scene3 18s ease-in-out infinite}
+
+  @keyframes v13Scene1{
+    0%,4%{opacity:0;transform:translateY(12px) scale(.985)}
+    9%,31%{opacity:1;transform:translateY(0) scale(1)}
+    36%,100%{opacity:0;transform:translateY(-8px) scale(.992)}
+  }
+  @keyframes v13Scene2{
+    0%,36%{opacity:0;transform:translateY(12px) scale(.985)}
+    41%,63%{opacity:1;transform:translateY(0) scale(1)}
+    68%,100%{opacity:0;transform:translateY(-8px) scale(.992)}
+  }
+  @keyframes v13Scene3{
+    0%,68%{opacity:0;transform:translateY(12px) scale(.985)}
+    73%,95%{opacity:1;transform:translateY(0) scale(1)}
+    100%{opacity:0;transform:translateY(-8px) scale(.992)}
+  }
+
+  @keyframes v13Dot1{
+    0%,35%{background:#88a879;transform:scale(1.2)}
+    36%,100%{background:rgba(91,78,70,.14);transform:scale(1)}
+  }
+  @keyframes v13Dot2{
+    0%,35%{background:rgba(91,78,70,.14);transform:scale(1)}
+    36%,68%{background:#88a879;transform:scale(1.2)}
+    69%,100%{background:rgba(91,78,70,.14);transform:scale(1)}
+  }
+  @keyframes v13Dot3{
+    0%,68%{background:rgba(91,78,70,.14);transform:scale(1)}
+    69%,100%{background:#88a879;transform:scale(1.2)}
+  }
+69%,100%{background:#88a879;transform:scale(1.2)}}68%,100%{background:#88a879;transform:scale(1.2)}}
+
+  .welcome-v9-actions{margin-top:8px}
+  .welcome-v9-primary{
+    width:100%;min-height:54px;border:0;border-radius:18px;
+    background:linear-gradient(135deg,#88a878,#769768);
+    color:#fff;font-size:16px;font-weight:950;
+    box-shadow:0 12px 24px rgba(118,151,104,.24);
+  }
+  .welcome-v9-signin{text-align:center;margin-top:13px;font-size:13px;color:#7c726b}
+  .welcome-v9-signin button{border:0;background:transparent;color:#5f7c55;font-weight:900}
+  .welcome-balance-note{display:none!important}
+
+  @media(max-width:360px){
+    .welcome-v9-title{font-size:37px}
+    .v13-story{height:315px}
+    .v13-input{width:52px;height:52px;font-size:25px}
+    .v13-inputs{gap:8px}
+    .v13-wheel{transform:scale(.92)}
+    .v13-next-row{gap:8px}
+    .v13-next-pill{min-width:72px}
+  }
+  @media(prefers-reduced-motion:reduce){
+    .v13-scene{animation:none!important;opacity:0!important}
+    .v13-s2{opacity:1!important;transform:none!important}
+    .v13-input,.v13-ring,.v13-next-pill,.v13-progress i{animation:none!important}
+  }
+
+
+  .v13-wheel{
+    position:relative;
+    width:200px;
+    height:200px;
+    margin:10px auto 10px !important;
+    left:0 !important;
+    right:0 !important;
+  }
+  .v13-wheel-center{
+    display:flex !important;
+    align-items:center !important;
+    justify-content:center !important;
+    flex-direction:column !important;
+    text-align:center !important;
+    padding:0 8px;
+    line-height:1.06 !important;
+  }
+  .v13-wheel-center span{
+    margin-top:5px !important;
+    max-width:92px;
+    text-align:center;
+  }
+
+
+  /* ===== SmartRoom v17 — clean, aligned, slow 3-scene welcome ===== */
+  .v17-story{
+    position:relative;
+    height:330px;
+    margin:6px 0 16px;
+    overflow:hidden;
+    border-radius:30px;
+    background:
+      radial-gradient(circle at 50% 40%, rgba(255,255,255,.95), rgba(255,255,255,.64) 54%, rgba(255,255,255,.34) 78%),
+      linear-gradient(145deg,#f7ebe7 0%,#eef5eb 52%,#eeeaf6 100%);
+    border:1px solid rgba(98,84,76,.06);
+    box-shadow:0 18px 34px rgba(76,63,55,.07);
+  }
+  .v17-scene{
+    position:absolute;
+    inset:0;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    padding:26px 22px 38px;
+    text-align:center;
+    opacity:0;
+    transform:translateY(10px);
+    pointer-events:none;
+  }
+  .v17-s1{animation:v17scene1 24s ease-in-out infinite}
+  .v17-s2{animation:v17scene2 24s ease-in-out infinite}
+  .v17-s3{animation:v17scene3 24s ease-in-out infinite}
+
+  @keyframes v17scene1{
+    0%,2%{opacity:0;transform:translateY(10px)}
+    6%,29%{opacity:1;transform:translateY(0)}
+    33%,100%{opacity:0;transform:translateY(-8px)}
+  }
+  @keyframes v17scene2{
+    0%,33%{opacity:0;transform:translateY(10px)}
+    37%,62%{opacity:1;transform:translateY(0)}
+    66%,100%{opacity:0;transform:translateY(-8px)}
+  }
+  @keyframes v17scene3{
+    0%,66%{opacity:0;transform:translateY(10px)}
+    70%,96%{opacity:1;transform:translateY(0)}
+    100%{opacity:0;transform:translateY(-8px)}
+  }
+
+  .v17-step{
+    margin-bottom:9px;
+    font-size:9px;
+    font-weight:950;
+    letter-spacing:.13em;
+    text-transform:uppercase;
+    color:#968b84;
+  }
+  .v17-title{
+    margin:0 0 7px;
+    font-size:22px;
+    line-height:1.08;
+    font-weight:950;
+    letter-spacing:-.035em;
+    color:#342e2a;
+  }
+  .v17-sub{
+    margin:0;
+    max-width:300px;
+    font-size:11.5px;
+    line-height:1.42;
+    color:#81766f;
+  }
+
+  .v17-owned{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:11px;
+    margin:20px 0 17px;
+  }
+  .v17-owned-item{
+    width:58px;
+    height:58px;
+    border-radius:19px;
+    display:grid;
+    place-items:center;
+    font-size:28px;
+    background:#fff;
+    border:1px solid rgba(98,84,76,.055);
+    box-shadow:0 10px 20px rgba(76,63,55,.07);
+    animation:v17float 4.4s ease-in-out infinite;
+  }
+  .v17-owned-item:nth-child(2){animation-delay:.35s}
+  .v17-owned-item:nth-child(3){animation-delay:.7s}
+  .v17-owned-item:nth-child(4){animation-delay:1.05s}
+  .v17-owned-item:nth-child(5){animation-delay:1.4s}
+  @keyframes v17float{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+
+  .v17-map{
+    position:relative;
+    width:208px;
+    height:208px;
+    margin:8px auto 10px;
+  }
+  .v17-map-ring{
+    position:absolute;
+    inset:20px;
+    border-radius:50%;
+    background:
+      conic-gradient(
+        #dfead9 0deg 60deg,
+        #f3e7d9 60deg 120deg,
+        #ebe7f5 120deg 180deg,
+        #e5eef1 180deg 240deg,
+        #f2e1e6 240deg 300deg,
+        #efedd9 300deg 360deg
+      );
+    box-shadow:0 12px 24px rgba(74,62,55,.08);
+    animation:v17breathe 5s ease-in-out infinite;
+  }
+  .v17-map-ring::after{
+    content:'';
+    position:absolute;
+    inset:29px;
+    border-radius:50%;
+    background:#fffdfa;
+    box-shadow:inset 0 0 0 1px rgba(98,84,76,.05);
+  }
+  @keyframes v17breathe{0%,100%{transform:scale(1)}50%{transform:scale(1.025)}}
+
+  .v17-map-center{
+    position:absolute;
+    inset:0;
+    z-index:3;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    color:#39332f;
+    font-size:15px;
+    line-height:1.06;
+    font-weight:950;
+  }
+  .v17-map-center span{
+    display:block;
+    margin-top:5px;
+    max-width:92px;
+    font-size:9px;
+    line-height:1.2;
+    font-weight:800;
+    color:#8b817a;
+  }
+  .v17-map-tag{
+    position:absolute;
+    z-index:5;
+    padding:6px 8px;
+    border-radius:999px;
+    background:#fff;
+    border:1px solid rgba(98,84,76,.06);
+    box-shadow:0 7px 15px rgba(76,63,55,.055);
+    color:#5d544e;
+    font-size:9px;
+    font-weight:900;
+    white-space:nowrap;
+  }
+  .v17-m1{top:0;left:50%;transform:translateX(-50%)}
+  .v17-m2{right:-7px;top:50px}
+  .v17-m3{right:-6px;bottom:45px}
+  .v17-m4{bottom:0;left:50%;transform:translateX(-50%)}
+  .v17-m5{left:-8px;bottom:45px}
+  .v17-m6{left:-10px;top:50px}
+
+  .v17-recos{
+    width:100%;
+    max-width:310px;
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:10px;
+    margin:18px auto 14px;
+  }
+  .v17-reco{
+    min-width:0;
+    min-height:116px;
+    padding:12px 7px 10px;
+    border-radius:20px;
+    background:#fff;
+    border:1px solid rgba(98,84,76,.055);
+    box-shadow:0 9px 19px rgba(76,63,55,.065);
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:flex-start;
+    text-align:center;
+    animation:v17reco 5s ease-in-out infinite;
+  }
+  .v17-reco:nth-child(2){animation-delay:.55s}
+  .v17-reco:nth-child(3){animation-delay:1.1s}
+  @keyframes v17reco{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+  .v17-reco-icon{
+    width:43px;
+    height:43px;
+    border-radius:14px;
+    display:grid;
+    place-items:center;
+    margin-bottom:8px;
+    font-size:24px;
+    background:#f8f5f1;
+  }
+  .v17-reco-name{
+    min-height:28px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:10.5px;
+    line-height:1.15;
+    font-weight:950;
+    color:#4d4540;
+  }
+  .v17-reco-fit{
+    margin-top:7px;
+    padding:4px 7px;
+    border-radius:999px;
+    background:#edf5e9;
+    color:#66805d;
+    font-size:8.5px;
+    line-height:1;
+    font-weight:900;
+    white-space:nowrap;
+  }
+  .v17-reco-fit::before{content:'+';margin-right:3px}
+
+  .v17-dots{
+    position:absolute;
+    left:50%;
+    bottom:14px;
+    transform:translateX(-50%);
+    display:flex;
+    gap:6px;
+    z-index:8;
+  }
+  .v17-dots i{
+    width:6px;height:6px;border-radius:50%;
+    background:rgba(91,78,70,.14);
+  }
+  .v17-dots i:nth-child(1){animation:v17dot1 24s linear infinite}
+  .v17-dots i:nth-child(2){animation:v17dot2 24s linear infinite}
+  .v17-dots i:nth-child(3){animation:v17dot3 24s linear infinite}
+  @keyframes v17dot1{
+    0%,33%{background:#88a879;transform:scale(1.2)}
+    34%,100%{background:rgba(91,78,70,.14);transform:scale(1)}
+  }
+  @keyframes v17dot2{
+    0%,33%{background:rgba(91,78,70,.14);transform:scale(1)}
+    34%,66%{background:#88a879;transform:scale(1.2)}
+    67%,100%{background:rgba(91,78,70,.14);transform:scale(1)}
+  }
+  @keyframes v17dot3{
+    0%,66%{background:rgba(91,78,70,.14);transform:scale(1)}
+    67%,100%{background:#88a879;transform:scale(1.2)}
+  }
+
+  @media(max-width:360px){
+    .v17-story{height:320px}
+    .v17-owned{gap:8px}
+    .v17-owned-item{width:52px;height:52px;font-size:25px}
+    .v17-map{transform:scale(.93);margin-top:2px}
+    .v17-recos{gap:7px;max-width:292px}
+    .v17-reco{padding-left:5px;padding-right:5px}
+  }
+  @media(prefers-reduced-motion:reduce){
+    .v17-scene{animation:none!important;opacity:0!important}
+    .v17-s2{opacity:1!important;transform:none!important}
+    .v17-owned-item,.v17-map-ring,.v17-reco,.v17-dots i{animation:none!important}
+  }
+
+
+  
+  /* ===== SmartRoom v19 — centered playful Cognitive Map orbit ===== */
+  .v18-orbit{
+    position:relative;
+    width:228px;
+    height:228px;
+    margin:10px auto 12px;
+  }
+  .v18-orbit::before{
+    content:'';
+    position:absolute;
+    left:50%;
+    top:50%;
+    width:154px;
+    height:154px;
+    transform:translate(-50%,-50%);
+    border-radius:50%;
+    border:1.5px dashed rgba(119,105,95,.14);
+  }
+  .v18-orbit::after{
+    content:'';
+    position:absolute;
+    left:50%;
+    top:50%;
+    width:198px;
+    height:198px;
+    transform:translate(-50%,-50%);
+    border-radius:50%;
+    border:1px solid rgba(119,105,95,.055);
+  }
+  .v18-brain{
+    position:absolute;
+    left:50%;
+    top:50%;
+    transform:translate(-50%,-50%);
+    width:94px;
+    height:94px;
+    border-radius:30px;
+    background:linear-gradient(145deg,#fffdfa,#f7f1eb);
+    border:1px solid rgba(99,85,77,.055);
+    box-shadow:0 13px 26px rgba(75,62,55,.09);
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    z-index:4;
+    animation:v18Brain 5.2s ease-in-out infinite;
+  }
+  .v18-brain-emoji{
+    font-size:38px;
+    line-height:1;
+  }
+  .v18-brain-label{
+    margin-top:6px;
+    font-size:9px;
+    line-height:1;
+    font-weight:950;
+    color:#665d57;
+  }
+  @keyframes v18Brain{
+    0%,100%{transform:translate(-50%,-50%) scale(1)}
+    50%{transform:translate(-50%,-50%) scale(1.035)}
+  }
+
+  .v18-bubble{
+    position:absolute;
+    width:84px;
+    height:52px;
+    padding:0 8px;
+    border-radius:18px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:6px;
+    text-align:center;
+    font-size:10px;
+    line-height:1.05;
+    font-weight:900;
+    color:#554c46;
+    border:1px solid rgba(99,85,77,.05);
+    box-shadow:0 8px 18px rgba(75,62,55,.065);
+    animation:v18Float 4.8s ease-in-out infinite;
+    z-index:5;
+  }
+  .v18-bubble em{
+    font-style:normal;
+    font-size:17px;
+    line-height:1;
+  }
+  /* symmetrical 6-point orbit */
+  .v18-b1{left:50%;top:10px;transform:translateX(-50%);background:#e9f2e4;animation-delay:0s}
+  .v18-b2{right:10px;top:50%;transform:translateY(-50%);background:#f5e9dc;animation-delay:.45s}
+  .v18-b3{right:32px;bottom:22px;background:#ece8f5;animation-delay:.9s}
+  .v18-b4{left:50%;bottom:10px;transform:translateX(-50%);background:#e6f0f3;animation-delay:1.35s}
+  .v18-b5{left:32px;bottom:22px;background:#f4e3e8;animation-delay:1.8s}
+  .v18-b6{left:10px;top:50%;transform:translateY(-50%);background:#f0eedb;animation-delay:2.25s}
+  @keyframes v18Float{
+    0%,100%{translate:0 0}
+    50%{translate:0 -4px}
+  }
+
+  .v18-balance-note{
+    margin:2px auto 0;
+    max-width:300px;
+    font-size:11px;
+    line-height:1.4;
+    color:#81776f;
+    text-align:center;
+  }
+
+  .v18-recos{
+    width:100%;
+    max-width:312px;
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:10px;
+    margin:18px auto 15px;
+  }
+  .v18-reco{
+    min-height:100px;
+    padding:12px 7px 10px;
+    border-radius:21px;
+    background:#fff;
+    border:1px solid rgba(98,84,76,.055);
+    box-shadow:0 9px 19px rgba(76,63,55,.065);
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    animation:v17reco 5s ease-in-out infinite;
+  }
+  .v18-reco:nth-child(2){animation-delay:.55s}
+  .v18-reco:nth-child(3){animation-delay:1.1s}
+  .v18-reco-icon{
+    width:44px;
+    height:44px;
+    border-radius:15px;
+    display:grid;
+    place-items:center;
+    margin-bottom:8px;
+    font-size:25px;
+    background:#f8f5f1;
+  }
+  .v18-reco-name{
+    font-size:10.5px;
+    line-height:1.15;
+    font-weight:950;
+    color:#4e4640;
+  }
+
+  @media(max-width:360px){
+    .v18-orbit{transform:scale(.91);margin-top:2px}
+    .v18-recos{gap:7px;max-width:292px}
+  }
+  @media(prefers-reduced-motion:reduce){
+    .v18-bubble,.v18-brain,.v18-reco{animation:none!important}
+  }
+
+
+
+  /* ===== SmartRoom v20 — simple, intuitive, commercial opening ===== */
+  .welcome-wrap-v9{
+    padding:22px 18px 36px;
+    min-height:100vh;
+    background:
+      radial-gradient(circle at 88% 7%,rgba(220,233,214,.72),transparent 26%),
+      radial-gradient(circle at 8% 24%,rgba(243,220,226,.62),transparent 23%),
+      linear-gradient(180deg,#fffaf7 0%,#f8f4ef 100%);
+  }
+  .welcome-v9-brand{
+    margin:0 0 18px;
+    display:flex;align-items:center;gap:9px;
+    font-size:20px;font-weight:950;letter-spacing:-.035em;color:#302b28;
+  }
+  .welcome-v9-mark{
+    width:36px;height:36px;border-radius:12px;
+    display:grid;place-items:center;
+    background:linear-gradient(135deg,#dce9d6,#f2dde3);
+    box-shadow:0 7px 17px rgba(75,62,55,.08);
+    font-size:18px;
+  }
+  .welcome-v9-title{
+    margin:0 0 10px;
+    font-size:42px;line-height:1.01;letter-spacing:-.055em;
+    color:#2f2a27;max-width:360px;
+  }
+  .welcome-v9-punch{display:none!important}
+  .welcome-v9-copy{
+    margin:0 0 18px;
+    font-size:14.5px;line-height:1.46;color:#6e6660;max-width:360px;
+  }
+
+  .v20-hero{
+    margin:8px 0 16px;
+    padding:18px 14px 16px;
+    border-radius:30px;
+    background:
+      linear-gradient(145deg,#f7ebe7 0%,#eef5eb 52%,#eeeaf6 100%);
+    border:1px solid rgba(98,84,76,.06);
+    box-shadow:0 18px 34px rgba(76,63,55,.07);
+  }
+  .v20-step{
+    background:rgba(255,255,255,.72);
+    border:1px solid rgba(98,84,76,.05);
+    border-radius:24px;
+    padding:14px 12px;
+    text-align:center;
+    box-shadow:0 8px 18px rgba(76,63,55,.045);
+  }
+  .v20-step + .v20-step{margin-top:12px}
+  .v20-step-kicker{
+    margin-bottom:6px;
+    font-size:9px;font-weight:950;letter-spacing:.13em;
+    text-transform:uppercase;color:#968b84;
+  }
+  .v20-step-title{
+    margin:0 0 5px;
+    font-size:19px;line-height:1.12;
+    font-weight:950;letter-spacing:-.03em;color:#342e2a;
+  }
+  .v20-step-sub{
+    margin:0;
+    font-size:11.5px;line-height:1.42;color:#81766f;
+  }
+
+  .v20-owned{
+    display:flex;justify-content:center;gap:10px;flex-wrap:wrap;
+    margin:14px 0 8px;
+  }
+  .v20-owned-item{
+    width:56px;height:56px;border-radius:18px;
+    display:grid;place-items:center;
+    background:#fff;
+    border:1px solid rgba(98,84,76,.055);
+    box-shadow:0 9px 18px rgba(76,63,55,.06);
+    font-size:27px;
+  }
+
+  .v20-map-wrap{
+    display:flex;flex-direction:column;align-items:center;
+    gap:10px;margin:14px 0 8px;
+  }
+  .v20-map-core{
+    width:112px;height:112px;border-radius:34px;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    background:#fff;
+    border:1px solid rgba(98,84,76,.055);
+    box-shadow:0 11px 21px rgba(76,63,55,.065);
+    color:#3b3430;
+  }
+  .v20-map-core-emoji{font-size:40px;line-height:1}
+  .v20-map-core-label{
+    margin-top:6px;
+    font-size:11px;font-weight:950;color:#665d57;line-height:1.05;
+  }
+  .v20-pill-grid{
+    width:100%;
+    max-width:280px;
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:8px;
+  }
+  .v20-pill{
+    min-height:46px;
+    border-radius:16px;
+    display:flex;align-items:center;justify-content:center;gap:6px;
+    padding:0 8px;
+    font-size:10px;line-height:1.05;font-weight:900;color:#554c46;
+    border:1px solid rgba(99,85,77,.05);
+    box-shadow:0 6px 14px rgba(75,62,55,.045);
+    background:#fff;
+  }
+  .v20-pill:nth-child(1){background:#e9f2e4}
+  .v20-pill:nth-child(2){background:#f5e9dc}
+  .v20-pill:nth-child(3){background:#ece8f5}
+  .v20-pill:nth-child(4){background:#e6f0f3}
+  .v20-pill:nth-child(5){background:#f4e3e8}
+  .v20-pill:nth-child(6){background:#f0eedb}
+  .v20-pill em{font-style:normal;font-size:15px;line-height:1}
+
+  .v20-recos{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:9px;
+    margin:14px 0 8px;
+  }
+  .v20-reco{
+    min-height:100px;
+    border-radius:20px;
+    background:#fff;
+    border:1px solid rgba(98,84,76,.055);
+    box-shadow:0 9px 18px rgba(76,63,55,.06);
+    padding:12px 7px 10px;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    text-align:center;
+  }
+  .v20-reco-icon{
+    width:42px;height:42px;border-radius:14px;
+    display:grid;place-items:center;
+    background:#f8f5f1;font-size:24px;margin-bottom:8px;
+  }
+  .v20-reco-label{
+    font-size:10.5px;line-height:1.14;font-weight:950;color:#4e4640;
+  }
+
+  .welcome-v9-actions{margin-top:8px}
+  .welcome-v9-primary{
+    width:100%;min-height:54px;border:0;border-radius:18px;
+    background:linear-gradient(135deg,#88a878,#769768);
+    color:#fff;font-size:16px;font-weight:950;
+    box-shadow:0 12px 24px rgba(118,151,104,.24);
+  }
+  .welcome-v9-signin{text-align:center;margin-top:13px;font-size:13px;color:#7c726b}
+  .welcome-v9-signin button{border:0;background:transparent;color:#5f7c55;font-weight:900}
+  .welcome-balance-note{display:none!important}
+
+  @media(max-width:360px){
+    .welcome-v9-title{font-size:38px}
+    .v20-owned-item{width:52px;height:52px;font-size:24px}
+    .v20-pill-grid{gap:7px}
+    .v20-pill{font-size:9px}
+    .v20-recos{gap:7px}
+    .v20-reco{min-height:95px;padding-left:5px;padding-right:5px}
+    .v20-reco-label{font-size:10px}
+  }
+
+
+  /* ===== SmartRoom v21 sharing ===== */
+  .share-social-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:9px;
+    margin:14px 0 16px;
+  }
+  .share-social{
+    min-height:92px;
+    border:1px solid var(--border);
+    border-radius:18px;
+    background:#fff;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:7px;
+    padding:10px 6px;
+    color:var(--ink);
+    font:inherit;
+    cursor:pointer;
+  }
+  .share-social.selected{
+    border-color:#b8cbb0;
+    background:#f1f6ee;
+    box-shadow:0 0 0 2px rgba(142,171,128,.10);
+  }
+  .share-social-icon{
+    width:38px;height:38px;border-radius:13px;
+    display:grid;place-items:center;
+    font-size:21px;
+    background:#f6f2ed;
+  }
+  .share-social.whatsapp .share-social-icon{background:#e8f5e7}
+  .share-social.instagram .share-social-icon{background:#f6e7f0}
+  .share-social strong{font-size:11px}
+  .share-social span{font-size:9px;color:var(--muted);text-align:center;line-height:1.2}
+  .share-fields.hidden{display:none}
+  .share-helper{
+    margin-top:9px;
+    font-size:10.5px;
+    line-height:1.35;
+    color:var(--muted);
+    text-align:center;
+  }
+  @media(max-width:350px){
+    .share-social-grid{gap:6px}
+    .share-social{min-height:86px;padding:8px 4px}
+    .share-social strong{font-size:10px}
+  }
+
+
+  /* ===== SmartRoom v22 — bundle budget slider + smart swap ===== */
+  .bundle-budget-card{
+    margin:14px 0 16px;
+    padding:16px;
+    border-radius:22px;
+    background:#fff;
+    border:1px solid var(--border);
+    box-shadow:0 8px 20px rgba(76,63,55,.045);
+  }
+  .bundle-budget-head{
+    display:flex;
+    align-items:flex-end;
+    justify-content:space-between;
+    gap:12px;
+    margin-bottom:10px;
+  }
+  .bundle-budget-title{
+    font-size:13px;
+    font-weight:950;
+    color:var(--ink);
+  }
+  .bundle-budget-value{
+    font-size:22px;
+    font-weight:950;
+    letter-spacing:-.035em;
+    color:#5f7c55;
+  }
+  .bundle-budget-range{
+    width:100%;
+    accent-color:#88a878;
+  }
+  .bundle-budget-scale{
+    display:flex;
+    justify-content:space-between;
+    margin-top:5px;
+    font-size:9px;
+    color:var(--muted);
+  }
+  .bundle-total-line{
+    margin-top:10px;
+    display:flex;
+    justify-content:space-between;
+    gap:10px;
+    font-size:10.5px;
+    color:var(--muted);
+  }
+  .bundle-total-line strong{
+    color:var(--ink);
+  }
+
+  .smart-swap-card{
+    margin:14px 0;
+    padding:15px;
+    border-radius:22px;
+    background:linear-gradient(145deg,#f4f0f8,#f0f5ec);
+    border:1px solid rgba(112,97,128,.08);
+    box-shadow:0 8px 18px rgba(76,63,55,.045);
+  }
+  .smart-swap-kicker{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    margin-bottom:7px;
+    padding:5px 8px;
+    border-radius:999px;
+    background:#fff;
+    font-size:9px;
+    font-weight:950;
+    color:#756784;
+    border:1px solid rgba(112,97,128,.08);
+  }
+  .smart-swap-title{
+    margin:0 0 6px;
+    font-size:16px;
+    line-height:1.15;
+    font-weight:950;
+    color:var(--ink);
+    letter-spacing:-.025em;
+  }
+  .smart-swap-copy{
+    margin:0 0 12px;
+    font-size:11px;
+    line-height:1.45;
+    color:var(--muted);
+  }
+  .smart-swap-actions{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+  }
+  .smart-swap-actions button{
+    flex:1 1 130px;
+  }
+  .swap-preview{
+    display:grid;
+    grid-template-columns:1fr auto 1fr;
+    gap:8px;
+    align-items:center;
+    margin:12px 0;
+  }
+  .swap-preview-card{
+    min-height:96px;
+    padding:10px;
+    border-radius:18px;
+    background:#fff;
+    border:1px solid var(--border);
+    text-align:center;
+  }
+  .swap-preview-card .swap-emoji{
+    font-size:28px;
+    line-height:1;
+    margin-bottom:6px;
+  }
+  .swap-preview-card strong{
+    display:block;
+    font-size:10.5px;
+    line-height:1.2;
+    color:var(--ink);
+  }
+  .swap-preview-arrow{
+    font-size:20px;
+    color:#8a7f78;
+  }
+
 </style>
 </head>
 <body>
@@ -317,7 +1918,30 @@
       <section id="wishesScreen" class="screen"></section>
     </main>
 
-    <nav class="bottom-nav" aria-label="Primary">
+    
+      <div class="smart-swap-card" id="smartSwapCard">
+        <div class="smart-swap-kicker">✨ Smart suggestion</div>
+        <h3 class="smart-swap-title">Two items lean toward the same kind of play.</h3>
+        <p class="smart-swap-copy">Swap one for something different to bring more variety into the bundle.</p>
+
+        <div class="swap-preview">
+          <div class="swap-preview-card">
+            <div class="swap-emoji">🧱</div>
+            <strong>Construction-style item</strong>
+          </div>
+          <div class="swap-preview-arrow">→</div>
+          <div class="swap-preview-card">
+            <div class="swap-emoji">🤝</div>
+            <strong>Cooperative game</strong>
+          </div>
+        </div>
+
+        <div class="smart-swap-actions">
+          <button class="btn btn-soft" type="button" id="seeSmartSwap">See smarter swap</button>
+          <button class="btn btn-ghost" type="button" id="keepBundle">Keep my bundle</button>
+        </div>
+      </div>
+<nav class="bottom-nav" aria-label="Primary">
       <button class="nav-btn active" data-screen="discover"><span>✨</span>Discover</button>
       <button class="nav-btn" data-screen="playroom"><span>🧸</span>Playroom</button>
       <button class="nav-btn" data-screen="wishes"><span>🎁</span>Wishes</button>
@@ -389,6 +2013,22 @@
   </div>
 </dialog>
 
+
+<dialog id="signInDialog">
+  <div class="dialog-body">
+    <div class="dialog-head">
+      <div><div class="eyebrow">Welcome back</div><h2>Sign in to SmartRoom</h2></div>
+      <button class="dialog-close" data-close-dialog="signInDialog" aria-label="Close">×</button>
+    </div>
+    <form id="signInForm" class="signin-form">
+      <div><label for="signInEmail">Email</label><input id="signInEmail" type="text" inputmode="email" autocomplete="email" placeholder="you@example.com"></div>
+      <div><label for="signInPassword">Password</label><input id="signInPassword" type="password" autocomplete="current-password" placeholder="••••••••"></div>
+      <button class="btn btn-primary" type="submit">Sign in</button>
+    </form>
+    <div class="signin-note">Prototype note: account authentication is not connected yet. Signing in opens the demo profile so the flow can be tested.</div>
+  </div>
+</dialog>
+
 <script>
 (function(){
   'use strict';
@@ -405,6 +2045,7 @@
   const bundleDialog = document.getElementById('bundleDialog');
   const shareWishDialog = document.getElementById('shareWishDialog');
   const wishesMapDialog = document.getElementById('wishesMapDialog');
+  const signInDialog = document.getElementById('signInDialog');
   let sharingWishId=null;
   let shareMethod='email';
   let addFlow={type:null,category:null};
@@ -473,17 +2114,17 @@
   };
 
   const products = [
-    {id:'outfoxed',name:'Outfoxed!',emoji:'🦊',desc:'Cooperative whodunit board game',age:[5,8],price:25,group:'cooperative-board',interests:['Animals','Puzzles','Stories'],themes:['Animals','Mystery'],mechanics:['Deduction','Clue finding','Shared decision-making'],socialStyle:'Cooperative',pace:'Calm',structure:'Rule-based',experience:'Players work together as detectives, revealing clues one by one to identify the fox before it escapes.',appealHooks:['solve an animal mystery together','reveal clues and rule out suspects','win or lose as one team'],skills:{cooperation:5,problemSolving:5,attention:4,planning:3,workingMemory:3},image:'https://www.steamrocket.co.uk/cdn/shop/products/outfoxed-cooperative-kids-family-game-gamewright-boxcopy_300x.jpg?v=1619746478',amazon:'https://www.amazon.de/s?k=Gamewright+Outfoxed+board+game'},
-    {id:'dobblekids',name:'Dobble Kids',emoji:'🔎',desc:'Fast visual matching card game',age:[4,8],price:14,group:'visual-card',interests:['Animals','Puzzles'],themes:['Animals'],mechanics:['Visual matching','Quick spotting','Pattern recognition'],socialStyle:'Competitive',pace:'Fast',structure:'Rule-based',experience:'Each round is a quick visual hunt to spot the one matching animal before everyone else.',appealHooks:['race to spot matching animals','play very short energetic rounds','notice tiny visual differences quickly'],skills:{attention:5,workingMemory:3,inhibition:3,patterns:3},image:'https://cdn.svc.asmodee.net/production-asmodeeit/uploads/image-converter/2022/09/DOKI_SETUP_20231113-1024x627.webp',amazon:'https://www.amazon.de/s?k=Dobble+Kids+Asmodee'},
-    {id:'squirrels',name:'Squirrels Go Nuts!',emoji:'🐿️',desc:'Single-player sliding logic puzzle',age:[6,8],price:18,group:'logic',interests:['Animals','Puzzles'],themes:['Animals','Nature'],mechanics:['Sliding puzzle','Sequencing','Logic challenges'],socialStyle:'Solo',pace:'Calm',structure:'Challenge-based',experience:'The child slides squirrels around the board to work out how to drop every acorn into the right hole.',appealHooks:['solve compact animal logic challenges','work through increasingly tricky levels','physically move pieces while thinking ahead'],skills:{planning:5,problemSolving:5,spatial:4,attention:4,workingMemory:2},image:'https://mp-sellers-files.danubehome.com/sellers/KLUG-TOYS/pi/179900097876/image_1727281269237.jpeg',amazon:'https://www.amazon.de/s?k=SmartGames+Squirrels+Go+Nuts'},
-    {id:'rushhourjr',name:'Rush Hour Junior',emoji:'🚗',desc:'Traffic-jam logic game by ThinkFun',age:[5,8],price:25,group:'logic',interests:['Cars','Puzzles'],themes:['Cars','Traffic'],mechanics:['Sliding puzzle','Sequencing','Logic challenges'],socialStyle:'Solo',pace:'Calm',structure:'Challenge-based',experience:'The child rearranges cars and trucks step by step until the red car can escape the traffic jam.',appealHooks:['solve a hands-on traffic puzzle','move vehicles to clear a path','see a clear goal after every sequence of moves'],skills:{planning:5,problemSolving:5,spatial:5,attention:4,workingMemory:3},image:'https://m.media-amazon.com/images/I/81DVjxytyLL._AC_SL1500_.jpg',amazon:'https://www.amazon.de/s?k=ThinkFun+Rush+Hour+Junior'},
-    {id:'animaluponanimal',name:'Animal Upon Animal',emoji:'🐊',desc:'Wooden stacking game by HABA',age:[4,8],price:25,group:'dexterity',interests:['Animals'],themes:['Animals'],mechanics:['Stacking','Dexterity','Risk-taking'],socialStyle:'Competitive',pace:'Medium',structure:'Rule-based',experience:'Players balance chunky wooden animals into an increasingly wobbly tower and try not to bring it down.',appealHooks:['build a funny tower of wooden animals','combine suspense with hands-on play','take small risks as the stack gets wobblier'],skills:{fineMotor:5,coordination:4,planning:3,patience:4,inhibition:2},image:'https://www.bellalunatoys.com/cdn/shop/files/games-animal-upon-animal-3678-ls1_7193e17e-3ef5-40ba-b72a-631f6f42b21f.jpg?v=1743540453&width=1000',amazon:'https://www.amazon.de/s?k=HABA+Animal+Upon+Animal'},
-    {id:'ticketfirst',name:'Ticket to Ride: First Journey',emoji:'🚂',desc:'Junior route-building strategy game',age:[6,8],price:30,group:'strategy-board',interests:['Cars','Stories','Puzzles'],themes:['Travel','Trains','Maps'],mechanics:['Route building','Set collection','Planning'],socialStyle:'Competitive',pace:'Medium',structure:'Rule-based',experience:'Players collect cards and decide which train routes to claim as they connect cities across a colorful map.',appealHooks:['build routes across a map','make simple strategic choices with a visible goal','watch a transport network grow turn by turn'],skills:{planning:5,workingMemory:3,patterns:3,attention:3,problemSolving:3},image:'https://cdn.svc.asmodee.net/production-asmodeeca/uploads/image-converter/2022/01/EN-TICKET_TO_RIDE-FIRST_JOURNEY-EUROPE-L.webp',amazon:'https://www.amazon.de/s?k=Ticket+to+Ride+First+Journey+Europe'},
-    {id:'zingo',name:'Zingo!',emoji:'🔤',desc:'Picture-and-word matching game',age:[4,8],price:25,group:'language-game',interests:['Stories','Numbers'],themes:['Words','Pictures'],mechanics:['Matching','Recognition','Quick response'],socialStyle:'Competitive',pace:'Fast',structure:'Rule-based',experience:'A tactile tile dispenser reveals pictures and words, and players race to match them to spaces on their cards.',appealHooks:['slide the tile dispenser and reveal new pictures','race to recognize matching words or images','get frequent small wins during short rounds'],skills:{language:5,attention:4,patterns:4,inhibition:3,workingMemory:3},image:'https://www.bigw.com.au/medias/sys_master/images/images/hb7/h95/138157100171294.jpg',amazon:'https://www.amazon.de/s?k=ThinkFun+Zingo'},
-    {id:'storycubes',name:"Rory's Story Cubes Classic",emoji:'🎲',desc:'Storytelling dice for open-ended imagination',age:[6,8],price:15,group:'storytelling',interests:['Stories','Pretend play'],themes:['Stories','Imagination'],mechanics:['Story creation','Prompt interpretation','Improvisation'],socialStyle:'Flexible',pace:'Calm',structure:'Open-ended',experience:'Nine picture dice provide unexpected prompts that can be connected into a completely new story every time.',appealHooks:['invent a different story every round','turn random pictures into imaginative connections','play alone or build a story together'],skills:{storytelling:5,language:5,creativity:5,flexibility:4,cooperation:2},image:'https://cdn.svc.asmodee.net/production-asmodeeca/uploads/image-converter/2022/01/ML-RSC-CLASSIC-L.webp',amazon:'https://www.amazon.de/s?k=Rory%27s+Story+Cubes+Classic'},
-    {id:'iqpuzzler',name:'IQ Puzzler Pro',emoji:'🧠',desc:'120 compact 2D and 3D logic challenges',age:[6,8],price:15,group:'logic',interests:['Puzzles','Numbers'],themes:['Logic','Shapes'],mechanics:['Spatial puzzle','Pattern completion','Sequencing'],socialStyle:'Solo',pace:'Calm',structure:'Challenge-based',experience:'Compact pieces are arranged to complete 2D and 3D challenges that become progressively more demanding.',appealHooks:['work through many short logic challenges','handle colorful pieces while testing possibilities','move from simple puzzles to harder 3D problems'],skills:{planning:5,problemSolving:5,spatial:5,attention:5,workingMemory:3},image:'https://smartgamesusa.com/sites/default/files/smartgames-product-banner_IQ-Puzzler-Pro_0.jpg',amazon:'https://www.amazon.de/s?k=SmartGames+IQ+Puzzler+Pro'},
-    {id:'juniorlabyrinth',name:'Junior Labyrinth',emoji:'🌀',desc:'Ravensburger shifting-maze strategy game',age:[5,8],price:22,group:'strategy-board',interests:['Puzzles','Stories'],themes:['Maze','Treasure','Fantasy'],mechanics:['Tile shifting','Route planning','Spatial navigation'],socialStyle:'Competitive',pace:'Medium',structure:'Rule-based',experience:'The maze changes every turn, so players keep finding new routes to reach their treasures before someone else does.',appealHooks:['change the maze itself as you play','hunt for treasures through shifting paths','adapt when another player changes the route'],skills:{planning:4,spatial:5,problemSolving:4,attention:4,workingMemory:2},image:'https://m.media-amazon.com/images/I/61V+zdyHLQL._AC_SL1024_.jpg',amazon:'https://www.amazon.de/Ravensburger-Kinderspiele-21210-Junior-Labyrinth/dp/B0000TZ4VG'},
-    {id:'conceptkids',name:'Concept Kids: Animals',emoji:'🐯',desc:'Cooperative animal guessing game',age:[4,8],price:28,group:'cooperative-board',interests:['Animals','Stories'],themes:['Animals','Guessing'],mechanics:['Clue giving','Categorization','Guessing'],socialStyle:'Cooperative',pace:'Medium',structure:'Rule-based',experience:'Children use illustrated icons to describe an animal without naming it while everyone works together to guess correctly.',appealHooks:['describe animals without saying their names','give visual clues for others to interpret','work together rather than compete'],skills:{language:5,cooperation:5,flexibility:4,attention:3,problemSolving:3},image:'https://shop.steamda.com/cdn/shop/files/CONC02-image2_2000_720x_1089ba4b-8c0f-458f-a35f-2b19bbd5b05b.webp?v=1705118599&width=1445',amazon:'https://www.amazon.de/s?k=Concept+Kids+Animals+Asmodee'}
+    {id:'outfoxed',name:'Outfoxed!',emoji:'🦊',desc:'Cooperative whodunit board game',age:[5,8],price:25,group:'cooperative-board',interests:['Animals','Puzzles','Stories'],themes:['Animals','Mystery'],mechanics:['Deduction','Clue finding','Shared decision-making'],socialStyle:'Cooperative',pace:'Calm',structure:'Rule-based',experience:'Players work together as detectives, revealing clues one by one to identify the fox before it escapes.',appealHooks:['solve an animal mystery together','reveal clues and rule out suspects','win or lose as one team'],skills:{cooperation:5,problemSolving:5,attention:4,planning:3,workingMemory:3},image:'https://www.steamrocket.co.uk/cdn/shop/products/outfoxed-cooperative-kids-family-game-gamewright-boxcopy_300x.jpg?v=1619746478',amazon:'https://www.amazon.de/dp/B06WW6WXHX'},
+    {id:'dobblekids',name:'Dobble Kids',emoji:'🔎',desc:'Fast visual matching card game',age:[4,8],price:14,group:'visual-card',interests:['Animals','Puzzles'],themes:['Animals'],mechanics:['Visual matching','Quick spotting','Pattern recognition'],socialStyle:'Competitive',pace:'Fast',structure:'Rule-based',experience:'Each round is a quick visual hunt to spot the one matching animal before everyone else.',appealHooks:['race to spot matching animals','play very short energetic rounds','notice tiny visual differences quickly'],skills:{attention:5,workingMemory:3,inhibition:3,patterns:3},image:'https://cdn.svc.asmodee.net/production-asmodeeit/uploads/image-converter/2022/09/DOKI_SETUP_20231113-1024x627.webp',amazon:'https://www.amazon.de/dp/B072M34SCK'},
+    {id:'squirrels',name:'Squirrels Go Nuts!',emoji:'🐿️',desc:'Single-player sliding logic puzzle',age:[6,8],price:18,group:'logic',interests:['Animals','Puzzles'],themes:['Animals','Nature'],mechanics:['Sliding puzzle','Sequencing','Logic challenges'],socialStyle:'Solo',pace:'Calm',structure:'Challenge-based',experience:'The child slides squirrels around the board to work out how to drop every acorn into the right hole.',appealHooks:['solve compact animal logic challenges','work through increasingly tricky levels','physically move pieces while thinking ahead'],skills:{planning:5,problemSolving:5,spatial:4,attention:4,workingMemory:2},image:'https://mp-sellers-files.danubehome.com/sellers/KLUG-TOYS/pi/179900097876/image_1727281269237.jpeg',amazon:'https://www.amazon.de/dp/B07BQFT5N1'},
+    {id:'rushhourjr',name:'Rush Hour Junior',emoji:'🚗',desc:'Traffic-jam logic game by ThinkFun',age:[5,8],price:25,group:'logic',interests:['Cars','Puzzles'],themes:['Cars','Traffic'],mechanics:['Sliding puzzle','Sequencing','Logic challenges'],socialStyle:'Solo',pace:'Calm',structure:'Challenge-based',experience:'The child rearranges cars and trucks step by step until the red car can escape the traffic jam.',appealHooks:['solve a hands-on traffic puzzle','move vehicles to clear a path','see a clear goal after every sequence of moves'],skills:{planning:5,problemSolving:5,spatial:5,attention:4,workingMemory:3},image:'https://m.media-amazon.com/images/I/81DVjxytyLL._AC_SL1500_.jpg',amazon:'https://www.amazon.de/dp/B0D5P7XFVQ'},
+    {id:'animaluponanimal',name:'Animal Upon Animal',emoji:'🐊',desc:'Wooden stacking game by HABA',age:[4,8],price:25,group:'dexterity',interests:['Animals'],themes:['Animals'],mechanics:['Stacking','Dexterity','Risk-taking'],socialStyle:'Competitive',pace:'Medium',structure:'Rule-based',experience:'Players balance chunky wooden animals into an increasingly wobbly tower and try not to bring it down.',appealHooks:['build a funny tower of wooden animals','combine suspense with hands-on play','take small risks as the stack gets wobblier'],skills:{fineMotor:5,coordination:4,planning:3,patience:4,inhibition:2},image:'https://www.bellalunatoys.com/cdn/shop/files/games-animal-upon-animal-3678-ls1_7193e17e-3ef5-40ba-b72a-631f6f42b21f.jpg?v=1743540453&width=1000',amazon:'https://www.amazon.de/dp/B001IM4CSU'},
+    {id:'ticketfirst',name:'Ticket to Ride: First Journey',emoji:'🚂',desc:'Junior route-building strategy game',age:[6,8],price:30,group:'strategy-board',interests:['Cars','Stories','Puzzles'],themes:['Travel','Trains','Maps'],mechanics:['Route building','Set collection','Planning'],socialStyle:'Competitive',pace:'Medium',structure:'Rule-based',experience:'Players collect cards and decide which train routes to claim as they connect cities across a colorful map.',appealHooks:['build routes across a map','make simple strategic choices with a visible goal','watch a transport network grow turn by turn'],skills:{planning:5,workingMemory:3,patterns:3,attention:3,problemSolving:3},image:'https://cdn.svc.asmodee.net/production-asmodeeca/uploads/image-converter/2022/01/EN-TICKET_TO_RIDE-FIRST_JOURNEY-EUROPE-L.webp',amazon:'https://www.amazon.de/dp/B074N9B2XH'},
+    {id:'zingo',name:'Zingo!',emoji:'🔤',desc:'Picture-and-word matching game',age:[4,8],price:25,group:'language-game',interests:['Stories','Numbers'],themes:['Words','Pictures'],mechanics:['Matching','Recognition','Quick response'],socialStyle:'Competitive',pace:'Fast',structure:'Rule-based',experience:'A tactile tile dispenser reveals pictures and words, and players race to match them to spaces on their cards.',appealHooks:['slide the tile dispenser and reveal new pictures','race to recognize matching words or images','get frequent small wins during short rounds'],skills:{language:5,attention:4,patterns:4,inhibition:3,workingMemory:3},image:'https://www.bigw.com.au/medias/sys_master/images/images/hb7/h95/138157100171294.jpg',amazon:'https://www.amazon.de/dp/B00006408Q'},
+    {id:'storycubes',name:"Rory's Story Cubes Classic",emoji:'🎲',desc:'Storytelling dice for open-ended imagination',age:[6,8],price:15,group:'storytelling',interests:['Stories','Pretend play'],themes:['Stories','Imagination'],mechanics:['Story creation','Prompt interpretation','Improvisation'],socialStyle:'Flexible',pace:'Calm',structure:'Open-ended',experience:'Nine picture dice provide unexpected prompts that can be connected into a completely new story every time.',appealHooks:['invent a different story every round','turn random pictures into imaginative connections','play alone or build a story together'],skills:{storytelling:5,language:5,creativity:5,flexibility:4,cooperation:2},image:'https://cdn.svc.asmodee.net/production-asmodeeca/uploads/image-converter/2022/01/ML-RSC-CLASSIC-L.webp',amazon:'https://www.amazon.de/dp/B003EIK136'},
+    {id:'iqpuzzler',name:'IQ Puzzler Pro',emoji:'🧠',desc:'120 compact 2D and 3D logic challenges',age:[6,8],price:15,group:'logic',interests:['Puzzles','Numbers'],themes:['Logic','Shapes'],mechanics:['Spatial puzzle','Pattern completion','Sequencing'],socialStyle:'Solo',pace:'Calm',structure:'Challenge-based',experience:'Compact pieces are arranged to complete 2D and 3D challenges that become progressively more demanding.',appealHooks:['work through many short logic challenges','handle colorful pieces while testing possibilities','move from simple puzzles to harder 3D problems'],skills:{planning:5,problemSolving:5,spatial:5,attention:5,workingMemory:3},image:'https://smartgamesusa.com/sites/default/files/smartgames-product-banner_IQ-Puzzler-Pro_0.jpg',amazon:'https://www.amazon.de/dp/B09B3JVJZD'},
+    {id:'juniorlabyrinth',name:'Junior Labyrinth',emoji:'🌀',desc:'Ravensburger shifting-maze strategy game',age:[5,8],price:22,group:'strategy-board',interests:['Puzzles','Stories'],themes:['Maze','Treasure','Fantasy'],mechanics:['Tile shifting','Route planning','Spatial navigation'],socialStyle:'Competitive',pace:'Medium',structure:'Rule-based',experience:'The maze changes every turn, so players keep finding new routes to reach their treasures before someone else does.',appealHooks:['change the maze itself as you play','hunt for treasures through shifting paths','adapt when another player changes the route'],skills:{planning:4,spatial:5,problemSolving:4,attention:4,workingMemory:2},image:'https://m.media-amazon.com/images/I/61V+zdyHLQL._AC_SL1024_.jpg',amazon:'https://www.amazon.de/dp/B0000TZ4VG'},
+    {id:'conceptkids',name:'Concept Kids: Animals',emoji:'🐯',desc:'Cooperative animal guessing game',age:[4,8],price:28,group:'cooperative-board',interests:['Animals','Stories'],themes:['Animals','Guessing'],mechanics:['Clue giving','Categorization','Guessing'],socialStyle:'Cooperative',pace:'Medium',structure:'Rule-based',experience:'Children use illustrated icons to describe an animal without naming it while everyone works together to guess correctly.',appealHooks:['describe animals without saying their names','give visual clues for others to interpret','work together rather than compete'],skills:{language:5,cooperation:5,flexibility:4,attention:3,problemSolving:3},image:'https://shop.steamda.com/cdn/shop/files/CONC02-image2_2000_720x_1089ba4b-8c0f-458f-a35f-2b19bbd5b05b.webp?v=1705118599&width=1445',amazon:'https://www.amazon.de/dp/B092N8JQT9'}
   ];
 
   const defaults = {
@@ -505,14 +2146,14 @@
 
   function loadState(){
     try{
-      const raw = localStorage.getItem('smartroom_mvp_v4');
+      const raw = localStorage.getItem('smartroom_mvp_v9');
       if(!raw) return structuredClone(defaults);
       const parsed = JSON.parse(raw);
       return Object.assign(structuredClone(defaults), parsed, {profile:Object.assign({},defaults.profile,parsed.profile||{})});
     }catch(e){ return structuredClone(defaults); }
   }
   let state = loadState();
-  function save(){ try{ localStorage.setItem('smartroom_mvp_v4',JSON.stringify(state)); }catch(e){} }
+  function save(){ try{ localStorage.setItem('smartroom_mvp_v9',JSON.stringify(state)); }catch(e){} }
   function escapeHtml(str){ return String(str??'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c])); }
   function showToast(msg){ toastEl.textContent=msg; toastEl.classList.add('show'); clearTimeout(showToast.t); showToast.t=setTimeout(()=>toastEl.classList.remove('show'),1800); }
   function initials(){ return (state.profile.name||'S').trim().charAt(0).toUpperCase() || 'S'; }
@@ -597,6 +2238,22 @@
   }
   function nextProduct(){ const ranked=rankedProducts(); state.currentProductId=ranked[0]?.p.id||null; save(); renderAll(); }
 
+  function refreshDiscoveryDeck(){
+    state.skipped=[];
+    state.currentProductId=null;
+    const ranked=rankedProducts();
+    if(ranked.length){
+      state.currentProductId=ranked[0].p.id;
+      save();
+      renderAll();
+      showToast('Deck refreshed');
+      return;
+    }
+    save();
+    renderAll();
+    showToast('All suitable products are already in the Playroom or Wishes.');
+  }
+
   function skillPills(skills,limit=3){
     return Object.entries(skills).sort((a,b)=>b[1]-a[1]).slice(0,limit).map(([k])=>`<span class="pill">${escapeHtml(skillLabels[k])}<button type="button" class="skill-info" data-skill="${k}" aria-label="About ${escapeHtml(skillLabels[k])}">ⓘ</button></span>`).join('');
   }
@@ -659,19 +2316,71 @@
     onboardingEl.style.display='block'; mainAppEl.style.display='none';
     const step=state.onboardingStep;
     if(step===-1){
-      const hero=products.slice(0,3);
-      onboardingEl.className='welcome-wrap';
-      onboardingEl.innerHTML=`<div class="welcome-logo"><div class="welcome-logo-mark">✨</div>SmartRoom</div>
-        <h1 class="welcome-title">Find what belongs in their Playroom next.</h1>
-        <p class="welcome-copy">Add what they already have and love. SmartRoom looks at the range of cognitive play around them, then helps you choose what is genuinely worth adding next.</p>
-        <div class="hero-products">${hero.map((p,i)=>`<div class="hero-product hp${i+1}"><img src="${p.image}" alt="${escapeHtml(p.name)}"></div>`).join('')}</div>
-        <button class="btn btn-primary" id="startOnboarding" style="width:100%;min-height:54px;font-size:16px">Build my child’s profile</button>
-        <div class="welcome-points">
-          <div class="welcome-point"><div class="welcome-point-icon">🧸</div><div><strong>Start with what you already own</strong><span>Your Playroom becomes the context behind every recommendation.</span></div></div>
-          <div class="welcome-point"><div class="welcome-point-icon">🧠</div><div><strong>Understand why each match matters</strong><span>Short cognitive explanations, without judging or scoring your child.</span></div></div>
-          <div class="welcome-point"><div class="welcome-point-icon">🎁</div><div><strong>Save wishes and send them to family</strong><span>Turn “what should we get?” into a one-tap answer.</span></div></div>
+      onboardingEl.className='welcome-wrap-v9';
+      onboardingEl.innerHTML=`
+        <div class="welcome-v9-brand"><div class="welcome-v9-mark">✦</div>SmartRoom</div>
+        <h1 class="welcome-v9-title">Build a smarter, more balanced Playroom.</h1>
+        <p class="welcome-v9-copy">Add the games they already own and the hobbies they do. SmartRoom creates a <strong>Cognitive Map</strong> and recommends which games and toys are worth adding next.</p>
+
+        <div class="v20-hero" aria-label="How SmartRoom works">
+          <div class="v20-step">
+            <div class="v20-step-kicker">1 · Set their Playroom</div>
+            <h2 class="v20-step-title">Games, toys & hobbies</h2>
+            <div class="v20-owned" aria-hidden="true">
+              <div class="v20-owned-item">🧱</div>
+              <div class="v20-owned-item">🧩</div>
+              <div class="v20-owned-item">⚽</div>
+              <div class="v20-owned-item">🏊</div>
+              <div class="v20-owned-item">🎨</div>
+            </div>
+            <p class="v20-step-sub">A quick picture of what is already in their world.</p>
+          </div>
+
+          <div class="v20-step">
+            <div class="v20-step-kicker">2 · Cognitive balance</div>
+            <h2 class="v20-step-title">See the cognitive balance of their Playroom</h2>
+            <div class="v20-map-wrap" aria-hidden="true">
+              <div class="v20-map-core">
+                <div class="v20-map-core-emoji">🧠</div>
+                <div class="v20-map-core-label">Cognitive Map</div>
+              </div>
+              <div class="v20-pill-grid">
+                <div class="v20-pill"><em>🎯</em><span>Focus</span></div>
+                <div class="v20-pill"><em>🧩</em><span>Thinking</span></div>
+                <div class="v20-pill"><em>🤝</em><span>Social</span></div>
+                <div class="v20-pill"><em>🏃</em><span>Movement</span></div>
+                <div class="v20-pill"><em>🎨</em><span>Creative</span></div>
+                <div class="v20-pill"><em>🧱</em><span>Spatial</span></div>
+              </div>
+            </div>
+            <p class="v20-step-sub">See which kinds of cognitive play are already represented across their Playroom.</p>
+          </div>
+
+          <div class="v20-step">
+            <div class="v20-step-kicker">3 · Decide what to buy next</div>
+            <h2 class="v20-step-title">Game & toy recommendations</h2>
+            <div class="v20-recos" aria-hidden="true">
+              <div class="v20-reco">
+                <div class="v20-reco-icon">🎴</div>
+                <div class="v20-reco-label">Memory game</div>
+              </div>
+              <div class="v20-reco">
+                <div class="v20-reco-icon">🤝</div>
+                <div class="v20-reco-label">Co-op game</div>
+              </div>
+              <div class="v20-reco">
+                <div class="v20-reco-icon">🧩</div>
+                <div class="v20-reco-label">Planning puzzle</div>
+              </div>
+            </div>
+            <p class="v20-step-sub">SmartRoom recommends what to add next instead of simply showing more of the same.</p>
+          </div>
         </div>
-        <p class="source-note">Prototype: product imagery and retailer links are used only to make the MVP shopping experience realistic.</p>`;
+
+        <div class="welcome-v9-actions">
+          <button class="welcome-v9-primary" id="startOnboarding">Build their profile</button>
+          <div class="welcome-v9-signin">Already use SmartRoom? <button type="button" id="openSignIn">Sign in</button></div>
+        </div>`;
       return;
     }
     onboardingEl.className='onboarding';
@@ -697,7 +2406,7 @@
   function renderDiscover(){
     const p=currentProduct();
     if(!p){
-      discoverEl.innerHTML=`<div class="deck-empty card"><h2>You’ve seen the current deck.</h2><p class="subtle">Refresh skipped games or add more Playroom context for a new set of matches.</p><button class="btn btn-primary" id="resetSkipped">Refresh deck</button></div>`;
+      discoverEl.innerHTML=`<div class="deck-empty card"><h2>You’ve seen the current deck.</h2><p class="subtle">Bring skipped games back into the deck, or update the Playroom for a different set of matches.</p><button class="btn btn-primary" id="resetSkipped">Refresh deck</button></div>`;
       return;
     }
     const hintClass=state.seenSwipeHint?'':' swipe-hint-active';
@@ -733,8 +2442,8 @@
         <div style="height:14px"></div>
         <button class="feature-action green" id="openAddDialog"><span class="feature-icon">＋</span><span><strong>Add something</strong><span>Add a toy/game or a regular activity.</span></span><span class="feature-chevron">›</span></button>
       </div>
-      <div class="card playmap section"><div class="eyebrow">Play Map</div><h2>What this environment already offers</h2><p class="subtle">This maps the play opportunities around ${escapeHtml(state.profile.name||'your child')} — not their ability.</p>${map.map(m=>`<div class="map-row"><div class="map-label">${escapeHtml(m.label)}</div><div class="bar"><span style="width:${Math.max(8,m.value)}%"></span></div><div class="map-state">${m.value>=72?'Strong':m.value>=42?'Present':'Explore'}</div></div>`).join('')}<div class="next-focus"><strong>A useful next direction</strong><div class="next-skills">${skillPills(Object.fromEntries(next.map(k=>[k,5])),3)}</div></div></div>
-      <button class="feature-action" id="openBundleDialog"><span class="feature-icon">🧩</span><span><strong>Build / complete the Playroom</strong><span>Let SmartRoom create a complementary bundle for your budget.</span></span><span class="feature-chevron">›</span></button>`;
+      <div class="card playmap section"><div class="eyebrow">Cognitive Map</div><h2>What this environment already offers</h2><p class="subtle">This maps the cognitive and developmental experiences represented by ${escapeHtml(state.profile.name||'your child')}’s toys, games and regular activities — not their ability.</p>${map.map(m=>`<div class="map-row"><div class="map-label">${escapeHtml(m.label)}</div><div class="bar"><span style="width:${Math.max(8,m.value)}%"></span></div><div class="map-state">${m.value>=72?'Strong':m.value>=42?'Present':'Explore'}</div></div>`).join('')}<div class="next-focus"><strong>A useful next direction</strong><div class="next-skills">${skillPills(Object.fromEntries(next.map(k=>[k,5])),3)}</div></div></div>
+      <button class="bundle-feature" id="openBundleDialog"><span class="bundle-icon">🧩</span><span class="bundle-copy"><span class="bundle-kicker">SmartRoom bundle</span><strong>Build / complete the Playroom</strong><span class="bundle-sub">Get a curated set that adds useful cognitive variety without repeating what is already well represented.</span></span><span class="feature-chevron">›</span></button>`;
   }
 
   const categoryConfig={
@@ -833,37 +2542,118 @@
   function renderShareWishDialog(productId){
     const isAll=productId==='__all__';
     const p=isAll?null:products.find(x=>x.id===productId); if(!isAll&&!p)return;
-    sharingWishId=productId; shareMethod='email';
+    sharingWishId=productId;
+    shareMethod='email';
     document.getElementById('shareWishTitle').textContent=isAll?'Share all Wishes':`Share ${p.name}`;
     const content=document.getElementById('shareWishContent');
-    content.innerHTML=`<p class="subtle">Choose email or text message. SmartRoom will open your device’s app with ${isAll?'the whole list':'the gift idea'} ready to send.</p>
-      <div class="share-choice"><button class="share-method selected" data-share-method="email"><div style="font-size:24px">✉️</div><strong>Email</strong><span>Send it to an email address.</span></button><button class="share-method" data-share-method="sms"><div style="font-size:24px">💬</div><strong>Text message</strong><span>Send it to a phone number.</span></button></div>
-      <div class="share-fields"><label id="shareRecipientLabel" for="shareRecipient">Email address</label><input id="shareRecipient" type="text" inputmode="email" placeholder="name@example.com"><div style="height:12px"></div><button class="btn btn-soft" id="sendWishShare" style="width:100%">Open email</button></div>`;
+    content.innerHTML=`
+      <p class="subtle">Send ${isAll?'the whole Wishes list':'this wish'} to family or friends.</p>
+
+      <div class="share-social-grid">
+        <button class="share-social selected" type="button" data-share-method="email">
+          <div class="share-social-icon">✉️</div>
+          <strong>Email</strong>
+          <span>Send by email</span>
+        </button>
+
+        <button class="share-social whatsapp" type="button" data-share-method="whatsapp">
+          <div class="share-social-icon">💬</div>
+          <strong>WhatsApp</strong>
+          <span>Send in chat</span>
+        </button>
+
+        <button class="share-social instagram" type="button" data-share-method="instagram">
+          <div class="share-social-icon">◎</div>
+          <strong>Instagram</strong>
+          <span>Share to DM</span>
+        </button>
+      </div>
+
+      <div class="share-fields" id="shareFields">
+        <label id="shareRecipientLabel" for="shareRecipient">Email address</label>
+        <input id="shareRecipient" type="text" inputmode="email" placeholder="name@example.com">
+        <div style="height:12px"></div>
+        <button class="btn btn-soft" id="sendWishShare" style="width:100%">Open email</button>
+      </div>
+
+      <div class="share-helper" id="shareHelper"></div>`;
     bindShareWishDialog();
   }
 
   function bindShareWishDialog(){
     const content=document.getElementById('shareWishContent'); if(!content)return;
+    const fields=content.querySelector('#shareFields');
+    const label=content.querySelector('#shareRecipientLabel');
+    const input=content.querySelector('#shareRecipient');
+    const send=content.querySelector('#sendWishShare');
+    const helper=content.querySelector('#shareHelper');
+
+    const refreshShareUI=()=>{
+      content.querySelectorAll('[data-share-method]').forEach(x=>{
+        x.classList.toggle('selected',x.dataset.shareMethod===shareMethod);
+      });
+
+      if(shareMethod==='email'){
+        fields.classList.remove('hidden');
+        label.textContent='Email address';
+        input.value='';
+        input.placeholder='name@example.com';
+        input.inputMode='email';
+        send.textContent='Open email';
+        helper.textContent='';
+      }else if(shareMethod==='whatsapp'){
+        fields.classList.remove('hidden');
+        label.textContent='Phone number (optional)';
+        input.value='';
+        input.placeholder='+30 69…';
+        input.inputMode='tel';
+        send.textContent='Open WhatsApp';
+        helper.textContent='Leave the number empty to choose the chat inside WhatsApp.';
+      }else{
+        fields.classList.add('hidden');
+        helper.textContent='Choose Instagram or Instagram Direct from your phone’s share options.';
+      }
+    };
+
     content.querySelectorAll('[data-share-method]').forEach(btn=>btn.addEventListener('click',()=>{
       shareMethod=btn.dataset.shareMethod;
-      content.querySelectorAll('[data-share-method]').forEach(x=>x.classList.toggle('selected',x.dataset.shareMethod===shareMethod));
-      const label=content.querySelector('#shareRecipientLabel'), input=content.querySelector('#shareRecipient'), send=content.querySelector('#sendWishShare');
-      if(shareMethod==='email'){label.textContent='Email address';input.placeholder='name@example.com';input.inputMode='email';send.textContent='Open email';}
-      else{label.textContent='Phone number';input.placeholder='+30 69…';input.inputMode='tel';send.textContent='Open text message';}
+      refreshShareUI();
+
+      if(shareMethod==='instagram'){
+        const isAll=sharingWishId==='__all__';
+        const p=isAll?null:products.find(x=>x.id===sharingWishId); if(!isAll&&!p)return;
+        const msg=isAll?allWishesShareMessage():wishShareMessage(p);
+
+        if(navigator.share){
+          navigator.share({
+            title:isAll?`${state.profile.name||'Our child'}'s Wishes`:`Gift idea for ${state.profile.name||'our child'}`,
+            text:msg
+          }).catch(()=>{});
+        }else{
+          window.open('https://www.instagram.com/direct/inbox/','_blank','noopener');
+        }
+      }
     }));
-    content.querySelector('#sendWishShare')?.addEventListener('click',()=>{
+
+    send?.addEventListener('click',()=>{
       const isAll=sharingWishId==='__all__';
       const p=isAll?null:products.find(x=>x.id===sharingWishId); if(!isAll&&!p)return;
-      const recipient=content.querySelector('#shareRecipient')?.value.trim()||'';
+      const recipient=input?.value.trim()||'';
       const msg=isAll?allWishesShareMessage():wishShareMessage(p);
+
       if(shareMethod==='email'){
         const subject=isAll?`${state.profile.name||'Our child'}'s Wishes`:`Gift idea for ${state.profile.name||'our child'}: ${p.name}`;
         window.location.href=`mailto:${encodeURIComponent(recipient)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(msg)}`;
-      }else{
-        const prefix=recipient?encodeURIComponent(recipient):'';
-        window.location.href=`sms:${prefix}?&body=${encodeURIComponent(msg)}`;
+      }else if(shareMethod==='whatsapp'){
+        const phone=recipient.replace(/[^\d+]/g,'').replace(/^\+/,'');
+        const url=phone
+          ? `https://wa.me/${encodeURIComponent(phone)}?text=${encodeURIComponent(msg)}`
+          : `https://wa.me/?text=${encodeURIComponent(msg)}`;
+        window.open(url,'_blank','noopener');
       }
     });
+
+    refreshShareUI();
   }
 
   function wishesMapRows(ws){
@@ -945,7 +2735,7 @@
     document.getElementById('skipProduct')?.addEventListener('click',()=>{ const p=currentProduct(); if(!p)return; state.seenSwipeHint=true; state.skipped.push(p.id); state.currentProductId=null; save(); showToast('Skipped. We’ll learn from that.'); nextProduct(); });
     document.getElementById('saveProduct')?.addEventListener('click',()=>{ const p=currentProduct(); if(!p)return; state.seenSwipeHint=true; if(!state.wishes.includes(p.id)) state.wishes.push(p.id); state.currentProductId=null; save(); showToast('Saved to Wishes'); nextProduct(); });
     document.getElementById('ownProduct')?.addEventListener('click',()=>{ const p=currentProduct(); if(!p)return; state.seenSwipeHint=true; if(!state.playroom.includes(p.id)) state.playroom.push(p.id); state.currentProductId=null; save(); showToast(`Added ${p.name} to the Playroom`); nextProduct(); });
-    document.getElementById('resetSkipped')?.addEventListener('click',()=>{ state.skipped=[];state.currentProductId=null;save();renderAll(); });
+    document.getElementById('resetSkipped')?.addEventListener('click',refreshDiscoveryDeck);
     document.getElementById('openAddDialog')?.addEventListener('click',()=>{ addFlow={type:null,category:null}; renderAddDialog(); addDialog.showModal(); bindAddDialog(); });
     document.getElementById('openBundleDialog')?.addEventListener('click',()=>{ state.bundle=[]; renderBundlePanel(); bundleDialog.showModal(); bindBundleDialog(); });
     document.querySelectorAll('[data-remove-owned]').forEach(btn=>btn.addEventListener('click',()=>{ state.playroom=state.playroom.filter(x=>x!==btn.dataset.removeOwned); save(); renderAll(); showToast('Removed from Playroom'); }));
@@ -988,7 +2778,9 @@
 
   app.addEventListener('click',e=>{
     const btn=e.target.closest('button'); if(!btn)return;
+    if(btn.id==='resetSkipped'){ refreshDiscoveryDeck(); return; }
     if(btn.id==='startOnboarding'){state.onboardingStep=0;save();renderAll();}
+    if(btn.id==='openSignIn'){ signInDialog?.showModal(); }
     if(btn.id==='nextOnboarding'){
       if(state.onboardingStep===0){ const n=document.getElementById('childName')?.value.trim(); const a=Number(document.getElementById('childAge')?.value); if(!n){showToast('Add a name or nickname first.');return;} state.profile.name=n;state.profile.age=a; }
       state.onboardingStep=Math.min(3,state.onboardingStep+1); save(); renderAll();
@@ -998,6 +2790,18 @@
     if(btn.dataset.playroomSelect!==undefined){toggleArray(state.playroom,btn.dataset.playroomSelect);save();renderAll();}
     if(btn.dataset.activity!==undefined){toggleArray(state.profile.activities,btn.dataset.activity);save();renderAll();}
     if(btn.id==='finishOnboarding'){state.completed=true;state.activeScreen='discover';state.currentProductId=null;save();renderAll();showToast('Your first matches are ready.');}
+  });
+
+  document.getElementById('signInForm')?.addEventListener('submit',e=>{
+    e.preventDefault();
+    const email=document.getElementById('signInEmail')?.value.trim();
+    const password=document.getElementById('signInPassword')?.value||'';
+    if(!email || !email.includes('@')){ showToast('Enter a valid email.'); return; }
+    if(password.length<4){ showToast('Enter your password.'); return; }
+    state.profile={name:'Sofia',age:6,interests:['Animals','Building','Stories','Cycling'],activities:['Swimming','Football']};
+    state.playroom=['lego','magnetictiles','puzzle','uno','crayons','bike','ball'];
+    state.completed=true; state.onboardingStep=3; state.activeScreen='discover'; state.currentProductId=null;
+    save(); signInDialog.close(); renderAll(); showToast('Demo profile opened.');
   });
 
   document.querySelectorAll('.nav-btn').forEach(btn=>btn.addEventListener('click',()=>{ state.activeScreen=btn.dataset.screen; save(); renderAll(); }));
@@ -1010,7 +2814,7 @@
     panel.querySelectorAll('[data-profile-interest]').forEach(btn=>btn.addEventListener('click',()=>{toggleArray(state.profile.interests,btn.dataset.profileInterest);btn.classList.toggle('selected');}));
     panel.querySelectorAll('[data-profile-activity]').forEach(btn=>btn.addEventListener('click',()=>{toggleArray(state.profile.activities,btn.dataset.profileActivity);btn.classList.toggle('selected');}));
     panel.querySelector('#saveProfile').addEventListener('click',()=>{state.profile.name=panel.querySelector('#profileName').value.trim()||state.profile.name;state.profile.age=Number(panel.querySelector('#profileAge').value)||state.profile.age;state.currentProductId=null;save();panel.remove();renderAll();showToast('Profile updated');});
-    panel.querySelector('#resetDemo').addEventListener('click',()=>{ if(confirm('Reset the SmartRoom MVP and start onboarding again?')){localStorage.removeItem('smartroom_mvp_v4');state=structuredClone(defaults);renderAll();} });
+    panel.querySelector('#resetDemo').addEventListener('click',()=>{ if(confirm('Reset the SmartRoom MVP and start onboarding again?')){localStorage.removeItem('smartroom_mvp_v9');state=structuredClone(defaults);renderAll();} });
   });
 
   giftDialog.addEventListener('click',e=>{
@@ -1053,6 +2857,58 @@
 
   renderAll();
 })();
+
+  // SmartRoom v22 bundle controls
+  (function(){
+    function wireBundleControls(){
+      const slider=document.getElementById('bundleBudgetRange');
+      const value=document.getElementById('bundleBudgetValue');
+      const total=document.getElementById('bundleEstimatedTotal');
+
+      if(slider && value){
+        const update=()=>{
+          value.textContent=`€${slider.value}`;
+          if(total) total.textContent=`Around €${slider.value}`;
+          try{
+            localStorage.setItem('smartroom_bundle_budget', slider.value);
+          }catch(e){}
+        };
+        try{
+          const saved=localStorage.getItem('smartroom_bundle_budget');
+          if(saved && !isNaN(+saved)) slider.value=saved;
+        }catch(e){}
+        slider.addEventListener('input',update);
+        update();
+      }
+
+      const see=document.getElementById('seeSmartSwap');
+      const keep=document.getElementById('keepBundle');
+      const card=document.getElementById('smartSwapCard');
+
+      if(see && !see.dataset.wired){
+        see.dataset.wired='1';
+        see.addEventListener('click',()=>{
+          const title=card?.querySelector('.smart-swap-title');
+          const copy=card?.querySelector('.smart-swap-copy');
+          if(title) title.textContent='Swap construction overlap for more cooperative play?';
+          if(copy) copy.textContent='This keeps the bundle age-appropriate while adding a different play experience instead of repeating what is already well represented.';
+          see.textContent='Make the swap';
+        });
+      }
+
+      if(keep && !keep.dataset.wired){
+        keep.dataset.wired='1';
+        keep.addEventListener('click',()=>{
+          if(card) card.style.display='none';
+        });
+      }
+    }
+
+    document.addEventListener('click',()=>setTimeout(wireBundleControls,20));
+    document.addEventListener('DOMContentLoaded',wireBundleControls);
+    setInterval(wireBundleControls,500);
+  })();
+
 </script>
 </body>
 </html>
