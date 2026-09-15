@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<!-- SmartRoom MVP v22: bundle budget slider and smart swap suggestions -->
+<!-- SmartRoom MVP v32: simplified Discover header -->
 <title>SmartRoom — MVP</title>
 <style>
   :root{
@@ -313,7 +313,7 @@
       linear-gradient(180deg,#fffaf7 0%,#f7f3ee 100%);
   }
   .welcome-v9-brand{display:flex;align-items:center;gap:10px;font-weight:900;letter-spacing:-.035em;font-size:23px;margin-bottom:28px}
-  .welcome-v9-mark{width:44px;height:44px;border-radius:15px;background:linear-gradient(135deg,var(--rose),var(--sage));display:grid;place-items:center;font-size:22px;box-shadow:0 10px 24px rgba(76,61,51,.08)}
+  .welcome-v9-mark{display:none;width:44px;height:44px;border-radius:15px;background:linear-gradient(135deg,var(--rose),var(--sage));display:grid;place-items:center;font-size:22px;box-shadow:0 10px 24px rgba(76,61,51,.08)}
   .welcome-v9-title{font-size:43px;line-height:.99;letter-spacing:-.057em;margin:0 0 12px;max-width:420px}
   .welcome-v9-punch{font-size:19px;line-height:1.25;font-weight:900;letter-spacing:-.02em;margin:0 0 9px;max-width:400px}
   .welcome-v9-copy{font-size:15.5px;line-height:1.5;color:#6d6661;max-width:410px;margin-bottom:20px}
@@ -583,7 +583,7 @@
     display:flex;align-items:center;gap:10px;
     color:#5c544d;font-size:15px;font-weight:950;letter-spacing:-.01em;
   }
-  .welcome-v9-mark{
+  .welcome-v9-mark{display:none;
     width:34px;height:34px;border-radius:12px;display:grid;place-items:center;
     background:linear-gradient(135deg,#dfead8,#f5dfe4);color:#584f49;
     box-shadow:0 6px 16px rgba(72,61,55,.08);
@@ -794,7 +794,7 @@
     display:flex;align-items:center;gap:9px;
     font-size:20px;font-weight:950;letter-spacing:-.03em;color:#312c29;
   }
-  .welcome-v9-mark{
+  .welcome-v9-mark{display:none;
     width:38px;height:38px;border-radius:13px;
     display:grid;place-items:center;
     background:linear-gradient(135deg,#dce9d6,#f3dfe4);
@@ -992,7 +992,7 @@
     display:flex;align-items:center;gap:9px;
     font-size:20px;font-weight:950;letter-spacing:-.035em;color:#302b28;
   }
-  .welcome-v9-mark{
+  .welcome-v9-mark{display:none;
     width:36px;height:36px;border-radius:12px;
     display:grid;place-items:center;
     background:linear-gradient(135deg,#dce9d6,#f2dde3);
@@ -1566,7 +1566,7 @@
     display:flex;align-items:center;gap:9px;
     font-size:20px;font-weight:950;letter-spacing:-.035em;color:#302b28;
   }
-  .welcome-v9-mark{
+  .welcome-v9-mark{display:none;
     width:36px;height:36px;border-radius:12px;
     display:grid;place-items:center;
     background:linear-gradient(135deg,#dce9d6,#f2dde3);
@@ -1895,6 +1895,615 @@
     color:#8a7f78;
   }
 
+
+  /* ===== SmartRoom v23 — Tinder-style Discover ===== */
+  .discover-full{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+    min-height:calc(100dvh - 172px);
+  }
+  .discover-topline{
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+    gap:10px;
+    margin-bottom:2px;
+  }
+  .discover-topline .eyebrow{
+    margin-bottom:4px;
+  }
+  .discover-topline p{
+    margin:0;
+    font-size:12px;
+    line-height:1.35;
+    color:var(--muted);
+    max-width:240px;
+  }
+  .discover-count{
+    align-self:flex-start;
+    padding:8px 10px;
+    border-radius:999px;
+    background:#fff;
+    border:1px solid var(--border);
+    font-size:11px;
+    font-weight:850;
+    color:var(--muted);
+    white-space:nowrap;
+  }
+  .discover-stage{
+    flex:1;
+    display:flex;
+    min-height:0;
+  }
+  .discover-card{
+    width:100%;
+    flex:1;
+    display:flex;
+    flex-direction:column;
+    overflow:hidden;
+    border-radius:28px;
+    touch-action:pan-y;
+    transition:transform .2s ease,opacity .2s ease;
+  }
+  .discover-card .product-visual{
+    position:relative;
+    height:min(42vh, 340px);
+    min-height:250px;
+    display:grid;
+    place-items:center;
+    background:linear-gradient(135deg,var(--peach),var(--lav));
+  }
+  .discover-card .product-photo{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    display:block;
+  }
+  .discover-card .product-fallback{
+    font-size:98px;
+    filter:drop-shadow(0 8px 14px rgba(0,0,0,.08));
+  }
+  .discover-card .match-badge,
+  .discover-card .price-badge{
+    position:absolute;
+    top:14px;
+    z-index:2;
+    padding:8px 11px;
+    border-radius:999px;
+    font-size:11px;
+    font-weight:900;
+    backdrop-filter:blur(6px);
+  }
+  .discover-card .match-badge{
+    left:14px;
+    background:rgba(232,241,226,.96);
+    color:var(--sage-deep);
+  }
+  .discover-card .price-badge{
+    right:14px;
+    background:rgba(255,255,255,.94);
+    color:var(--ink);
+  }
+  .discover-body{
+    flex:1;
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+    padding:15px 15px 14px;
+  }
+  .discover-title{
+    font-size:27px;
+    line-height:1.05;
+    font-weight:950;
+    letter-spacing:-.04em;
+    color:var(--ink);
+    margin:0;
+  }
+  .discover-meta{
+    margin-top:5px;
+    font-size:12px;
+    color:var(--muted);
+  }
+  .discover-why{
+    border-radius:18px;
+    padding:11px 12px;
+    background:#f8f3ee;
+  }
+  .discover-why.sage{
+    background:var(--sage);
+  }
+  .discover-why-label{
+    display:flex;
+    align-items:center;
+    gap:6px;
+    font-size:10px;
+    text-transform:uppercase;
+    letter-spacing:.08em;
+    font-weight:950;
+    color:#8f877f;
+    margin-bottom:4px;
+  }
+  .discover-why-text{
+    font-size:13px;
+    line-height:1.38;
+    color:var(--ink);
+  }
+  .discover-pill-row{
+    display:flex;
+    flex-wrap:wrap;
+    gap:6px;
+  }
+  .discover-pill{
+    display:inline-flex;
+    align-items:center;
+    gap:5px;
+    padding:7px 10px;
+    border-radius:999px;
+    background:#fff;
+    border:1px solid var(--border);
+    font-size:11px;
+    font-weight:850;
+    color:var(--ink);
+  }
+  .discover-actions{
+    margin-top:auto;
+    display:grid;
+    grid-template-columns:1fr 1.2fr;
+    gap:10px;
+  }
+  .discover-own{
+    display:flex;
+    justify-content:center;
+    margin-top:8px;
+  }
+  .discover-own button{
+    border:none;
+    background:none;
+    font-size:12px;
+    font-weight:850;
+    color:var(--muted);
+  }
+  .deck-empty.big{
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    min-height:calc(100dvh - 210px);
+    text-align:center;
+    padding:22px;
+  }
+  .deck-empty.big h2{
+    margin:0 0 8px;
+    font-size:26px;
+    line-height:1.05;
+    letter-spacing:-.03em;
+  }
+  .deck-empty.big p{
+    margin:0 auto 18px;
+    max-width:290px;
+    color:var(--muted);
+    line-height:1.45;
+    font-size:14px;
+  }
+  @media(max-width:360px){
+    .discover-topline p{font-size:11.5px;max-width:210px}
+    .discover-card .product-visual{min-height:230px}
+    .discover-title{font-size:24px}
+    .discover-why-text{font-size:12.5px}
+    .discover-actions{gap:8px}
+  }
+
+
+  /* ===== SmartRoom v24 — overlap-aware bundle swap ===== */
+  .bundle-budget-card{
+    margin:14px 0 16px;
+    padding:15px;
+    border-radius:21px;
+    background:#fff;
+    border:1px solid var(--border);
+  }
+  .bundle-budget-top{
+    display:flex;
+    align-items:flex-end;
+    justify-content:space-between;
+    gap:12px;
+    margin-bottom:9px;
+  }
+  .bundle-budget-top strong{
+    font-size:13px;
+  }
+  .bundle-budget-number{
+    font-size:23px;
+    line-height:1;
+    font-weight:950;
+    letter-spacing:-.035em;
+    color:#66805d;
+  }
+  .bundle-budget-range{
+    width:100%;
+    accent-color:#88a878;
+  }
+  .bundle-budget-scale{
+    display:flex;
+    justify-content:space-between;
+    margin-top:4px;
+    font-size:9px;
+    color:var(--muted);
+  }
+
+  .overlap-suggestion{
+    margin:14px 0 4px;
+    padding:15px;
+    border-radius:22px;
+    background:linear-gradient(145deg,#f3f0f8,#edf4e9);
+    border:1px solid rgba(115,98,132,.08);
+  }
+  .overlap-kicker{
+    display:inline-flex;
+    align-items:center;
+    gap:5px;
+    padding:5px 8px;
+    border-radius:999px;
+    background:#fff;
+    border:1px solid rgba(115,98,132,.08);
+    color:#746580;
+    font-size:9px;
+    font-weight:950;
+    margin-bottom:8px;
+  }
+  .overlap-title{
+    margin:0 0 6px;
+    font-size:16px;
+    line-height:1.2;
+    font-weight:950;
+    letter-spacing:-.02em;
+    color:var(--ink);
+  }
+  .overlap-copy{
+    margin:0 0 12px;
+    font-size:11px;
+    line-height:1.42;
+    color:var(--muted);
+  }
+  .overlap-swap-row{
+    display:grid;
+    grid-template-columns:1fr auto 1fr;
+    gap:8px;
+    align-items:stretch;
+  }
+  .overlap-item{
+    min-width:0;
+    padding:10px 8px;
+    border-radius:17px;
+    background:#fff;
+    border:1px solid var(--border);
+    text-align:center;
+  }
+  .overlap-item img{
+    width:52px;
+    height:52px;
+    object-fit:contain;
+    border-radius:12px;
+    background:#faf7f2;
+    margin-bottom:7px;
+  }
+  .overlap-item strong{
+    display:block;
+    font-size:10px;
+    line-height:1.2;
+  }
+  .overlap-item span{
+    display:block;
+    margin-top:4px;
+    font-size:9px;
+    line-height:1.2;
+    color:var(--muted);
+  }
+  .overlap-arrow{
+    align-self:center;
+    font-size:20px;
+    color:#887d76;
+  }
+  .overlap-actions{
+    display:grid;
+    grid-template-columns:1.25fr .75fr;
+    gap:8px;
+    margin-top:11px;
+  }
+  .overlap-actions .btn{
+    min-height:42px;
+    padding:10px 11px;
+    font-size:11px;
+  }
+
+
+  /* ===== SmartRoom v27 — Discover skill info ===== */
+  .discover-pill .skill-info{
+    border:none;
+    background:transparent;
+    padding:0;
+    margin:0;
+    font-size:12px;
+    line-height:1;
+    color:var(--muted);
+    cursor:pointer;
+  }
+
+
+  /* ===== SmartRoom v29 — brand mark + refined wordmark ===== */
+  .brand-lockup{
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .brand-mark{
+    width:34px;
+    height:34px;
+    border-radius:11px;
+    background:linear-gradient(145deg,#f3e2e7,#e7f0e2);
+    border:1px solid rgba(91,78,70,.06);
+    box-shadow:0 7px 16px rgba(76,63,55,.07);
+    position:relative;
+    flex:0 0 auto;
+    overflow:hidden;
+  }
+  .brand-mark::before{
+    content:'';
+    position:absolute;
+    left:7px;
+    top:8px;
+    width:8px;
+    height:8px;
+    border-radius:50%;
+    background:#8ea980;
+    box-shadow:
+      12px 2px 0 #c9a8b3,
+      5px 12px 0 1px #a9a0c7;
+  }
+  .brand-mark::after{
+    content:'';
+    position:absolute;
+    right:6px;
+    bottom:6px;
+    width:7px;
+    height:7px;
+    border-radius:2px;
+    background:#d8bf98;
+    transform:rotate(12deg);
+  }
+  .brand-wordmark{
+    display:flex;
+    align-items:baseline;
+    line-height:1;
+    letter-spacing:-.035em;
+  }
+  .brand-wordmark .smart{
+    font-size:21px;
+    font-weight:850;
+    color:#332d29;
+  }
+  .brand-wordmark .room{
+    font-size:21px;
+    font-weight:650;
+    color:#718667;
+    margin-left:1px;
+  }
+
+  .welcome-v9-brand{
+    display:flex;
+    align-items:center;
+    gap:11px;
+  }
+  .welcome-v9-brand .brand-mark{
+    width:38px;
+    height:38px;
+    border-radius:12px;
+  }
+  .welcome-v9-brand .brand-wordmark .smart,
+  .welcome-v9-brand .brand-wordmark .room{
+    font-size:23px;
+  }
+
+
+  /* ===== SmartRoom v30 — outcome-first Gifts Map ===== */
+  .wishes-map-card{
+    margin-top:14px;
+    padding:18px;
+    border-radius:22px;
+  }
+  .gift-map-hero{
+    text-align:center;
+    padding:8px 4px 14px;
+  }
+  .gift-map-kicker{
+    font-size:12px;
+    font-weight:800;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color:var(--muted);
+    margin-bottom:8px;
+  }
+  .gift-map-score{
+    display:flex;
+    align-items:flex-end;
+    justify-content:center;
+    gap:5px;
+    margin:2px 0 5px;
+  }
+  .gift-map-score strong{
+    font-size:46px;
+    line-height:.95;
+    letter-spacing:-.05em;
+    color:var(--ink);
+  }
+  .gift-map-score span{
+    font-size:18px;
+    font-weight:800;
+    color:#718667;
+    padding-bottom:5px;
+  }
+  .gift-map-headline{
+    font-size:19px;
+    line-height:1.25;
+    font-weight:850;
+    letter-spacing:-.02em;
+    max-width:330px;
+    margin:8px auto 5px;
+  }
+  .gift-map-sub{
+    font-size:13px;
+    line-height:1.45;
+    color:var(--muted);
+    max-width:340px;
+    margin:0 auto;
+  }
+  .gift-verdict{
+    margin-top:12px;
+    border:1px solid var(--line);
+    background:var(--paper);
+    border-radius:18px;
+    padding:15px;
+  }
+  .gift-verdict.good{ background:#f1f5ee; }
+  .gift-verdict.focused{ background:#f5f0f6; }
+  .gift-verdict.overlap{ background:#fbf4ef; }
+  .gift-verdict-title{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    font-weight:850;
+    margin-bottom:5px;
+  }
+  .gift-verdict p{
+    margin:0;
+    font-size:13px;
+    line-height:1.45;
+    color:var(--ink);
+  }
+  .gift-added-chips{
+    display:flex;
+    flex-wrap:wrap;
+    gap:7px;
+    margin-top:12px;
+    justify-content:center;
+  }
+  .gift-added-chip{
+    border-radius:999px;
+    padding:7px 10px;
+    background:#f3f0eb;
+    font-size:12px;
+    font-weight:750;
+    color:var(--ink);
+  }
+  .gift-swap-card{
+    margin-top:14px;
+    border-radius:19px;
+    border:1px solid var(--line);
+    background:#fff;
+    padding:14px;
+  }
+  .gift-swap-kicker{
+    font-size:12px;
+    font-weight:850;
+    color:#718667;
+    margin-bottom:8px;
+  }
+  .gift-swap-row{
+    display:grid;
+    grid-template-columns:1fr auto 1fr;
+    align-items:center;
+    gap:8px;
+  }
+  .gift-swap-item{
+    min-width:0;
+    text-align:center;
+  }
+  .gift-swap-item img{
+    width:62px;
+    height:62px;
+    object-fit:cover;
+    border-radius:13px;
+    display:block;
+    margin:0 auto 6px;
+  }
+  .gift-swap-item strong{
+    display:block;
+    font-size:12px;
+    line-height:1.25;
+  }
+  .gift-swap-arrow{
+    font-size:20px;
+    color:var(--muted);
+  }
+  .gift-swap-explain{
+    text-align:center;
+    font-size:12px;
+    line-height:1.45;
+    color:var(--muted);
+    margin:11px 2px 12px;
+  }
+  .gift-swap-actions{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:8px;
+  }
+  .gift-map-details-toggle{
+    width:100%;
+    margin-top:13px;
+    border:none;
+    background:transparent;
+    color:var(--muted);
+    font-weight:800;
+    font-size:12px;
+    padding:10px;
+    cursor:pointer;
+  }
+  .gift-map-details{
+    display:none;
+    margin-top:4px;
+    border-top:1px solid var(--line);
+    padding-top:12px;
+  }
+  .gift-map-details.open{ display:block; }
+  .gift-detail-row{
+    padding:10px 0;
+    border-bottom:1px solid var(--line);
+  }
+  .gift-detail-row:last-child{ border-bottom:none; }
+  .gift-detail-row strong{
+    display:block;
+    font-size:13px;
+    margin-bottom:3px;
+  }
+  .gift-detail-row span{
+    font-size:12px;
+    line-height:1.4;
+    color:var(--muted);
+  }
+  .gift-swap-success{
+    text-align:center;
+    padding:18px 8px 10px;
+  }
+  .gift-swap-success .success-icon{
+    font-size:40px;
+    margin-bottom:8px;
+  }
+  .gift-swap-success h3{
+    font-size:20px;
+    margin:0 0 7px;
+  }
+  .gift-swap-success p{
+    font-size:13px;
+    line-height:1.5;
+    color:var(--muted);
+    margin:0;
+  }
+  .gift-score-change{
+    margin:12px auto;
+    font-size:20px;
+    font-weight:900;
+  }
+
 </style>
 </head>
 <body>
@@ -1905,8 +2514,11 @@
     <header class="topbar">
       <div class="brand-row">
         <div>
-          <div class="brand">SmartRoom</div>
-          <div class="subtle" id="childLine">Personalized playroom guidance</div>
+          <div class="brand-lockup" aria-label="SmartRoom">
+          <div class="brand-mark" aria-hidden="true"></div>
+          <div class="brand-wordmark"><span class="smart">Smart</span><span class="room">Room</span></div>
+        </div>
+          <div class="subtle" id="childLine">Find the next toy worth buying.</div>
         </div>
         <button class="profile-btn" id="profileBtn" aria-label="Open child profile">S</button>
       </div>
@@ -1917,34 +2529,10 @@
       <section id="playroomScreen" class="screen"></section>
       <section id="wishesScreen" class="screen"></section>
     </main>
-
-    
-      <div class="smart-swap-card" id="smartSwapCard">
-        <div class="smart-swap-kicker">✨ Smart suggestion</div>
-        <h3 class="smart-swap-title">Two items lean toward the same kind of play.</h3>
-        <p class="smart-swap-copy">Swap one for something different to bring more variety into the bundle.</p>
-
-        <div class="swap-preview">
-          <div class="swap-preview-card">
-            <div class="swap-emoji">🧱</div>
-            <strong>Construction-style item</strong>
-          </div>
-          <div class="swap-preview-arrow">→</div>
-          <div class="swap-preview-card">
-            <div class="swap-emoji">🤝</div>
-            <strong>Cooperative game</strong>
-          </div>
-        </div>
-
-        <div class="smart-swap-actions">
-          <button class="btn btn-soft" type="button" id="seeSmartSwap">See smarter swap</button>
-          <button class="btn btn-ghost" type="button" id="keepBundle">Keep my bundle</button>
-        </div>
-      </div>
 <nav class="bottom-nav" aria-label="Primary">
       <button class="nav-btn active" data-screen="discover"><span>✨</span>Discover</button>
       <button class="nav-btn" data-screen="playroom"><span>🧸</span>Playroom</button>
-      <button class="nav-btn" data-screen="wishes"><span>🎁</span>Wishes</button>
+      <button class="nav-btn" data-screen="wishes"><span>🎁</span>Gifts</button>
     </nav>
   </div>
 
@@ -1996,7 +2584,7 @@
 <dialog id="shareWishDialog">
   <div class="dialog-body">
     <div class="dialog-head">
-      <div><div class="eyebrow">Share a wish</div><h2 id="shareWishTitle">Send this gift idea</h2></div>
+      <div><div class="eyebrow">Share a gift</div><h2 id="shareWishTitle">Send this gift idea</h2></div>
       <button class="dialog-close" data-close-dialog="shareWishDialog" aria-label="Close">×</button>
     </div>
     <div id="shareWishContent"></div>
@@ -2006,7 +2594,7 @@
 <dialog id="wishesMapDialog">
   <div class="dialog-body">
     <div class="dialog-head">
-      <div><div class="eyebrow">Wishes Map</div><h2>What these Wishes would bring</h2></div>
+      <div><div class="eyebrow">Gifts Map</div><h2>See what your Gifts add</h2></div>
       <button class="dialog-close" data-close-dialog="wishesMapDialog" aria-label="Close">×</button>
     </div>
     <div id="wishesMapContent"></div>
@@ -2251,7 +2839,7 @@
     }
     save();
     renderAll();
-    showToast('All suitable products are already in the Playroom or Wishes.');
+    showToast('All suitable products are already in the Playroom or Gifts.');
   }
 
   function skillPills(skills,limit=3){
@@ -2259,12 +2847,38 @@
   }
 
   function recommendationReason(p){
+    const child=state.profile.name||'your child';
+    const childInterests=state.profile.interests||[];
+    const matched=(p.interests||[]).filter(i=>childInterests.includes(i));
     const lows=lowSkills(4);
-    const relevant=Object.entries(p.skills).filter(([k])=>lows.includes(k)).sort((a,b)=>b[1]-a[1]).slice(0,2).map(([k])=>skillLabels[k]);
-    const broad=broadMap();
-    const strong=broad[0]?.label.toLowerCase()||'several areas';
-    if(relevant.length>=2) return `Adds more ${relevant[0].toLowerCase()} and ${relevant[1].toLowerCase()} to a play environment already strong in ${strong}.`;
-    return `Adds a different kind of play while still fitting ${state.profile.name||'your child'}’s interests.`;
+    const relevant=Object.entries(p.skills||{})
+      .filter(([k])=>lows.includes(k))
+      .sort((a,b)=>b[1]-a[1])
+      .slice(0,2)
+      .map(([k])=>skillLabels[k]);
+
+    const mechanic=(p.mechanics||[])[0];
+    const secondMechanic=(p.mechanics||[])[1];
+    const social=p.socialStyle ? p.socialStyle.toLowerCase() : '';
+    const broad=dominantBroadForProduct(p).toLowerCase();
+
+    if(matched.length>=2){
+      return `${child} already enjoys ${matched[0].toLowerCase()} and ${matched[1].toLowerCase()}. This turns those interests into ${mechanic?mechanic.toLowerCase():broad} play${social?` with a ${social} feel`:''}.`;
+    }
+
+    if(matched.length===1 && mechanic){
+      return `${child} already likes ${matched[0].toLowerCase()}. This gives that interest a new angle through ${mechanic.toLowerCase()}${secondMechanic?` and ${secondMechanic.toLowerCase()}`:''}.`;
+    }
+
+    if(relevant.length>=2){
+      return `${child}’s Playroom already has plenty of ${broad}. This adds more ${relevant[0].toLowerCase()} and ${relevant[1].toLowerCase()} without moving too far from the kinds of games already saved.`;
+    }
+
+    if(mechanic){
+      return `${child}’s saved choices suggest an interest in this kind of play. ${p.name} adds ${mechanic.toLowerCase()} in a way that feels different from what is already in the Playroom.`;
+    }
+
+    return `${p.name} adds a different kind of play to ${child}’s current Playroom, while staying close to the interests and play styles already selected.`;
   }
 
   function preferenceSignals(){
@@ -2318,7 +2932,10 @@
     if(step===-1){
       onboardingEl.className='welcome-wrap-v9';
       onboardingEl.innerHTML=`
-        <div class="welcome-v9-brand"><div class="welcome-v9-mark">✦</div>SmartRoom</div>
+        <div class="welcome-v9-brand" aria-label="SmartRoom">
+          <div class="brand-mark" aria-hidden="true"></div>
+          <div class="brand-wordmark"><span class="smart">Smart</span><span class="room">Room</span></div>
+        </div>
         <h1 class="welcome-v9-title">Build a smarter, more balanced Playroom.</h1>
         <p class="welcome-v9-copy">Add the games they already own and the hobbies they do. SmartRoom creates a <strong>Cognitive Map</strong> and recommends which games and toys are worth adding next.</p>
 
@@ -2399,32 +3016,79 @@
   }
 
   function renderHeader(){
-    document.getElementById('childLine').textContent = `${state.profile.name||'Child'}, age ${state.profile.age} · ${state.playroom.length} Playroom items`;
+    document.getElementById('childLine').textContent = 'Find the next toy worth buying.';
     document.getElementById('profileBtn').textContent=initials();
   }
 
   function renderDiscover(){
+    const ranked=rankedProducts();
     const p=currentProduct();
     if(!p){
-      discoverEl.innerHTML=`<div class="deck-empty card"><h2>You’ve seen the current deck.</h2><p class="subtle">Bring skipped games back into the deck, or update the Playroom for a different set of matches.</p><button class="btn btn-primary" id="resetSkipped">Refresh deck</button></div>`;
+      discoverEl.innerHTML=`
+        <div class="deck-empty card big">
+          <h2>You’ve seen everything for now</h2>
+          <p>Refresh the deck to see the current games again, or update the Playroom to unlock different kinds of matches.</p>
+          <button class="btn btn-primary" id="resetSkipped">Refresh deck</button>
+        </div>`;
       return;
     }
+
     const hintClass=state.seenSwipeHint?'':' swipe-hint-active';
+    const imageMarkup=p.image
+      ? `<img class="product-photo" src="${escapeHtml(p.image)}" alt="${escapeHtml(p.name)}" onerror="this.style.display='none'; this.nextElementSibling.style.display='grid';">`
+      : '';
+    const fallbackDisplay=p.image?'display:none':'display:grid';
+
     discoverEl.innerHTML=`
-      <div class="discover-head simple"><div class="eyebrow">Personalized for ${escapeHtml(state.profile.name||'your child')}</div><h1>Find their next favorite.</h1><p class="subtle">Swipe left to skip or right to save. Every choice sharpens the next match.</p></div>
-      <article class="card product-card${hintClass}" id="productCard" data-product="${p.id}">
-        <div class="product-visual"><div class="match-badge">SmartRoom match</div><div class="swipe-stamp nope" id="nopeStamp">Skip</div><div class="swipe-stamp like" id="likeStamp">Wish</div><img src="${p.image}" alt="${escapeHtml(p.name)}" onerror="this.style.display='none';this.nextElementSibling.style.display='grid'"><div class="product-fallback">${p.emoji}</div></div>
-        <div class="product-body">
-          <div class="product-title-row"><div><div class="product-name">${escapeHtml(p.name)}</div><div class="product-meta">${escapeHtml(p.desc)} · Ages ${p.age[0]}–${p.age[1]} · ~€${p.price}</div></div></div>
-          <div class="reason-box"><div class="reason-label">Why ${escapeHtml(state.profile.name||'they')} may enjoy it</div><div class="reason-text">${escapeHtml(loveReason(p))}</div></div>
-          <div class="reason-box" style="background:var(--sage)"><div class="reason-label">Why SmartRoom matched it</div><div class="reason-text">${escapeHtml(recommendationReason(p))}</div></div>
-          <div>${skillPills(p.skills,3)}</div>
-          <div class="action-row"><button class="btn btn-skip" id="skipProduct">✕ Skip</button><button class="btn btn-wish" id="saveProduct">♡ Add to Wishes</button></div>
-          <div class="secondary-actions single"><button id="ownProduct">Already own it</button></div>
-          ${state.seenSwipeHint?'':'<div class="swipe-cue">← skip &nbsp;&nbsp; swipe &nbsp;&nbsp; save →</div>'}
-          
+      <div class="discover-full">
+        <div class="discover-topline">
+          <div>
+            <div class="eyebrow">Discover</div>
+            <p>Swipe through games and toys that could fit their Playroom.</p>
+          </div>
         </div>
-      </article>`;
+
+        <div class="discover-stage">
+          <article class="card product-card discover-card${hintClass}" id="productCard" data-product="${p.id}">
+            <div class="product-visual">
+              <div class="match-badge">Smart match</div>
+              <div class="price-badge">~€${p.price}</div>
+              ${imageMarkup}
+              <div class="product-fallback" style="${fallbackDisplay}">${p.emoji}</div>
+            </div>
+
+            <div class="discover-body">
+              <div>
+                <h2 class="discover-title">${escapeHtml(p.name)}</h2>
+                <div class="discover-meta">${escapeHtml(p.desc)} · Ages ${p.age[0]}–${p.age[1]}</div>
+              </div>
+
+              <div class="discover-why">
+                <div class="discover-why-label">♡ Why they may like it</div>
+                <div class="discover-why-text">${escapeHtml(loveReason(p))}</div>
+              </div>
+
+              <div class="discover-why sage">
+                <div class="discover-why-label">✨ Why it fits</div>
+                <div class="discover-why-text">${escapeHtml(recommendationReason(p))}</div>
+              </div>
+
+              <div class="discover-pill-row">
+                ${Object.keys(p.skills||{}).sort((a,b)=>(p.skills[b]||0)-(p.skills[a]||0)).slice(0,3).map(k=>`<span class="discover-pill">${skillLabels[k]||k}<button type="button" class="skill-info" data-skill="${k}" aria-label="About ${escapeHtml(skillLabels[k]||k)}">ⓘ</button></span>`).join('')}
+              </div>
+
+              <div class="discover-actions">
+                <button class="btn btn-skip" id="skipProduct">Skip</button>
+                <button class="btn btn-wish" id="saveProduct">♡ Add to Wishes</button>
+              </div>
+
+              <div class="discover-own">
+                <button id="ownProduct">Already own it</button>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>`;
   }
 
   function renderPlayroom(){
@@ -2506,25 +3170,173 @@
     state.bundle=selected.map(p=>p.id); save();
   }
 
+
+  function bundleOverlapSuggestion(){
+    const items=state.bundle.map(id=>products.find(p=>p.id===id)).filter(Boolean);
+    if(items.length<2) return null;
+
+    // Prefer true category/group overlap; otherwise use dominant cognitive-play overlap.
+    const groupBuckets={};
+    const broadBuckets={};
+    items.forEach(p=>{
+      (groupBuckets[p.group] ||= []).push(p);
+      const broad=dominantBroadForProduct(p);
+      (broadBuckets[broad] ||= []).push(p);
+    });
+
+    let overlapLabel='';
+    let overlapping=[];
+    const repeatedGroup=Object.entries(groupBuckets)
+      .filter(([,arr])=>arr.length>=2)
+      .sort((a,b)=>b[1].length-a[1].length)[0];
+
+    if(repeatedGroup){
+      overlapLabel=repeatedGroup[0];
+      overlapping=repeatedGroup[1];
+    }else{
+      const repeatedBroad=Object.entries(broadBuckets)
+        .filter(([,arr])=>arr.length>=2)
+        .sort((a,b)=>b[1].length-a[1].length)[0];
+      if(!repeatedBroad) return null;
+      overlapLabel=repeatedBroad[0];
+      overlapping=repeatedBroad[1];
+    }
+
+    // Replace the weaker-ranked redundant item.
+    const current=[...overlapping].sort((a,b)=>scoreProduct(a)-scoreProduct(b))[0];
+    const currentBroad=dominantBroadForProduct(current);
+    const taken=new Set([...state.playroom,...state.wishes,...state.bundle]);
+    taken.delete(current.id);
+
+    const otherBundle=items.filter(p=>p.id!==current.id);
+    const budget=Number(state.bundleBudget)||150;
+    const otherTotal=otherBundle.reduce((sum,p)=>sum+p.price,0);
+
+    const candidates=products
+      .filter(p=>
+        !taken.has(p.id) &&
+        Number(state.profile.age)>=p.age[0] &&
+        Number(state.profile.age)<=p.age[1] &&
+        p.group!==current.group &&
+        dominantBroadForProduct(p)!==currentBroad &&
+        otherTotal+p.price<=budget &&
+        isReasonableSwapPrice(p,current)
+      )
+      .map(p=>{
+        const childFit=childFitScore(p);
+        const priceFit=priceFitScore(p,current);
+        const novelty=swapNoveltyScore(p,current,otherBundle);
+        return {p,total:childFit*1.25+priceFit+novelty,childFit,priceFit,novelty};
+      })
+      .filter(x=>x.childFit>=0)
+      .sort((a,b)=>b.total-a.total)
+      .map(x=>x.p);
+
+    if(!candidates.length) return null;
+
+    const alternative=candidates[0];
+    return {
+      current,
+      alternative,
+      overlapLabel,
+      currentBroad,
+      alternativeBroad:dominantBroadForProduct(alternative)
+    };
+  }
+
+  function overlapReasonText(s){
+    const label=(s.current.group===s.overlapLabel)
+      ? 'the same kind of play'
+      : `${String(s.overlapLabel).toLowerCase()} play`;
+    return `${s.current.name} overlaps with another item around ${label}. ${s.alternative.name} adds more ${s.alternativeBroad.toLowerCase()}, still fits ${state.profile.name||'your child'}, and stays close to the same price.`;
+  }
+
   function renderBundlePanel(){
     const panel=document.getElementById('bundleContent'); if(!panel) return;
     if(!state.bundle.length) generateBundle();
+
     const items=state.bundle.map(id=>products.find(p=>p.id===id)).filter(Boolean);
     const total=items.reduce((a,p)=>a+p.price,0);
-    panel.innerHTML=`<p class="subtle">We’ve spread this bundle across different kinds of play so it introduces a broader range of cognitive skills, rather than repeating what the Playroom already offers.</p><label for="bundleBudget">Budget</label><select id="bundleBudget"><option value="80" ${state.bundleBudget==80?'selected':''}>Around €80</option><option value="120" ${state.bundleBudget==120?'selected':''}>Around €120</option><option value="150" ${state.bundleBudget==150?'selected':''}>Around €150</option><option value="220" ${state.bundleBudget==220?'selected':''}>Around €220</option></select><div class="bundle-card card"><div style="display:flex;justify-content:space-between;gap:10px"><strong>Suggested bundle</strong><strong>~€${total}</strong></div>${items.map(p=>`<div class="bundle-item"><div class="bundle-emoji"><img src="${p.image}" alt="${escapeHtml(p.name)}"></div><div class="bundle-main"><div class="bundle-name">${escapeHtml(p.name)}</div><div class="bundle-skills">${Object.entries(p.skills).sort((a,b)=>b[1]-a[1]).slice(0,2).map(([k])=>skillLabels[k]).join(' · ')}</div></div><div><button class="bundle-swap" data-swap-bundle="${p.id}">Swap</button></div></div>`).join('')}</div><div style="height:10px"></div><button class="btn btn-soft" id="saveBundleWishes" style="width:100%">Save bundle to Wishes</button><div class="retailer-note">Bundle prices are indicative; Amazon prices may change.</div>`;
+    const suggestion=bundleOverlapSuggestion();
+
+    panel.innerHTML=`
+      <p class="subtle">We’ve spread this bundle across different kinds of play so it introduces a broader range of cognitive skills, rather than repeating what the Playroom already offers.</p>
+
+      <div class="bundle-budget-card">
+        <div class="bundle-budget-top">
+          <div>
+            <strong>Your budget</strong>
+            <div class="subtle" style="font-size:10px;margin-top:3px">Set what you’re comfortable spending.</div>
+          </div>
+          <div class="bundle-budget-number" id="bundleBudgetNumber">€${Number(state.bundleBudget)||150}</div>
+        </div>
+        <input class="bundle-budget-range" id="bundleBudget" type="range" min="30" max="300" step="10" value="${Number(state.bundleBudget)||150}">
+        <div class="bundle-budget-scale"><span>€30</span><span>€300</span></div>
+      </div>
+
+      <div class="bundle-card card">
+        <div style="display:flex;justify-content:space-between;gap:10px">
+          <strong>Suggested bundle</strong>
+          <strong>~€${total}</strong>
+        </div>
+
+        ${items.map(p=>`
+          <div class="bundle-item">
+            <div class="bundle-emoji"><img src="${p.image}" alt="${escapeHtml(p.name)}"></div>
+            <div class="bundle-main">
+              <div class="bundle-name">${escapeHtml(p.name)}</div>
+              <div class="bundle-skills">${Object.entries(p.skills).sort((a,b)=>b[1]-a[1]).slice(0,2).map(([k])=>skillLabels[k]).join(' · ')}</div>
+            </div>
+            <div><button class="bundle-swap" data-swap-bundle="${p.id}">Swap</button></div>
+          </div>`).join('')}
+      </div>
+
+      ${suggestion ? `
+        <div class="overlap-suggestion">
+          <div class="overlap-kicker">✨ Smart swap</div>
+          <h3 class="overlap-title">These two lean toward similar play.</h3>
+          <p class="overlap-copy">${escapeHtml(overlapReasonText(suggestion))}</p>
+
+          <div class="overlap-swap-row">
+            <div class="overlap-item">
+              <img src="${suggestion.current.image}" alt="${escapeHtml(suggestion.current.name)}">
+              <strong>${escapeHtml(suggestion.current.name)}</strong>
+              <span>Current</span>
+            </div>
+            <div class="overlap-arrow">→</div>
+            <div class="overlap-item">
+              <img src="${suggestion.alternative.image}" alt="${escapeHtml(suggestion.alternative.name)}">
+              <strong>${escapeHtml(suggestion.alternative.name)}</strong>
+              <span>Recommended swap</span>
+            </div>
+          </div>
+
+          <div class="overlap-actions">
+            <button class="btn btn-soft" id="applySmartSwap"
+              data-from="${suggestion.current.id}"
+              data-to="${suggestion.alternative.id}">
+              Swap to ${escapeHtml(suggestion.alternative.name)}
+            </button>
+            <button class="btn btn-ghost" id="dismissSmartSwap">Keep bundle</button>
+          </div>
+        </div>` : ''}
+
+      <div style="height:10px"></div>
+      <button class="btn btn-soft" id="saveBundleWishes" style="width:100%">Save bundle to Wishes</button>
+      <div class="retailer-note">Bundle prices are indicative; Amazon prices may change.</div>`;
   }
 
   function renderWishes(){
     const ws=state.wishes.map(id=>products.find(p=>p.id===id)).filter(Boolean);
     wishesEl.innerHTML=`
-      <div class="section"><div class="eyebrow">Approved by you</div><h1>${escapeHtml(state.profile.name||'Child')}’s Wishes 🎁</h1><p class="subtle">Keep good gift ideas in one place, buy them directly, or share them with family and friends.</p></div>
-      <div class="section">${ws.length?ws.map(p=>`<div class="card wish-card"><div class="wish-thumb"><img src="${p.image}" alt="${escapeHtml(p.name)}"></div><div class="wish-main"><div class="wish-name">${escapeHtml(p.name)}</div><div class="wish-meta">~€${p.price} · ${escapeHtml(p.desc)}</div><div>${skillPills(p.skills,2)}</div><div class="wish-cta-grid"><a class="wish-cta amazon" href="${p.amazon}" target="_blank" rel="noopener">🛒 Buy on Amazon</a><button class="wish-cta share" data-share-single="${p.id}">↗ Share wish</button></div><button class="wish-remove" data-remove-wish="${p.id}">Remove from Wishes</button>${state.reserved.includes(p.id)?'<div style="margin-top:6px"><span class="pill" style="background:var(--sage)">Reserved ✓</span></div>':''}</div></div>`).join(''):`<div class="card" style="padding:22px;text-align:center"><div style="font-size:42px">♡</div><h2>No Wishes yet</h2><p class="subtle">Save a few matches and this becomes a ready-made answer when someone asks what gift to buy.</p><button class="btn btn-soft" data-go="discover">Discover products</button></div>`}</div>
-      ${ws.length?`<button class="wishes-map-card" id="openWishesMap"><span class="wm-icon">🧠</span><span><strong>Wishes Map</strong><span>See the cognitive play these saved games would add — and where they overlap.</span></span><span class="feature-chevron">›</span></button><div class="wishes-footer-actions"><button class="feature-action share-all" id="shareWishes"><span class="feature-icon">🎁</span><span><strong>Share all Wishes</strong><span>Send the whole list to family or friends.</span></span><span class="feature-chevron">›</span></button><button class="feature-action discover-more" data-go="discover"><span class="feature-icon">✨</span><span><strong>Discover more</strong><span>Find another good match.</span></span><span class="feature-chevron">›</span></button></div><p class="subtle" style="text-align:center;margin-top:10px">Each Wish can also be bought directly on Amazon.</p>`:''}`;
+      <div class="section"><div class="eyebrow">Approved by you</div><h1>${escapeHtml(state.profile.name||'Child')}’s Gifts 🎁</h1><p class="subtle">Keep good gift ideas in one place, buy them directly, or share them with family and friends.</p></div>
+      <div class="section">${ws.length?ws.map(p=>`<div class="card wish-card"><div class="wish-thumb"><img src="${p.image}" alt="${escapeHtml(p.name)}"></div><div class="wish-main"><div class="wish-name">${escapeHtml(p.name)}</div><div class="wish-meta">~€${p.price} · ${escapeHtml(p.desc)}</div><div>${skillPills(p.skills,2)}</div><div class="wish-cta-grid"><a class="wish-cta amazon" href="${p.amazon}" target="_blank" rel="noopener">🛒 Buy on Amazon</a><button class="wish-cta share" data-share-single="${p.id}">↗ Share gift</button></div><button class="wish-remove" data-remove-wish="${p.id}">Remove from Gifts</button>${state.reserved.includes(p.id)?'<div style="margin-top:6px"><span class="pill" style="background:var(--sage)">Reserved ✓</span></div>':''}</div></div>`).join(''):`<div class="card" style="padding:22px;text-align:center"><div style="font-size:42px">♡</div><h2>No Gifts yet</h2><p class="subtle">Save a few matches and this becomes a ready-made answer when someone asks what gift to buy.</p><button class="btn btn-soft" data-go="discover">Discover products</button></div>`}</div>
+      ${ws.length?`<button class="wishes-map-card" id="openWishesMap"><span class="wm-icon">✨</span><span><strong>Gifts Map</strong><span>See how much new variety your Gifts bring to the Playroom.</span></span><span class="feature-chevron">›</span></button>`:''}`;
   }
 
   function renderGiftView(){
     const ws=state.wishes.map(id=>products.find(p=>p.id===id)).filter(Boolean);
-    document.getElementById('giftContent').innerHTML=`<div class="gift-header"><div class="eyebrow">SmartRoom Wishes</div><h2>Gift ideas for ${escapeHtml(state.profile.name||'this child')} 🎁</h2><p class="subtle" style="color:var(--ink);margin:0">Picked by the parent because they fit what ${escapeHtml(state.profile.name||'they')} enjoy and add something useful to the Playroom.</p></div>${ws.map(p=>`<div class="card wish-card"><div class="wish-thumb"><img src="${p.image}" alt="${escapeHtml(p.name)}"></div><div class="wish-main"><div class="wish-name">${escapeHtml(p.name)}</div><div class="wish-meta">~€${p.price} · ${Object.entries(p.skills).sort((a,b)=>b[1]-a[1]).slice(0,2).map(([k])=>skillLabels[k]).join(' + ')}</div><div class="wish-actions">${state.reserved.includes(p.id)?'<button class="reserved">Someone is getting this ✓</button>':`<button data-reserve-gift="${p.id}">I’m getting this</button>`}<a class="amazon-link" href="${p.amazon}" target="_blank" rel="noopener">Buy on Amazon ↗</a></div></div></div>`).join('')}`;
+    document.getElementById('giftContent').innerHTML=`<div class="gift-header"><div class="eyebrow">SmartRoom Gifts</div><h2>Gift ideas for ${escapeHtml(state.profile.name||'this child')} 🎁</h2><p class="subtle" style="color:var(--ink);margin:0">Picked by the parent because they fit what ${escapeHtml(state.profile.name||'they')} enjoy and add something useful to the Playroom.</p></div>${ws.map(p=>`<div class="card wish-card"><div class="wish-thumb"><img src="${p.image}" alt="${escapeHtml(p.name)}"></div><div class="wish-main"><div class="wish-name">${escapeHtml(p.name)}</div><div class="wish-meta">~€${p.price} · ${Object.entries(p.skills).sort((a,b)=>b[1]-a[1]).slice(0,2).map(([k])=>skillLabels[k]).join(' + ')}</div><div class="wish-actions">${state.reserved.includes(p.id)?'<button class="reserved">Someone is getting this ✓</button>':`<button data-reserve-gift="${p.id}">I’m getting this</button>`}<a class="amazon-link" href="${p.amazon}" target="_blank" rel="noopener">Buy on Amazon ↗</a></div></div></div>`).join('')}`;
   }
 
   function wishShareMessage(p){
@@ -2536,7 +3348,7 @@
     const child=state.profile.name||'our child';
     const ws=state.wishes.map(id=>products.find(p=>p.id===id)).filter(Boolean);
     const lines=ws.map(p=>`• ${p.name} (~€${p.price}) — ${p.amazon}`).join('\n');
-    return `${child}'s Wishes 🎁\n\nHere are a few things we think would fit ${child}'s Playroom well:\n\n${lines}\n\nSaved with SmartRoom.`;
+    return `${child}'s Gifts 🎁\n\nHere are a few things we think would fit ${child}'s Playroom well:\n\n${lines}\n\nSaved with SmartRoom.`;
   }
 
   function renderShareWishDialog(productId){
@@ -2544,7 +3356,7 @@
     const p=isAll?null:products.find(x=>x.id===productId); if(!isAll&&!p)return;
     sharingWishId=productId;
     shareMethod='email';
-    document.getElementById('shareWishTitle').textContent=isAll?'Share all Wishes':`Share ${p.name}`;
+    document.getElementById('shareWishTitle').textContent=isAll?'Share all Gifts':`Share ${p.name}`;
     const content=document.getElementById('shareWishContent');
     content.innerHTML=`
       <p class="subtle">Send ${isAll?'the whole Wishes list':'this wish'} to family or friends.</p>
@@ -2626,7 +3438,7 @@
 
         if(navigator.share){
           navigator.share({
-            title:isAll?`${state.profile.name||'Our child'}'s Wishes`:`Gift idea for ${state.profile.name||'our child'}`,
+            title:isAll?`${state.profile.name||'Our child'}'s Gifts`:`Gift idea for ${state.profile.name||'our child'}`,
             text:msg
           }).catch(()=>{});
         }else{
@@ -2642,7 +3454,7 @@
       const msg=isAll?allWishesShareMessage():wishShareMessage(p);
 
       if(shareMethod==='email'){
-        const subject=isAll?`${state.profile.name||'Our child'}'s Wishes`:`Gift idea for ${state.profile.name||'our child'}: ${p.name}`;
+        const subject=isAll?`${state.profile.name||'Our child'}'s Gifts`:`Gift idea for ${state.profile.name||'our child'}: ${p.name}`;
         window.location.href=`mailto:${encodeURIComponent(recipient)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(msg)}`;
       }else if(shareMethod==='whatsapp'){
         const phone=recipient.replace(/[^\d+]/g,'').replace(/^\+/,'');
@@ -2656,61 +3468,381 @@
     refreshShareUI();
   }
 
-  function wishesMapRows(ws){
-    const current=getPlayMap().scores;
-    const future=getPlayMap(ws).scores;
-    const curBroad=broadRawFromScores(current);
-    const futBroad=broadRawFromScores(future);
-    const max=Math.max(1,...Object.values(futBroad));
-    return Object.keys(broadSkillGroups).map(label=>({
-      label,
-      current:Math.round((curBroad[label]/max)*100),
-      future:Math.round((futBroad[label]/max)*100),
-      delta:futBroad[label]-curBroad[label]
-    })).sort((a,b)=>b.delta-a.delta);
+
+  function giftItemSignature(p){
+    return {
+      broad:dominantBroadForProduct(p),
+      group:p.group||'other',
+      mechanics:new Set(p.mechanics||[]),
+      social:p.socialStyle||''
+    };
   }
 
-  function wishesOverlap(ws){
-    const counts={};
-    ws.forEach(p=>{const label=dominantBroadForProduct(p);counts[label]=(counts[label]||0)+1;});
-    const sorted=Object.entries(counts).sort((a,b)=>b[1]-a[1]);
-    if(!sorted.length||sorted[0][1]<2)return null;
-    return {label:sorted[0][0],count:sorted[0][1]};
+  function currentPlayItems(){
+    return state.playroom.map(id=>ownedItemById(id)).filter(Boolean);
   }
 
-  function wishesAlternative(ws,overlap){
-    if(!overlap)return null;
-    return rankedProducts().map(x=>x.p).find(p=>!state.wishes.includes(p.id)&&!state.playroom.includes(p.id)&&dominantBroadForProduct(p)!==overlap.label)||null;
+  function varietyComponents(items){
+    const broad=new Set();
+    const groups=new Set();
+    const mechanics=new Set();
+    const social=new Set();
+
+    items.forEach(p=>{
+      if(!p) return;
+      broad.add(dominantBroadForProduct(p));
+      if(p.group) groups.add(p.group);
+      (p.mechanics||[]).forEach(m=>mechanics.add(m));
+      if(p.socialStyle) social.add(p.socialStyle);
+    });
+
+    // This is an internal variety index, not a measure of the child.
+    const broadScore=Math.min(1,broad.size/5);
+    const groupScore=Math.min(1,groups.size/7);
+    const mechanicsScore=Math.min(1,mechanics.size/10);
+    const socialScore=Math.min(1,social.size/4);
+
+    return {
+      score:Math.round((broadScore*.42 + groupScore*.30 + mechanicsScore*.20 + socialScore*.08)*100),
+      broad,groups,mechanics,social
+    };
   }
 
-  function renderWishesMap(){
+  function giftsVarietyResult(ws){
+    const current=currentPlayItems();
+    const before=varietyComponents(current);
+    const after=varietyComponents([...current,...ws]);
+
+    const absoluteLift=Math.max(0,after.score-before.score);
+    const relativeLift=before.score>0
+      ? Math.round((absoluteLift/Math.max(1,before.score))*100)
+      : Math.round(after.score*.55);
+
+    // Keep the headline intuitive and avoid absurd percentages in tiny demo catalogues.
+    const displayLift=Math.max(1,Math.min(48,relativeLift||absoluteLift||1));
+
+    const broadBefore=before.broad;
+    const newBroad=[...after.broad].filter(x=>!broadBefore.has(x));
+
+    const groupBefore=before.groups;
+    const newGroups=[...after.groups].filter(x=>!groupBefore.has(x));
+
+    return {before,after,absoluteLift,displayLift,newBroad,newGroups};
+  }
+
+  function pairSimilarity(a,b){
+    if(!a||!b) return 0;
+    let score=0;
+    const sa=giftItemSignature(a), sb=giftItemSignature(b);
+
+    if(sa.broad===sb.broad) score+=3;
+    if(sa.group===sb.group) score+=3;
+
+    const sharedMechanics=[...sa.mechanics].filter(m=>sb.mechanics.has(m)).length;
+    score+=Math.min(3,sharedMechanics*1.5);
+
+    if(sa.social && sa.social===sb.social) score+=1;
+
+    return score;
+  }
+
+  function giftsOverlap(ws){
+    if(ws.length<2) return null;
+
+    let best=null;
+    for(let i=0;i<ws.length;i++){
+      for(let j=i+1;j<ws.length;j++){
+        const similarity=pairSimilarity(ws[i],ws[j]);
+        if(!best || similarity>best.similarity){
+          best={a:ws[i],b:ws[j],similarity};
+        }
+      }
+    }
+
+    // Avoid manufacturing a problem when overlap is weak.
+    if(!best || best.similarity<5) return null;
+
+    const label=dominantBroadForProduct(best.a)===dominantBroadForProduct(best.b)
+      ? dominantBroadForProduct(best.a)
+      : (best.a.group===best.b.group ? best.a.group : 'similar play');
+
+    const related=ws.filter(p=>
+      p.id===best.a.id ||
+      p.id===best.b.id ||
+      pairSimilarity(p,best.a)>=5 ||
+      pairSimilarity(p,best.b)>=5
+    );
+
+    return {label,count:related.length,items:related,similarity:best.similarity};
+  }
+
+  function childFitScore(p){
+    if(!p) return -999;
+    const age=Number(state.profile.age)||6;
+    if(age<p.age[0] || age>p.age[1]) return -999;
+
+    let score=0;
+    const likes=new Set(state.profile.interests||[]);
+    const interestMatches=(p.interests||[]).filter(i=>likes.has(i));
+    score += interestMatches.length*12;
+
+    const prefs=preferenceSignals();
+    (p.mechanics||[]).forEach(m=>{
+      score += Math.max(-2,Math.min(4,prefs.mechanics[m]||0));
+    });
+
+    if(p.socialStyle) score += Math.max(-2,Math.min(3,prefs.social[p.socialStyle]||0));
+    if(p.pace) score += Math.max(-1.5,Math.min(2,prefs.pace[p.pace]||0));
+
+    const midpoint=(p.age[0]+p.age[1])/2;
+    score += Math.max(0,3-Math.abs(age-midpoint));
+    return score;
+  }
+
+  function priceFitScore(candidate,current){
+    if(!candidate || !current) return -999;
+    const diff=Math.abs(candidate.price-current.price);
+    const relative=diff/Math.max(10,current.price);
+    if(diff<=5) return 12;
+    if(diff<=10) return 8;
+    if(relative<=0.35) return 5;
+    if(relative<=0.55) return 1;
+    return -10;
+  }
+
+  function isReasonableSwapPrice(candidate,current){
+    if(!candidate || !current) return false;
+    const diff=Math.abs(candidate.price-current.price);
+    const relative=diff/Math.max(10,current.price);
+    return diff<=12 || relative<=0.4;
+  }
+
+  function swapNoveltyScore(candidate,current,otherItems=[]){
+    let score=0;
+    if(candidate.group!==current.group) score+=12;
+    if(dominantBroadForProduct(candidate)!==dominantBroadForProduct(current)) score+=14;
+
+    const candidateBroad=dominantBroadForProduct(candidate);
+    if(!otherItems.some(x=>dominantBroadForProduct(x)===candidateBroad)) score+=10;
+    if(!otherItems.some(x=>x.group===candidate.group)) score+=8;
+
+    const candidateMechanics=new Set(candidate.mechanics||[]);
+    const mechanicAlreadyUsed=otherItems.some(x=>(x.mechanics||[]).some(m=>candidateMechanics.has(m)));
+    if(!mechanicAlreadyUsed) score+=7;
+
+    return score;
+  }
+
+  function wishesSwapSuggestion(ws,overlap){
+    if(!overlap || !overlap.items?.length) return null;
+
+    const replace=[...overlap.items].sort((a,b)=>{
+      const fitDiff=childFitScore(a)-childFitScore(b);
+      if(Math.abs(fitDiff)>0.1) return fitDiff;
+      return pairSimilarity(b,overlap.items[0])-pairSimilarity(a,overlap.items[0]);
+    })[0];
+
+    const otherGifts=ws.filter(p=>p.id!==replace.id);
+    const excluded=new Set([...state.wishes,...state.playroom]);
+    excluded.delete(replace.id);
+
+    const candidates=products
+      .filter(p=>
+        !excluded.has(p.id) &&
+        Number(state.profile.age)>=p.age[0] &&
+        Number(state.profile.age)<=p.age[1] &&
+        isReasonableSwapPrice(p,replace)
+      )
+      .map(p=>{
+        const childFit=childFitScore(p);
+        const priceFit=priceFitScore(p,replace);
+        const novelty=swapNoveltyScore(p,replace,otherGifts);
+        const overlapPenalty=otherGifts.reduce((sum,x)=>sum+pairSimilarity(p,x),0);
+        const total=childFit*1.25 + priceFit + novelty - overlapPenalty*1.3;
+        return {p,childFit,priceFit,novelty,total};
+      })
+      .filter(x=>x.childFit>=0)
+      .sort((a,b)=>b.total-a.total);
+
+    if(!candidates.length) return null;
+
+    const alternative=candidates[0].p;
+    const before=giftsVarietyResult(ws);
+    const swapped=ws.map(p=>p.id===replace.id?alternative:p);
+    const after=giftsVarietyResult(swapped);
+
+    return {
+      replace,
+      alternative,
+      beforeLift:before.displayLift,
+      afterLift:Math.max(before.displayLift,after.displayLift)
+    };
+  }
+
+  function giftsVerdict(ws,overlap,variety){
+    if(overlap){
+      return {
+        type:'overlap',
+        icon:'✨',
+        title:'One swap could add more variety',
+        copy:`Some of your saved Gifts offer very similar play. You can keep the same interests while adding something different.`
+      };
+    }
+
+    const broadCounts={};
+    ws.forEach(p=>{
+      const b=dominantBroadForProduct(p);
+      broadCounts[b]=(broadCounts[b]||0)+1;
+    });
+    const top=Object.entries(broadCounts).sort((a,b)=>b[1]-a[1])[0];
+    const focused=top && ws.length>=3 && top[1]/ws.length>=0.6;
+
+    if(focused){
+      return {
+        type:'focused',
+        icon:'💜',
+        title:'A focused mix',
+        copy:`These Gifts strongly build on ${state.profile.name||'your child'}’s interests while still bringing some new variety.`
+      };
+    }
+
+    return {
+      type:'good',
+      icon:'✓',
+      title:'Great variety',
+      copy:`These Gifts bring different kinds of play into the Playroom. There is no obvious overlap worth changing.`
+    };
+  }
+
+  function addedVarietyLabels(ws){
+    const broadCounts={};
+    ws.forEach(p=>{
+      const b=dominantBroadForProduct(p);
+      broadCounts[b]=(broadCounts[b]||0)+(Object.values(p.skills||{}).reduce((a,v)=>a+v,0)||1);
+    });
+    return Object.entries(broadCounts)
+      .sort((a,b)=>b[1]-a[1])
+      .slice(0,3)
+      .map(([label])=>label);
+  }
+
+  function renderWishesMap(successData=null){
     const ws=state.wishes.map(id=>products.find(p=>p.id===id)).filter(Boolean);
     const content=document.getElementById('wishesMapContent'); if(!content)return;
-    if(!ws.length){content.innerHTML='<p class="subtle">Save a few Wishes first and their map will appear here.</p>';return;}
-    const rows=wishesMapRows(ws);
-    const current=getPlayMap().scores, future=getPlayMap(ws).scores;
-    const topSkills=Object.keys(future).map(k=>({k,d:future[k]-current[k]})).filter(x=>x.d>0).sort((a,b)=>b.d-a.d).slice(0,5);
-    const overlap=wishesOverlap(ws);
-    const alt=wishesAlternative(ws,overlap);
-    content.innerHTML=`<p class="subtle">This compares the cognitive play already represented by the Playroom and regular activities with what the saved Wishes would add.</p>
-      <div class="wm-legend"><span><i class="wm-dot current"></i>Current</span><span><i class="wm-dot future"></i>With Wishes</span></div>
-      <div>${rows.map(r=>`<div class="wm-row"><div class="wm-row-head"><strong>${escapeHtml(r.label)}</strong><span class="wm-delta">${r.delta>0?'adds variety':'little change'}</span></div><div class="wm-bar-track"><span class="wm-bar-future" style="width:${Math.max(4,r.future)}%"></span><span class="wm-bar-current" style="width:${Math.max(2,r.current)}%"></span></div></div>`).join('')}</div>
-      <div class="divider"></div><h3>What these Wishes add most</h3><p class="subtle">Tap a skill to see which saved games contribute to it.</p><div class="wm-skill-list">${topSkills.map(x=>`<button class="wm-skill-btn" data-wish-skill="${x.k}">${escapeHtml(skillLabels[x.k])}</button>`).join('')}</div><div class="wm-detail" id="wishSkillDetail">Choose a skill above.</div>
-      ${overlap?`<div class="wm-overlap"><strong>${overlap.count>=3?`${overlap.count} Wishes are quite similar.`:'Some Wishes lean toward the same kind of play.'}</strong><div class="subtle" style="color:var(--ink);margin-top:3px">${escapeHtml(overlap.label)} appears repeatedly. That is not bad, but one different choice could broaden the cognitive variety.</div>${alt?`<div class="wm-alt"><img src="${alt.image}" alt="${escapeHtml(alt.name)}"><div class="wm-alt-main"><div class="wm-alt-name">Try something different: ${escapeHtml(alt.name)}</div><div class="wm-alt-copy">A stronger contrast with the current Wishes.</div></div><button class="bundle-swap" id="viewWishAlternative" data-alt-product="${alt.id}">See it</button></div>`:''}</div>`:''}`;
-    bindWishesMap();
+
+    if(!ws.length){
+      content.innerHTML='<p class="subtle">Save a few Gifts first and their map will appear here.</p>';
+      return;
+    }
+
+    const variety=giftsVarietyResult(ws);
+    const overlap=giftsOverlap(ws);
+    const swapSuggestion=wishesSwapSuggestion(ws,overlap);
+    const verdict=giftsVerdict(ws,overlap,variety);
+    const labels=addedVarietyLabels(ws);
+
+    if(successData){
+      content.innerHTML=`
+        <div class="gift-swap-success">
+          <div class="success-icon">🎉</div>
+          <h3>Nice choice!</h3>
+          <p>You successfully swapped <strong>${escapeHtml(successData.from)}</strong> for <strong>${escapeHtml(successData.to)}</strong>.</p>
+          <div class="gift-score-change">+${successData.before}% → +${successData.after}% variety</div>
+          <p>Your Gift Mix now brings more variety to ${escapeHtml(state.profile.name||'your child')}’s Playroom.</p>
+        </div>
+        <button class="btn btn-soft" id="showUpdatedGiftMap" style="width:100%;margin-top:10px">See updated Gifts Map</button>`;
+      content.querySelector('#showUpdatedGiftMap')?.addEventListener('click',()=>renderWishesMap());
+      return;
+    }
+
+    const detailRows=Object.keys(broadSkillGroups).map(label=>{
+      const contributing=ws.filter(p=>dominantBroadForProduct(p)===label);
+      if(!contributing.length) return '';
+      return `<div class="gift-detail-row"><strong>${escapeHtml(label)}</strong><span>${contributing.map(p=>escapeHtml(p.name)).join(' · ')}</span></div>`;
+    }).join('');
+
+    content.innerHTML=`
+      <div class="gift-map-hero">
+        <div class="gift-map-kicker">Your Gift Mix</div>
+        <div class="gift-map-score"><strong>+${variety.displayLift}%</strong><span>variety</span></div>
+        <div class="gift-map-headline">Your Gifts bring more variety to the Playroom.</div>
+        <p class="gift-map-sub">They add different kinds of play while still building on what ${escapeHtml(state.profile.name||'your child')} enjoys.</p>
+        <div class="gift-added-chips">${labels.map(x=>`<span class="gift-added-chip">${escapeHtml(x)}</span>`).join('')}</div>
+      </div>
+
+      <div class="gift-verdict ${verdict.type}">
+        <div class="gift-verdict-title"><span>${verdict.icon}</span><span>${escapeHtml(verdict.title)}</span></div>
+        <p>${escapeHtml(verdict.copy)}</p>
+      </div>
+
+      ${swapSuggestion?`
+        <div class="gift-swap-card">
+          <div class="gift-swap-kicker">✨ Smart suggestion</div>
+          <div class="gift-swap-row">
+            <div class="gift-swap-item">
+              <img src="${swapSuggestion.replace.image}" alt="${escapeHtml(swapSuggestion.replace.name)}">
+              <strong>${escapeHtml(swapSuggestion.replace.name)}</strong>
+            </div>
+            <div class="gift-swap-arrow">→</div>
+            <div class="gift-swap-item">
+              <img src="${swapSuggestion.alternative.image}" alt="${escapeHtml(swapSuggestion.alternative.name)}">
+              <strong>${escapeHtml(swapSuggestion.alternative.name)}</strong>
+            </div>
+          </div>
+          <div class="gift-swap-explain">This keeps a good fit for ${escapeHtml(state.profile.name||'your child')} and a similar price, while adding a more different kind of play.</div>
+          <div class="gift-swap-actions">
+            <button class="btn btn-soft" id="smartSwapGift" data-from-product="${swapSuggestion.replace.id}" data-alt-product="${swapSuggestion.alternative.id}">Smart Swap</button>
+            <button class="btn btn-ghost" id="showAnotherGiftSwap">Show another</button>
+          </div>
+        </div>`:''}
+
+      <button class="gift-map-details-toggle" id="toggleGiftMapDetails">See details</button>
+      <div class="gift-map-details" id="giftMapDetails">
+        ${detailRows || '<p class="subtle">Your saved Gifts add a mix of different play experiences.</p>'}
+      </div>`;
+
+    bindWishesMap(swapSuggestion);
   }
 
-  function bindWishesMap(){
+  function bindWishesMap(swapSuggestion){
     const content=document.getElementById('wishesMapContent'); if(!content)return;
-    content.querySelectorAll('[data-wish-skill]').forEach(btn=>btn.addEventListener('click',()=>{
-      content.querySelectorAll('[data-wish-skill]').forEach(x=>x.classList.toggle('active',x===btn));
-      const k=btn.dataset.wishSkill;
-      const contributing=state.wishes.map(id=>products.find(p=>p.id===id)).filter(p=>p?.skills?.[k]).sort((a,b)=>(b.skills[k]||0)-(a.skills[k]||0));
-      const detail=content.querySelector('#wishSkillDetail');
-      detail.innerHTML=contributing.length?`<strong>${escapeHtml(skillLabels[k])}</strong><br>${contributing.map(p=>escapeHtml(p.name)).join(' · ')}`:'No saved Wish contributes strongly to this area yet.';
-    }));
-    content.querySelector('#viewWishAlternative')?.addEventListener('click',e=>{
-      state.currentProductId=e.currentTarget.dataset.altProduct;state.activeScreen='discover';save();wishesMapDialog.close();renderAll();showToast('Showing a more complementary option.');
+
+    content.querySelector('#toggleGiftMapDetails')?.addEventListener('click',e=>{
+      const details=content.querySelector('#giftMapDetails');
+      const open=details.classList.toggle('open');
+      e.currentTarget.textContent=open?'Hide details':'See details';
+    });
+
+    content.querySelector('#smartSwapGift')?.addEventListener('click',e=>{
+      const fromId=e.currentTarget.dataset.fromProduct;
+      const altId=e.currentTarget.dataset.altProduct;
+      const replace=products.find(p=>p.id===fromId);
+      const alternative=products.find(p=>p.id===altId);
+      if(!replace || !alternative) return;
+
+      const before=giftsVarietyResult(state.wishes.map(id=>products.find(p=>p.id===id)).filter(Boolean)).displayLift;
+
+      state.wishes=state.wishes.map(id=>id===fromId?altId:id);
+      state.reserved=state.reserved.filter(id=>id!==fromId);
+      save();
+      renderAll();
+
+      const after=giftsVarietyResult(state.wishes.map(id=>products.find(p=>p.id===id)).filter(Boolean)).displayLift;
+      renderWishesMap({
+        from:replace.name,
+        to:alternative.name,
+        before,
+        after:Math.max(before,after)
+      });
+    });
+
+    content.querySelector('#showAnotherGiftSwap')?.addEventListener('click',()=>{
+      if(!swapSuggestion) return;
+      const currentAlt=swapSuggestion.alternative.id;
+      const originalSkipped=[...(state.skipped||[])];
+      if(!state.skipped.includes(currentAlt)) state.skipped.push(currentAlt);
+      renderWishesMap();
+      state.skipped=originalSkipped;
     });
   }
 
@@ -2733,7 +3865,7 @@
     document.querySelectorAll('.skill-info').forEach(btn=>btn.addEventListener('click',e=>{ e.stopPropagation(); const k=btn.dataset.skill; document.getElementById('skillTitle').textContent=skillInfo[k]?.[0]||'Skill'; document.getElementById('skillText').textContent=skillInfo[k]?.[1]||''; skillDialog.showModal(); }));
 
     document.getElementById('skipProduct')?.addEventListener('click',()=>{ const p=currentProduct(); if(!p)return; state.seenSwipeHint=true; state.skipped.push(p.id); state.currentProductId=null; save(); showToast('Skipped. We’ll learn from that.'); nextProduct(); });
-    document.getElementById('saveProduct')?.addEventListener('click',()=>{ const p=currentProduct(); if(!p)return; state.seenSwipeHint=true; if(!state.wishes.includes(p.id)) state.wishes.push(p.id); state.currentProductId=null; save(); showToast('Saved to Wishes'); nextProduct(); });
+    document.getElementById('saveProduct')?.addEventListener('click',()=>{ const p=currentProduct(); if(!p)return; state.seenSwipeHint=true; if(!state.wishes.includes(p.id)) state.wishes.push(p.id); state.currentProductId=null; save(); showToast('Saved to Gifts'); nextProduct(); });
     document.getElementById('ownProduct')?.addEventListener('click',()=>{ const p=currentProduct(); if(!p)return; state.seenSwipeHint=true; if(!state.playroom.includes(p.id)) state.playroom.push(p.id); state.currentProductId=null; save(); showToast(`Added ${p.name} to the Playroom`); nextProduct(); });
     document.getElementById('resetSkipped')?.addEventListener('click',refreshDiscoveryDeck);
     document.getElementById('openAddDialog')?.addEventListener('click',()=>{ addFlow={type:null,category:null}; renderAddDialog(); addDialog.showModal(); bindAddDialog(); });
@@ -2761,9 +3893,53 @@
 
   function bindBundleDialog(){
     const panel=document.getElementById('bundleContent'); if(!panel)return;
-    panel.querySelector('#bundleBudget')?.addEventListener('change',e=>{ state.bundleBudget=Number(e.target.value); state.bundle=[]; generateBundle(); renderBundlePanel(); bindBundleDialog(); });
-    panel.querySelectorAll('[data-swap-bundle]').forEach(btn=>btn.addEventListener('click',()=>{swapBundleItem(btn.dataset.swapBundle);renderBundlePanel();bindBundleDialog();}));
-    panel.querySelector('#saveBundleWishes')?.addEventListener('click',()=>{ state.bundle.forEach(id=>{if(!state.wishes.includes(id))state.wishes.push(id)}); save(); bundleDialog.close(); renderAll(); showToast('Bundle saved to Wishes'); });
+
+    const budget=panel.querySelector('#bundleBudget');
+    const budgetNumber=panel.querySelector('#bundleBudgetNumber');
+
+    budget?.addEventListener('input',e=>{
+      if(budgetNumber) budgetNumber.textContent=`€${e.target.value}`;
+    });
+
+    budget?.addEventListener('change',e=>{
+      state.bundleBudget=Number(e.target.value);
+      state.bundle=[];
+      generateBundle();
+      renderBundlePanel();
+      bindBundleDialog();
+    });
+
+    panel.querySelectorAll('[data-swap-bundle]').forEach(btn=>btn.addEventListener('click',()=>{
+      swapBundleItem(btn.dataset.swapBundle);
+      renderBundlePanel();
+      bindBundleDialog();
+    }));
+
+    panel.querySelector('#applySmartSwap')?.addEventListener('click',e=>{
+      const btn=e.currentTarget;
+      const from=btn.dataset.from;
+      const to=btn.dataset.to;
+      if(!from || !to) return;
+      state.bundle=state.bundle.map(id=>id===from?to:id);
+      save();
+      renderBundlePanel();
+      bindBundleDialog();
+      showToast('Smart swap applied');
+    });
+
+    panel.querySelector('#dismissSmartSwap')?.addEventListener('click',()=>{
+      panel.querySelector('.overlap-suggestion')?.remove();
+    });
+
+    panel.querySelector('#saveBundleWishes')?.addEventListener('click',()=>{
+      state.bundle.forEach(id=>{
+        if(!state.wishes.includes(id)) state.wishes.push(id);
+      });
+      save();
+      renderAll();
+      bundleDialog.close();
+      showToast('Bundle saved to Wishes');
+    });
   }
 
   function swapBundleItem(id){
@@ -2857,58 +4033,6 @@
 
   renderAll();
 })();
-
-  // SmartRoom v22 bundle controls
-  (function(){
-    function wireBundleControls(){
-      const slider=document.getElementById('bundleBudgetRange');
-      const value=document.getElementById('bundleBudgetValue');
-      const total=document.getElementById('bundleEstimatedTotal');
-
-      if(slider && value){
-        const update=()=>{
-          value.textContent=`€${slider.value}`;
-          if(total) total.textContent=`Around €${slider.value}`;
-          try{
-            localStorage.setItem('smartroom_bundle_budget', slider.value);
-          }catch(e){}
-        };
-        try{
-          const saved=localStorage.getItem('smartroom_bundle_budget');
-          if(saved && !isNaN(+saved)) slider.value=saved;
-        }catch(e){}
-        slider.addEventListener('input',update);
-        update();
-      }
-
-      const see=document.getElementById('seeSmartSwap');
-      const keep=document.getElementById('keepBundle');
-      const card=document.getElementById('smartSwapCard');
-
-      if(see && !see.dataset.wired){
-        see.dataset.wired='1';
-        see.addEventListener('click',()=>{
-          const title=card?.querySelector('.smart-swap-title');
-          const copy=card?.querySelector('.smart-swap-copy');
-          if(title) title.textContent='Swap construction overlap for more cooperative play?';
-          if(copy) copy.textContent='This keeps the bundle age-appropriate while adding a different play experience instead of repeating what is already well represented.';
-          see.textContent='Make the swap';
-        });
-      }
-
-      if(keep && !keep.dataset.wired){
-        keep.dataset.wired='1';
-        keep.addEventListener('click',()=>{
-          if(card) card.style.display='none';
-        });
-      }
-    }
-
-    document.addEventListener('click',()=>setTimeout(wireBundleControls,20));
-    document.addEventListener('DOMContentLoaded',wireBundleControls);
-    setInterval(wireBundleControls,500);
-  })();
-
 </script>
 </body>
 </html>
