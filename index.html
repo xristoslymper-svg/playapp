@@ -1,1835 +1,1016 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>SmartParent — Purposeful Cognitive Play</title>
-  <style>
-    :root{
-      --rose:#F2C6CF;
-      --rose-2:#F8E6EA;
-      --rose-3:#EAAFC0;
-      --sage:#C9DEC7;
-      --sage-2:#EAF3E8;
-      --cream:#FBF7F1;
-      --peach:#F6DDC8;
-      --lav:#DDD7EF;
-      --sky:#D8E7F1;
-      --sun:#F4E7B8;
-      --ink:#35312F;
-      --muted:#7E7773;
-      --line:#EDE5DE;
-      --card:#FFFDFC;
-      --white:#FFFFFF;
-      --shadow:0 10px 30px rgba(77,60,49,.08);
-      --shadow-soft:0 6px 18px rgba(77,60,49,.06);
-      --radius-xl:28px;
-      --radius-lg:22px;
-      --radius-md:17px;
-      --radius-sm:13px;
-      --safe-bottom: env(safe-area-inset-bottom, 0px);
-    }
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>SmartRoom — MVP</title>
+<style>
+  :root{
+    --bg:#f7f3ee;
+    --card:#fffdfa;
+    --ink:#2e2b2a;
+    --muted:#7c7773;
+    --border:#e8e0d9;
+    --rose:#ead1d6;
+    --rose-deep:#b76f80;
+    --sage:#dbe6d5;
+    --sage-deep:#6f8a68;
+    --lav:#e3dff0;
+    --blue:#dce8ef;
+    --peach:#f2dfcd;
+    --cream:#fbf4e8;
+    --shadow:0 12px 30px rgba(68,55,45,.08);
+    --radius:24px;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter, ui-rounded, "SF Pro Rounded", "Segoe UI", system-ui, -apple-system, sans-serif}
+  body{min-height:100vh}
+  button,input,select{font:inherit}
+  button{cursor:pointer}
+  .app-shell{max-width:460px;margin:0 auto;min-height:100vh;background:linear-gradient(180deg,#fbf8f4 0%,#f7f3ee 100%);position:relative;padding-bottom:92px}
+  .topbar{position:sticky;top:0;z-index:10;background:rgba(251,248,244,.94);backdrop-filter:blur(16px);padding:16px 18px 10px;border-bottom:1px solid rgba(232,224,217,.65)}
+  .brand-row{display:flex;align-items:center;justify-content:space-between;gap:12px}
+  .brand{font-weight:850;letter-spacing:-.03em;font-size:22px}
+  .profile-btn{width:42px;height:42px;border:none;border-radius:50%;background:var(--sage);color:var(--ink);font-weight:800;display:grid;place-items:center}
+  .content{padding:18px}
+  .screen{display:none}
+  .screen.active{display:block}
+  h1,h2,h3,p{margin-top:0}
+  h1{font-size:28px;line-height:1.08;letter-spacing:-.035em;margin-bottom:8px}
+  h2{font-size:20px;letter-spacing:-.025em;margin-bottom:10px}
+  h3{font-size:16px;margin-bottom:6px}
+  .subtle{color:var(--muted);font-size:14px;line-height:1.45}
+  .eyebrow{font-size:12px;text-transform:uppercase;letter-spacing:.09em;font-weight:800;color:var(--sage-deep);margin-bottom:8px}
+  .card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow)}
+  .section{margin-bottom:18px}
+  .btn{border:0;border-radius:16px;padding:13px 16px;font-weight:800;min-height:46px}
+  .btn-primary{background:var(--ink);color:white}
+  .btn-soft{background:var(--sage);color:var(--ink)}
+  .btn-ghost{background:transparent;border:1px solid var(--border);color:var(--ink)}
+  .btn-rose{background:var(--rose);color:var(--ink)}
+  .btn-row{display:flex;gap:10px;flex-wrap:wrap}
+  .btn-row .btn{flex:1;min-width:120px}
+  .icon-btn{border:none;background:#fff;border:1px solid var(--border);width:42px;height:42px;border-radius:14px;display:grid;place-items:center;font-size:18px}
+  .pill{display:inline-flex;align-items:center;gap:5px;border-radius:999px;padding:7px 10px;background:#f3efeb;border:1px solid #ece5df;font-size:12px;font-weight:750;margin:3px 4px 3px 0}
+  .pill button{border:none;background:transparent;padding:0;font-size:13px;color:var(--muted)}
+  .divider{height:1px;background:var(--border);margin:16px 0}
+  .toast{position:fixed;left:50%;bottom:98px;transform:translateX(-50%) translateY(12px);background:#2f2b29;color:#fff;padding:11px 14px;border-radius:14px;font-size:13px;font-weight:700;opacity:0;pointer-events:none;transition:.2s;z-index:50;max-width:380px;text-align:center}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 
-    *{box-sizing:border-box}
-    html{scroll-behavior:smooth}
-    body{
-      margin:0;
-      background:linear-gradient(180deg,#FCF7F2 0%,#FAF8F4 55%,#F7F4EF 100%);
-      color:var(--ink);
-      font-family: ui-rounded, "SF Pro Rounded", "Nunito", "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-    }
-    button,input,select,textarea{font:inherit}
-    button{cursor:pointer}
-    .app{
-      max-width:520px;
-      margin:0 auto;
-      min-height:100vh;
-      background:rgba(255,255,255,.58);
-      position:relative;
-      box-shadow:0 0 0 1px rgba(70,50,40,.03);
-    }
-    .screen{
-      min-height:100vh;
-      padding:18px 18px calc(104px + var(--safe-bottom));
-      display:none;
-    }
-    .screen.active{display:block}
-    .topbar{
-      position:sticky;top:0;z-index:20;
-      margin:-18px -18px 10px;
-      padding:14px 18px 12px;
-      background:linear-gradient(180deg,rgba(251,247,241,.97),rgba(251,247,241,.90),rgba(251,247,241,0));
-      backdrop-filter: blur(8px);
-    }
-    .brand-row{display:flex;align-items:center;justify-content:space-between;gap:12px}
-    .brand{
-      display:flex;align-items:center;gap:10px;font-weight:900;font-size:21px;letter-spacing:-.4px;
-    }
-    .brand-mark{
-      width:36px;height:36px;border-radius:12px;background:linear-gradient(135deg,var(--rose),var(--sage));
-      display:grid;place-items:center;box-shadow:var(--shadow-soft);font-size:20px;
-    }
-    .profile-pill{
-      border:0;background:var(--white);box-shadow:var(--shadow-soft);
-      border-radius:999px;padding:8px 11px;font-size:13px;color:var(--ink);font-weight:700;
-    }
-    h1,h2,h3,p{margin-top:0}
-    h1{font-size:31px;line-height:1.08;letter-spacing:-1.1px;margin-bottom:8px}
-    h2{font-size:22px;letter-spacing:-.6px;margin-bottom:10px}
-    h3{font-size:17px;letter-spacing:-.25px;margin-bottom:7px}
-    p{line-height:1.5;color:var(--muted)}
-    .eyebrow{
-      text-transform:uppercase;letter-spacing:.11em;font-size:11px;font-weight:900;color:#9E777F;margin-bottom:7px
-    }
-    .section{margin-top:22px}
-    .section-head{display:flex;align-items:end;justify-content:space-between;gap:12px;margin-bottom:10px}
-    .section-head h2{margin:0}
-    .section-link{
-      border:0;background:transparent;color:#A06473;font-weight:800;font-size:13px;padding:5px 0;
-    }
-    .card{
-      background:var(--card);border:1px solid rgba(107,85,73,.07);
-      border-radius:var(--radius-xl);box-shadow:var(--shadow);padding:17px;
-    }
-    .hero{
-      background:
-        radial-gradient(circle at 88% 15%, rgba(255,255,255,.7), transparent 30%),
-        linear-gradient(135deg,var(--rose-2),#FFF7F4 55%,var(--sage-2));
-      overflow:hidden;position:relative;
-    }
-    .hero:after{
-      content:"";position:absolute;right:-30px;bottom:-45px;width:160px;height:160px;border-radius:50%;
-      background:rgba(201,222,199,.45);
-    }
-    .hero > *{position:relative;z-index:1}
-    .hero p{max-width:360px}
-    .hero-actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:14px}
-    .btn{
-      border:0;border-radius:16px;padding:12px 15px;font-weight:900;letter-spacing:-.15px;
-      display:inline-flex;align-items:center;justify-content:center;gap:7px;
-    }
-    .btn-primary{background:var(--ink);color:white}
-    .btn-rose{background:var(--rose);color:#4C333A}
-    .btn-soft{background:#fff;color:var(--ink);box-shadow:var(--shadow-soft)}
-    .btn-sage{background:var(--sage);color:#334436}
-    .btn-block{width:100%}
-    .mini{
-      font-size:12px;color:var(--muted)
-    }
+  /* onboarding */
+  .onboarding{padding:26px 18px 40px}
+  .hero-mark{width:56px;height:56px;border-radius:18px;background:linear-gradient(135deg,var(--rose),var(--sage));display:grid;place-items:center;font-size:26px;margin-bottom:18px}
+  .stepper{display:flex;gap:7px;margin:20px 0}
+  .step-dot{height:6px;flex:1;border-radius:999px;background:#e8dfd8}
+  .step-dot.active{background:var(--ink)}
+  .form-card{padding:18px}
+  label{display:block;font-size:13px;font-weight:800;margin-bottom:7px}
+  input[type="text"],input[type="number"],select{width:100%;border:1px solid var(--border);background:#fff;border-radius:14px;padding:13px 14px;color:var(--ink);font-size:16px;outline:none}
+  input:focus,select:focus{border-color:#a9bda1;box-shadow:0 0 0 3px rgba(111,138,104,.12)}
+  .chip-grid{display:flex;flex-wrap:wrap;gap:8px}
+  .chip{border:1px solid var(--border);background:#fff;border-radius:999px;padding:10px 12px;font-weight:700;color:var(--ink)}
+  .chip.selected{background:var(--sage);border-color:#bfd0b6}
+  .chip.small{padding:8px 10px;font-size:13px}
 
-    .mix-card{
-      padding:15px 15px 13px;background:linear-gradient(135deg,#FFFDFC,#FFF9F6);
-    }
-    .mix-row{display:grid;grid-template-columns:1fr auto;gap:14px;align-items:center}
-    .petals{width:105px;height:105px;position:relative;margin:auto}
-    .petal{
-      position:absolute;width:43px;height:43px;border-radius:56% 44% 60% 40%;
-      left:31px;top:31px;transform-origin:21px 21px;opacity:.98;
-    }
-    .petal:nth-child(1){background:var(--rose);transform:translateY(-31px) rotate(0deg)}
-    .petal:nth-child(2){background:var(--sage);transform:translate(27px,-14px) rotate(60deg)}
-    .petal:nth-child(3){background:var(--sky);transform:translate(27px,16px) rotate(120deg)}
-    .petal:nth-child(4){background:var(--peach);transform:translateY(31px) rotate(180deg)}
-    .petal:nth-child(5){background:var(--lav);transform:translate(-27px,16px) rotate(240deg)}
-    .petal:nth-child(6){background:var(--sun);transform:translate(-27px,-14px) rotate(300deg)}
-    .petals:after{
-      content:"";position:absolute;width:30px;height:30px;border-radius:50%;background:#FFFDFC;left:37px;top:37px;
-      box-shadow:0 3px 10px rgba(0,0,0,.05)
-    }
-    .mix-line{display:flex;gap:7px;align-items:flex-start;margin-top:8px}
-    .mix-dot{width:9px;height:9px;border-radius:50%;margin-top:6px;flex:0 0 auto}
+  /* discover */
+  .discover-head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:14px}
+  .mini-map{background:var(--sage);padding:10px 12px;border-radius:16px;font-size:12px;line-height:1.3;max-width:150px}
+  .product-card{overflow:hidden;touch-action:pan-y;transition:transform .2s ease,opacity .2s ease}
+  .product-visual{height:220px;display:grid;place-items:center;position:relative;background:linear-gradient(135deg,var(--peach),var(--lav))}
+  .product-visual .emoji{font-size:88px;filter:drop-shadow(0 8px 14px rgba(0,0,0,.08))}
+  .price-badge{position:absolute;top:14px;right:14px;background:rgba(255,255,255,.9);padding:8px 11px;border-radius:999px;font-size:13px;font-weight:850}
+  .match-badge{position:absolute;top:14px;left:14px;background:rgba(255,255,255,.9);padding:8px 11px;border-radius:999px;font-size:12px;font-weight:800;color:var(--sage-deep)}
+  .product-body{padding:18px}
+  .product-title-row{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+  .product-name{font-size:23px;font-weight:900;letter-spacing:-.03em;line-height:1.1}
+  .product-meta{font-size:13px;color:var(--muted);margin-top:4px}
+  .reason-box{border-radius:18px;padding:13px 14px;background:#f5f0eb;margin:12px 0}
+  .reason-label{font-size:11px;text-transform:uppercase;letter-spacing:.08em;font-weight:900;color:#8f877f;margin-bottom:4px}
+  .reason-text{font-size:14px;line-height:1.45}
+  .action-row{display:grid;grid-template-columns:1fr 1.25fr;gap:10px;margin-top:14px}
+  .secondary-actions{display:flex;justify-content:center;gap:8px;margin-top:10px}
+  .secondary-actions button{border:0;background:transparent;color:var(--muted);font-weight:750;padding:9px}
+  .deck-empty{padding:30px 20px;text-align:center}
 
-    .scroll-row{display:flex;gap:12px;overflow-x:auto;padding:3px 3px 7px;margin:0 -3px;scrollbar-width:none}
-    .scroll-row::-webkit-scrollbar{display:none}
-    .game-card{
-      min-width:245px;max-width:245px;background:var(--card);border-radius:23px;padding:15px;
-      border:1px solid rgba(107,85,73,.07);box-shadow:var(--shadow-soft);
-    }
-    .game-visual{
-      height:108px;border-radius:18px;margin-bottom:12px;display:flex;align-items:center;justify-content:center;
-      font-size:42px;position:relative;overflow:hidden;
-    }
-    .game-visual:before,.product-visual:before{
-      content:"";position:absolute;width:100px;height:100px;border-radius:50%;background:rgba(255,255,255,.46);right:-28px;top:-30px;
-    }
-    .game-card h3{margin-bottom:4px}
-    .tag-row{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0 12px}
-    .tag{
-      background:#F6F1EC;color:#6C625D;border-radius:999px;padding:6px 8px;font-size:11px;font-weight:800;
-    }
-    .tag.green{background:var(--sage-2);color:#60705E}
-    .tag.rose{background:var(--rose-2);color:#8A5E69}
-    .tag.blue{background:#ECF3F7;color:#647C8A}
+  /* playroom */
+  .summary-card{padding:18px;background:linear-gradient(135deg,#fff,var(--cream))}
+  .stat-row{display:flex;gap:12px;margin-top:14px}
+  .stat{flex:1;background:#fff;border:1px solid var(--border);border-radius:16px;padding:12px}
+  .stat strong{display:block;font-size:20px}
+  .stat span{font-size:12px;color:var(--muted)}
+  .owned-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+  .owned-item{display:flex;align-items:center;gap:10px;background:var(--card);border:1px solid var(--border);border-radius:18px;padding:12px;min-width:0}
+  .owned-item .oemoji{font-size:27px}
+  .owned-item .otext{min-width:0;flex:1}
+  .owned-item .otitle{font-size:13px;font-weight:850;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .owned-item .osub{font-size:11px;color:var(--muted);margin-top:2px}
+  .owned-item .remove{border:none;background:transparent;color:#9b8f87;font-size:18px}
+  .playmap{padding:18px}
+  .map-row{display:grid;grid-template-columns:120px 1fr 72px;gap:10px;align-items:center;margin:11px 0}
+  .map-label{font-size:13px;font-weight:800}
+  .bar{height:10px;border-radius:999px;background:#eee8e2;overflow:hidden}
+  .bar > span{display:block;height:100%;border-radius:999px;background:linear-gradient(90deg,#9eb793,#c2d5b9)}
+  .map-state{font-size:11px;color:var(--muted);text-align:right}
+  .next-focus{margin-top:14px;padding:13px 14px;border-radius:18px;background:var(--sage)}
+  .add-panel,.bundle-panel,.share-panel,.profile-panel{display:none;margin-top:14px;padding:16px}
+  .add-panel.show,.bundle-panel.show,.share-panel.show,.profile-panel.show{display:block}
 
-    .insight{
-      background:linear-gradient(135deg,#FAE9EE,#FFFDFC);
-      border-radius:22px;padding:15px;border:1px solid #F2D9E0;
-    }
-    .insight strong{color:#6F4752}
+  /* wishes */
+  .wish-card{display:flex;gap:12px;padding:13px;margin-bottom:10px;align-items:center}
+  .wish-thumb{width:74px;height:74px;border-radius:18px;display:grid;place-items:center;background:var(--lav);font-size:38px;flex:0 0 auto}
+  .wish-main{min-width:0;flex:1}
+  .wish-name{font-weight:850;line-height:1.2}
+  .wish-meta{font-size:12px;color:var(--muted);margin:4px 0}
+  .wish-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:7px}
+  .wish-actions button{border:none;border-radius:10px;padding:7px 9px;font-size:11px;font-weight:800;background:#f2ece7}
+  .reserved{background:var(--sage)!important}
 
-    .product-teaser{
-      display:grid;grid-template-columns:92px 1fr;gap:13px;align-items:center;
-      background:linear-gradient(135deg,#FFFDFC,#F5FAF3);
-    }
-    .product-visual{
-      height:90px;border-radius:20px;background:var(--sage-2);display:grid;place-items:center;font-size:38px;position:relative;overflow:hidden;
-    }
-    .price{font-weight:900;color:var(--ink);font-size:14px}
-    .trust-note{
-      margin-top:10px;background:#F8F4EF;padding:11px 13px;border-radius:15px;font-size:12px;color:#776E69;
-    }
+  /* bundle */
+  .bundle-card{padding:16px;margin-top:12px}
+  .bundle-item{display:flex;gap:12px;align-items:center;padding:12px 0;border-bottom:1px solid var(--border)}
+  .bundle-item:last-child{border-bottom:0}
+  .bundle-emoji{width:48px;height:48px;border-radius:14px;background:var(--blue);display:grid;place-items:center;font-size:27px;flex:0 0 auto}
+  .bundle-main{flex:1;min-width:0}
+  .bundle-name{font-weight:850;font-size:13px}
+  .bundle-skills{font-size:11px;color:var(--muted);margin-top:3px}
+  .bundle-swap{border:1px solid var(--border);background:#fff;border-radius:11px;padding:8px 10px;font-size:11px;font-weight:800}
 
-    .chips{display:flex;gap:8px;flex-wrap:wrap}
-    .chip{
-      border:1px solid var(--line);background:#FFFDFC;border-radius:999px;padding:9px 12px;
-      font-weight:800;font-size:13px;color:#665D58;
-    }
-    .chip.selected{background:var(--ink);color:#fff;border-color:var(--ink)}
-    .filter-group{margin-top:18px}
-    .filter-group label{display:block;font-size:13px;font-weight:900;margin-bottom:9px}
-    .search-bar{
-      background:white;border:1px solid var(--line);border-radius:18px;padding:12px 14px;display:flex;gap:10px;align-items:center;
-      box-shadow:var(--shadow-soft)
-    }
-    .search-bar input{border:0;outline:0;width:100%;background:transparent;color:var(--ink)}
+  /* bottom nav */
+  .bottom-nav{position:fixed;left:50%;bottom:0;transform:translateX(-50%);width:min(460px,100%);display:grid;grid-template-columns:repeat(3,1fr);background:rgba(255,253,250,.96);backdrop-filter:blur(16px);border-top:1px solid var(--border);padding:8px 10px calc(8px + env(safe-area-inset-bottom));z-index:20}
+  .nav-btn{border:none;background:transparent;border-radius:16px;padding:9px 6px;color:#8e8580;font-size:11px;font-weight:800;min-height:58px}
+  .nav-btn span{display:block;font-size:20px;margin-bottom:3px}
+  .nav-btn.active{background:var(--sage);color:var(--ink)}
 
-    .activity-entry{
-      width:100%;border:1px solid var(--line);border-radius:18px;padding:14px 15px;outline:none;background:#fff;
-    }
-    .quick-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
-    .quick{
-      border:0;border-radius:18px;padding:14px;background:white;text-align:left;box-shadow:var(--shadow-soft);
-      font-weight:850;color:var(--ink);
-    }
-    .quick .emoji{font-size:23px;display:block;margin-bottom:6px}
-    .mapped{
-      background:linear-gradient(135deg,var(--sage-2),#FBFDF9);border-radius:20px;padding:14px;margin-top:13px;display:none;
-    }
-    .mapped.show{display:block}
+  /* dialogs */
+  dialog{border:none;border-radius:24px;padding:0;max-width:380px;width:calc(100% - 34px);background:var(--card);color:var(--ink);box-shadow:0 24px 70px rgba(0,0,0,.22)}
+  dialog::backdrop{background:rgba(42,37,34,.35);backdrop-filter:blur(3px)}
+  .dialog-body{padding:20px}
+  .dialog-head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+  .dialog-close{border:none;background:#f1ece8;border-radius:12px;width:38px;height:38px;font-size:18px}
+  .gift-view{padding:18px}
+  .gift-header{background:linear-gradient(135deg,var(--rose),var(--cream));border-radius:20px;padding:16px;margin-bottom:14px}
 
-    .tab-toggle{
-      display:grid;grid-template-columns:repeat(3,1fr);gap:5px;background:#F2ECE6;padding:5px;border-radius:15px;
-    }
-    .tab-toggle button{border:0;background:transparent;border-radius:11px;padding:9px;font-size:12px;font-weight:850;color:#756C67}
-    .tab-toggle button.active{background:white;box-shadow:0 3px 10px rgba(0,0,0,.05);color:var(--ink)}
-    .bar-item{margin-top:14px}
-    .bar-label{display:flex;justify-content:space-between;gap:12px;font-size:13px;font-weight:800}
-    .bar-track{height:12px;background:#F2EEE9;border-radius:999px;overflow:hidden;margin-top:7px}
-    .bar-fill{height:100%;border-radius:999px;transition:width .5s ease}
-    .recent-item{
-      display:grid;grid-template-columns:44px 1fr;gap:11px;align-items:center;padding:10px 0;border-bottom:1px solid #F0E9E2;
-    }
-    .recent-item:last-child{border-bottom:0}
-    .recent-icon{width:44px;height:44px;border-radius:15px;display:grid;place-items:center;font-size:22px;background:#F7F1EC}
-
-    .gift-hero{
-      background:linear-gradient(135deg,#FBE6EC 0%,#FFF9F6 55%,#EDF6EB 100%);
-    }
-    .product-card{
-      background:white;border-radius:23px;padding:14px;box-shadow:var(--shadow-soft);border:1px solid rgba(107,85,73,.06)
-    }
-    .product-card .product-visual{height:135px;margin-bottom:11px}
-    .product-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-    .why{
-      font-size:12px;color:#6F6762;line-height:1.45;min-height:51px;
-    }
-    .affiliate{
-      font-size:10px;color:#9B918B;margin-top:9px;
-    }
-
-    .bottom-nav{
-      position:fixed;left:50%;bottom:0;transform:translateX(-50%);z-index:50;
-      width:min(520px,100%);padding:8px 9px calc(8px + var(--safe-bottom));
-      background:rgba(255,253,250,.95);backdrop-filter:blur(16px);
-      border-top:1px solid rgba(100,80,70,.08);
-      display:grid;grid-template-columns:repeat(5,1fr);gap:3px;
-    }
-    .nav-btn{
-      border:0;background:transparent;padding:6px 2px 4px;border-radius:15px;color:#8B817C;
-      font-size:10px;font-weight:800;display:flex;flex-direction:column;gap:3px;align-items:center;
-    }
-    .nav-btn .icon{font-size:23px;line-height:1}
-    .nav-btn.active{background:#F8ECEF;color:#6F4651}
-
-    .modal{
-      position:fixed;inset:0;background:rgba(43,35,31,.34);z-index:100;display:none;align-items:flex-end;justify-content:center;
-    }
-    .modal.show{display:flex}
-    .sheet{
-      width:min(520px,100%);max-height:88vh;overflow:auto;background:#FFFDFB;border-radius:28px 28px 0 0;padding:20px 18px calc(22px + var(--safe-bottom));
-      box-shadow:0 -15px 60px rgba(0,0,0,.15);
-    }
-    .sheet-handle{width:46px;height:5px;border-radius:99px;background:#DED5CF;margin:-7px auto 17px}
-    .sheet-close{float:right;border:0;background:#F4EFEA;width:34px;height:34px;border-radius:50%;font-size:18px}
-    .steps{padding-left:20px;color:#665D58;line-height:1.55}
-    .callout{border-left:4px solid var(--rose);padding:10px 12px;background:#FCF5F7;border-radius:0 14px 14px 0;color:#6F6064;font-size:13px}
-    .form-note{font-size:12px;color:#8D827B;margin-top:8px}
-    .empty-note{font-size:13px;color:#817770;text-align:center;padding:20px 6px}
-    .toast{
-      position:fixed;left:50%;bottom:92px;transform:translateX(-50%) translateY(20px);
-      background:#342F2C;color:white;padding:10px 14px;border-radius:999px;font-size:12px;font-weight:800;opacity:0;pointer-events:none;transition:.25s;z-index:120;
-    }
-    .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-    .subtle-divider{height:1px;background:var(--line);margin:15px 0}
-    .linkish{color:#9D6371;font-weight:850}
-
-    .welcome-screen{
-      min-height:100vh;padding:24px 18px 32px;display:none;
-      background:
-        radial-gradient(circle at 85% 5%, rgba(242,198,207,.55), transparent 28%),
-        radial-gradient(circle at 10% 78%, rgba(201,222,199,.55), transparent 30%),
-        linear-gradient(180deg,#FFF9F5 0%,#FBF7F1 100%);
-    }
-    .welcome-screen.active{display:block}
-    .welcome-logo{display:flex;align-items:center;gap:10px;font-size:22px;font-weight:900;letter-spacing:-.5px;margin-bottom:24px}
-    .welcome-video{
-      width:100%;aspect-ratio:12/7;border-radius:26px;object-fit:cover;background:#F5EEE8;
-      box-shadow:var(--shadow);border:1px solid rgba(107,85,73,.08);margin:14px 0 22px;
-    }
-    .value-pills{display:flex;gap:7px;flex-wrap:wrap;margin:15px 0 20px}
-    .value-pill{padding:8px 10px;border-radius:999px;font-size:12px;font-weight:850;background:#fff;box-shadow:var(--shadow-soft)}
-    .auth-box{background:rgba(255,255,255,.78);border:1px solid rgba(107,85,73,.07);border-radius:26px;padding:16px;box-shadow:var(--shadow)}
-    .auth-switch{display:grid;grid-template-columns:1fr 1fr;background:#F1EBE5;padding:4px;border-radius:14px;margin-bottom:12px}
-    .auth-switch button{border:0;background:transparent;padding:10px;border-radius:11px;font-weight:850;color:#7A706B}
-    .auth-switch button.active{background:white;color:var(--ink);box-shadow:0 3px 10px rgba(0,0,0,.05)}
-    .auth-input{width:100%;border:1px solid var(--line);background:white;border-radius:15px;padding:12px 13px;margin-top:9px;outline:0}
-    .welcome-foot{font-size:11px;color:#918781;text-align:center;margin-top:13px;line-height:1.4}
+  @media (max-width:360px){
+    .content{padding:14px}.map-row{grid-template-columns:105px 1fr 58px}.product-visual{height:195px}.product-visual .emoji{font-size:76px}.owned-grid{grid-template-columns:1fr}.discover-head{display:block}.mini-map{margin-top:10px;max-width:none}
+  }
 
 
-    .insight-green{
-      background:linear-gradient(135deg,#EAF3E8,#FBFDF9);
-      border-color:#D7E8D4;
-    }
-    .insight-green strong{color:#4F6A52}
-    .date-strip{display:flex;gap:8px;overflow-x:auto;padding:3px 2px 8px;scrollbar-width:none}
-    .date-strip::-webkit-scrollbar{display:none}
-    .date-card{
-      min-width:58px;border:1px solid var(--line);background:#FFFDFC;border-radius:18px;padding:9px 8px;text-align:center;
-      color:#756C67;box-shadow:var(--shadow-soft)
-    }
-    .date-card .dow{font-size:10px;font-weight:850;text-transform:uppercase;letter-spacing:.05em}
-    .date-card .num{font-size:18px;font-weight:900;color:var(--ink);margin:2px 0}
-    .date-card .count{font-size:10px;min-height:12px;color:#8B817C}
-    .date-card.selected{background:var(--sage-2);border-color:#CDE0CA}
-    .date-card.today .num:after{content:"";display:block;width:5px;height:5px;border-radius:50%;background:#83A780;margin:3px auto 0}
-    .date-picker-row{display:flex;gap:8px;align-items:center;margin-top:9px}
-    .date-picker-row input{flex:1;border:1px solid var(--line);background:white;border-radius:14px;padding:10px 11px;color:var(--ink)}
-    .personalization-card{
-      background:linear-gradient(135deg,#FFF7F9,#F7FBF5);border:1px solid #EEE5E1;border-radius:22px;padding:14px;
-    }
-    .persona-row{display:flex;gap:7px;flex-wrap:wrap;margin-top:9px}
-    .persona-pill{font-size:11px;font-weight:850;padding:7px 9px;border-radius:999px;background:white;box-shadow:var(--shadow-soft);color:#6D625D}
-    .goal-card{
-      background:#F8F5F0;border-radius:22px;padding:14px;margin-top:14px
-    }
-    .goal-card .chips{margin-top:9px}
-    .gift-reason{font-size:11px;font-weight:850;color:#6F7E6C;margin-bottom:4px}
+  /* v2 refinements */
+  a{color:inherit;text-decoration:none}
+  .welcome-wrap{padding:28px 18px 46px;min-height:100vh;background:
+    radial-gradient(circle at 88% 8%,rgba(219,230,213,.9),transparent 28%),
+    radial-gradient(circle at 8% 34%,rgba(234,209,214,.72),transparent 24%),
+    linear-gradient(180deg,#fffaf7 0%,#f7f3ee 100%)}
+  .welcome-logo{display:flex;align-items:center;gap:10px;font-weight:900;letter-spacing:-.03em;font-size:22px;margin-bottom:38px}
+  .welcome-logo-mark{width:42px;height:42px;border-radius:15px;background:linear-gradient(135deg,var(--rose),var(--sage));display:grid;place-items:center}
+  .welcome-title{font-size:42px;line-height:.98;letter-spacing:-.055em;max-width:390px;margin-bottom:14px}
+  .welcome-copy{font-size:17px;line-height:1.5;color:#69635f;max-width:390px}
+  .hero-products{height:235px;position:relative;margin:20px 0 24px}
+  .hero-product{position:absolute;width:144px;height:184px;background:#fff;border:1px solid var(--border);border-radius:24px;box-shadow:0 20px 45px rgba(58,45,37,.12);padding:10px;display:flex;align-items:center;justify-content:center;overflow:hidden}
+  .hero-product img{width:100%;height:100%;object-fit:contain}
+  .hero-product.hp1{left:50%;top:14px;transform:translateX(-50%) rotate(-2deg);z-index:3}
+  .hero-product.hp2{left:18px;top:38px;transform:rotate(-10deg);z-index:1}
+  .hero-product.hp3{right:18px;top:38px;transform:rotate(10deg);z-index:2}
+  .welcome-points{display:grid;gap:10px;margin:18px 0 22px}
+  .welcome-point{display:flex;gap:11px;align-items:flex-start;padding:12px 0;border-top:1px solid rgba(232,224,217,.8)}
+  .welcome-point:first-child{border-top:0}
+  .welcome-point-icon{width:34px;height:34px;border-radius:12px;background:#fff;border:1px solid var(--border);display:grid;place-items:center;flex:0 0 auto}
+  .welcome-point strong{font-size:14px;display:block;margin-bottom:2px}
+  .welcome-point span{font-size:12px;color:var(--muted);line-height:1.4}
+  .onboarding .hero-mark{box-shadow:0 10px 25px rgba(58,45,37,.08)}
+  .discover-head.simple{display:block;margin-bottom:14px}
+  .discover-head.simple h1{margin-bottom:6px}
+  .product-visual{height:250px;background:linear-gradient(180deg,#fff,#faf7f2);overflow:hidden}
+  .product-visual img{width:100%;height:100%;object-fit:contain;padding:18px;display:block}
+  .product-fallback{display:none;width:100%;height:100%;place-items:center;font-size:84px}
+  .amazon-badge{position:absolute;top:14px;right:14px;background:#fff7dc;border:1px solid #efdfaf;padding:8px 11px;border-radius:999px;font-size:12px;font-weight:900}
+  .swipe-cue{text-align:center;color:var(--muted);font-size:12px;font-weight:750;margin:10px 0 0}
+  @keyframes swipeNudge{
+    0%,100%{transform:translateX(0) rotate(0)}
+    20%{transform:translateX(11px) rotate(1.5deg)}
+    50%{transform:translateX(0) rotate(0)}
+    80%{transform:translateX(-11px) rotate(-1.5deg)}
+  }
+  .product-card.swipe-hint-active{animation:swipeNudge 1.55s ease-in-out .45s 2;transform-origin:50% 86%}
+  .swipe-stamp{position:absolute;top:78px;padding:8px 12px;border-radius:12px;border:3px solid currentColor;font-weight:950;letter-spacing:.07em;text-transform:uppercase;opacity:0;z-index:3;background:rgba(255,255,255,.88);pointer-events:none}
+  .swipe-stamp.like{right:18px;color:#6f8a68;transform:rotate(8deg)}
+  .swipe-stamp.nope{left:18px;color:#b76f80;transform:rotate(-8deg)}
+  .amazon-link{display:inline-flex;align-items:center;justify-content:center;gap:7px;border-radius:12px;padding:8px 10px;background:#fff1c9;color:#3b352d;font-size:11px;font-weight:900;border:1px solid #eddca7}
+  .amazon-link.big{min-height:46px;border-radius:16px;padding:12px 15px;font-size:13px}
+  .playroom-overview{padding:18px}
+  .existing-section{margin-top:14px}
+  .existing-title{font-size:12px;text-transform:uppercase;letter-spacing:.08em;font-weight:900;color:#8f877f;margin-bottom:9px}
+  .mini-owned-list{display:flex;gap:8px;overflow:auto;padding-bottom:4px;scrollbar-width:none}
+  .mini-owned-list::-webkit-scrollbar{display:none}
+  .owned-chip{display:inline-flex;align-items:center;gap:7px;background:#f7f2ed;border:1px solid var(--border);border-radius:999px;padding:8px 10px;white-space:nowrap;font-size:12px;font-weight:800}
+  .owned-chip .x{border:0;background:transparent;color:#9b8f87;font-size:15px;padding:0;line-height:1}
+  .activity-chip{background:#eef3ea}
+  .feature-action{width:100%;border:1px solid var(--border);background:var(--card);border-radius:22px;padding:15px 16px;display:flex;align-items:center;gap:13px;text-align:left;box-shadow:var(--shadow);color:var(--ink)}
+  .feature-action + .feature-action{margin-top:10px}
+  .feature-icon{width:44px;height:44px;border-radius:15px;background:var(--rose);display:grid;place-items:center;font-size:21px;flex:0 0 auto}
+  .feature-action.green .feature-icon{background:var(--sage)}
+  .feature-action strong{display:block;font-size:15px;margin-bottom:3px}
+  .feature-action span{display:block;font-size:12px;color:var(--muted);line-height:1.35}
+  .feature-chevron{margin-left:auto;color:#a59b94;font-size:22px}
+  .playmap{margin-top:14px}
+  .next-skills{margin-top:9px}
+  .modal-choice-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+  .modal-choice{border:1px solid var(--border);background:#fff;border-radius:18px;padding:16px;text-align:left;min-height:110px}
+  .modal-choice .mi{font-size:28px;margin-bottom:12px}
+  .modal-choice strong{display:block;font-size:15px;margin-bottom:4px}
+  .modal-choice span{font-size:12px;color:var(--muted);line-height:1.35}
+  .category-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin:12px 0}
+  .category-btn{border:1px solid var(--border);background:#fff;border-radius:16px;padding:12px;text-align:left;font-weight:800;min-height:58px}
+  .modal-back{border:0;background:transparent;padding:0;color:var(--muted);font-weight:800;margin-bottom:12px}
+  .custom-add{margin-top:14px;padding-top:14px;border-top:1px solid var(--border)}
+  .custom-row{display:grid;grid-template-columns:1fr auto;gap:8px}
+  .custom-row .btn{min-width:74px}
+  .wish-thumb{overflow:hidden;background:#fff}
+  .wish-thumb img{width:100%;height:100%;object-fit:contain;padding:5px}
+  .bundle-emoji{overflow:hidden;background:#fff;border:1px solid var(--border)}
+  .bundle-emoji img{width:100%;height:100%;object-fit:contain;padding:4px}
+  .bundle-buy{display:flex;gap:8px;align-items:center}
+  .retailer-note{font-size:10px;color:var(--muted);line-height:1.35;margin-top:8px;text-align:center}
+  .source-note{font-size:10px;color:var(--muted);margin-top:18px;line-height:1.4}
+  @media(max-width:360px){.welcome-title{font-size:36px}.hero-product{width:126px;height:166px}.hero-products{height:215px}.product-visual{height:220px}.modal-choice-grid{grid-template-columns:1fr}}
 
+  /* v3 wishes + sharing */
+  .wish-cta-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+  .wish-cta{min-height:42px;border-radius:13px;border:1px solid var(--border);font-weight:850;font-size:12px;display:flex;align-items:center;justify-content:center;gap:6px;padding:10px 8px;text-align:center;background:#fff;color:var(--ink)}
+  .wish-cta.amazon{background:#fff4d6;border-color:#ead9a6}
+  .wish-cta.share{background:var(--sage);border-color:#bfd0b6}
+  .wish-remove{border:0;background:transparent;color:var(--muted);font-size:11px;font-weight:750;padding:6px 0 0;text-decoration:underline;text-underline-offset:2px}
+  .wishes-footer-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+  .wishes-footer-actions .feature-action{min-height:86px;padding:14px}
+  .wishes-footer-actions .feature-icon{width:40px;height:40px;font-size:19px}
+  .wishes-footer-actions .feature-action strong{font-size:13px}
+  .wishes-footer-actions .feature-action span{font-size:11px}
+  .share-choice{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0}
+  .share-method{border:1px solid var(--border);background:#fff;border-radius:18px;padding:15px;text-align:left}
+  .share-method.selected{background:var(--sage);border-color:#bfd0b6}
+  .share-method strong{display:block;margin-top:8px}
+  .share-method span{display:block;color:var(--muted);font-size:12px;margin-top:3px;line-height:1.35}
+  .share-fields{margin-top:12px}
+  .share-preview{margin-top:12px;padding:12px 13px;border-radius:15px;background:#f6f1ec;font-size:12px;line-height:1.45;color:#5f5853}
+  @media(max-width:360px){.wishes-footer-actions{grid-template-columns:1fr}.wish-cta-grid{grid-template-columns:1fr 1fr}}
 
-    .home-greeting{margin:4px 0 14px}
-    .home-greeting h1{font-size:28px;margin-bottom:4px}
-    .home-greeting p{font-size:14px;margin-bottom:0}
-    .today-card{padding:15px;background:linear-gradient(135deg,#FFFDFC,#F9FBF7)}
-    .today-top{display:flex;justify-content:space-between;align-items:center;gap:10px}
-    .today-date{font-size:12px;font-weight:900;color:#7E7773}
-    .today-items{margin-top:10px}
-    .today-item{display:flex;align-items:center;gap:10px;padding:10px 0;border-top:1px solid #F0E8E1}
-    .today-item:first-child{border-top:0}
-    .today-icon{width:38px;height:38px;border-radius:13px;display:grid;place-items:center;background:#F4EFEA;font-size:20px}
-    .today-main{flex:1}
-    .today-title{font-size:13px;font-weight:900}
-    .today-meta{font-size:11px;color:#8A817B;margin-top:2px}
-    .today-actions{display:flex;gap:6px}
-    .tiny-btn{border:0;border-radius:11px;padding:7px 9px;font-size:10px;font-weight:850;background:#F5F0EB;color:#6F6661}
-    .tiny-btn.primary{background:var(--sage-2);color:#526752}
-    details.expand-card{
-      background:#FFFDFC;border:1px solid rgba(107,85,73,.07);border-radius:22px;box-shadow:var(--shadow-soft);overflow:hidden
-    }
-    details.expand-card summary{
-      list-style:none;padding:15px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:12px;font-weight:900
-    }
-    details.expand-card summary::-webkit-details-marker{display:none}
-    details.expand-card summary:after{content:"＋";font-size:20px;font-weight:500;color:#8A817B}
-    details.expand-card[open] summary:after{content:"–"}
-    .expand-body{padding:0 15px 15px}
-    .week-card{padding:14px}
-    .week-strip{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
-    .week-day{
-      border:0;background:#F8F4EF;border-radius:15px;padding:8px 2px 7px;text-align:center;color:#7C736D
-    }
-    .week-day .wday{font-size:9px;font-weight:900;text-transform:uppercase}
-    .week-day .wdate{font-size:15px;font-weight:900;color:var(--ink);margin-top:3px}
-    .week-day .dot-row{height:7px;display:flex;justify-content:center;gap:2px;margin-top:4px}
-    .cal-dot{width:5px;height:5px;border-radius:50%;background:var(--rose)}
-    .cal-dot.logged{background:var(--sage)}
-    .week-day.active{background:#EDF5EB;box-shadow:inset 0 0 0 1px #D8E8D4}
-    .suggestion-card{
-      display:grid;grid-template-columns:82px 1fr;gap:13px;align-items:center;
-      background:linear-gradient(135deg,#FFFDFC,#F9F7FD)
-    }
-    .suggestion-art{height:82px;border-radius:18px;display:grid;place-items:center;font-size:38px;background:var(--rose-2)}
-    .compact-kpi{display:flex;align-items:center;justify-content:space-between;gap:14px}
-    .mini-mix{display:flex;gap:4px;align-items:end;height:38px;min-width:92px}
-    .mini-bar{width:11px;border-radius:99px 99px 4px 4px}
-    .article-card{background:linear-gradient(135deg,#FFF9EF,#FFFDFC)}
-    .calendar-modal-list{margin-top:8px}
-    .calendar-event-row{display:grid;grid-template-columns:40px 1fr auto;gap:9px;align-items:center;padding:10px 0;border-bottom:1px solid #F0E9E2}
-    .calendar-event-row:last-child{border-bottom:0}
-    .event-status{font-size:10px;font-weight:850;padding:5px 7px;border-radius:999px;background:#F3EEE8;color:#786F68}
-    .event-status.logged{background:var(--sage-2);color:#59705A}
+  /* v4 SmartRoom refinements */
+  .btn-skip{background:var(--lav);color:var(--ink);border:1px solid #cec6e0}
+  .btn-wish{background:var(--sage);color:var(--ink);border:1px solid #bfd0b6}
+  .btn-skip:hover,.btn-wish:hover{filter:brightness(.985)}
+  .wishes-footer-actions .feature-action + .feature-action{margin-top:0}
+  .wishes-footer-actions .feature-action{height:100%;min-height:96px;align-items:flex-start}
+  .wishes-footer-actions .feature-action.share-all{background:var(--sage);border-color:#bfd0b6}
+  .wishes-footer-actions .feature-action.discover-more{background:var(--lav);border-color:#cec6e0}
+  .wishes-footer-actions .feature-action.share-all .feature-icon{background:#f3f7f0}
+  .wishes-footer-actions .feature-action.discover-more .feature-icon{background:#f5f2fb}
+  .wishes-map-card{width:100%;border:1px solid var(--border);background:linear-gradient(135deg,#fff,var(--cream));border-radius:22px;padding:16px;display:flex;gap:13px;align-items:center;text-align:left;color:var(--ink);box-shadow:var(--shadow);margin:0 0 12px}
+  .wishes-map-card .wm-icon{width:46px;height:46px;border-radius:15px;background:var(--blue);display:grid;place-items:center;font-size:22px;flex:0 0 auto}
+  .wishes-map-card strong{display:block;font-size:15px;margin-bottom:3px}
+  .wishes-map-card span{display:block;color:var(--muted);font-size:12px;line-height:1.4}
+  .wishes-map-card .feature-chevron{margin-left:auto;color:#a59b94;font-size:22px}
+  .wm-legend{display:flex;gap:14px;flex-wrap:wrap;margin:12px 0 14px;font-size:11px;color:var(--muted)}
+  .wm-legend span{display:inline-flex;align-items:center;gap:6px}
+  .wm-dot{width:10px;height:10px;border-radius:999px;display:inline-block}
+  .wm-dot.current{background:#d8d1cb}.wm-dot.future{background:#9eb793}
+  .wm-row{padding:11px 0;border-top:1px solid var(--border)}
+  .wm-row:first-of-type{border-top:0}
+  .wm-row-head{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-bottom:7px}
+  .wm-row-head strong{font-size:13px}.wm-delta{font-size:11px;color:var(--sage-deep);font-weight:850}
+  .wm-bar-track{height:9px;background:#eee8e2;border-radius:999px;position:relative;overflow:hidden;margin-top:5px}
+  .wm-bar-current,.wm-bar-future{position:absolute;left:0;top:0;height:100%;border-radius:999px}
+  .wm-bar-future{background:#b9ccb0;opacity:.95}.wm-bar-current{background:#d8d1cb;z-index:2}
+  .wm-skill-list{display:flex;gap:7px;flex-wrap:wrap;margin:10px 0}
+  .wm-skill-btn{border:1px solid var(--border);background:#fff;border-radius:999px;padding:8px 10px;font-size:12px;font-weight:800;color:var(--ink)}
+  .wm-skill-btn.active{background:var(--sage);border-color:#bfd0b6}
+  .wm-detail{padding:12px 13px;border-radius:16px;background:#f6f1ec;font-size:12px;line-height:1.45;color:#5f5853;min-height:46px}
+  .wm-overlap{margin-top:14px;padding:14px;border-radius:18px;background:var(--lav)}
+  .wm-overlap strong{display:block;margin-bottom:4px}
+  .wm-alt{margin-top:10px;display:flex;gap:10px;align-items:center;background:#fff;border-radius:14px;padding:10px}
+  .wm-alt img{width:52px;height:52px;object-fit:contain;border-radius:10px;flex:0 0 auto}
+  .wm-alt-main{min-width:0;flex:1}.wm-alt-name{font-size:12px;font-weight:850}.wm-alt-copy{font-size:11px;color:var(--muted);margin-top:2px}
+  @media(max-width:360px){.wishes-footer-actions{grid-template-columns:1fr 1fr}.wishes-footer-actions .feature-action{padding:12px;min-height:104px}.wishes-footer-actions .feature-icon{display:none}.wishes-footer-actions .feature-chevron{display:none}}
 
-
-    .intro-animation{
-      width:100%;min-height:205px;border-radius:26px;margin:14px 0 22px;padding:18px 12px;
-      background:linear-gradient(135deg,#F8E6EA,#FFFDFC 50%,#EAF3E8);
-      box-shadow:var(--shadow);border:1px solid rgba(107,85,73,.08);
-      display:grid;grid-template-columns:1fr auto 1fr auto 1fr;align-items:center;gap:6px;overflow:hidden;
-    }
-    .intro-scene{text-align:center;animation:introFloat 3.4s ease-in-out infinite}
-    .intro-scene.scene-two{animation-delay:.35s}
-    .intro-scene.scene-three{animation-delay:.7s}
-    .intro-title{font-size:11px;font-weight:900;color:#6F6560;margin-bottom:10px}
-    .play-people{font-size:40px;animation:tinyBounce 1.8s ease-in-out infinite}
-    .play-things{font-size:19px;margin-top:8px;white-space:nowrap}
-    .intro-arrow{font-size:20px;color:#A9948E;font-weight:900;animation:arrowPulse 1.8s ease-in-out infinite}
-    .idea-stack{font-size:28px;line-height:1.7;animation:tinyBounce 2s ease-in-out infinite}
-    .mini-wheel{width:72px;height:72px;margin:auto;position:relative;animation:slowTurn 9s linear infinite}
-    .mini-wheel span{position:absolute;width:30px;height:30px;border-radius:60% 40% 60% 40%;left:21px;top:21px;transform-origin:15px 15px}
-    .mini-wheel span:nth-child(1){background:var(--rose);transform:translateY(-22px)}
-    .mini-wheel span:nth-child(2){background:var(--sage);transform:translate(19px,-10px) rotate(60deg)}
-    .mini-wheel span:nth-child(3){background:var(--sky);transform:translate(19px,12px) rotate(120deg)}
-    .mini-wheel span:nth-child(4){background:var(--peach);transform:translateY(22px) rotate(180deg)}
-    .mini-wheel span:nth-child(5){background:var(--lav);transform:translate(-19px,12px) rotate(240deg)}
-    .mini-wheel span:nth-child(6){background:var(--sun);transform:translate(-19px,-10px) rotate(300deg)}
-    @keyframes introFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
-    @keyframes tinyBounce{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
-    @keyframes arrowPulse{0%,100%{opacity:.45;transform:translateX(0)}50%{opacity:1;transform:translateX(3px)}}
-    @keyframes slowTurn{to{transform:rotate(360deg)}}
-    @media(max-width:390px){
-      .intro-animation{grid-template-columns:1fr auto 1fr;gap:4px}
-      .scene-three,.intro-animation .intro-arrow:nth-of-type(2){display:none}
-    }
-
-
-    .card-with-info{position:relative}
-    .info-btn{
-      position:absolute;top:12px;right:12px;width:28px;height:28px;border-radius:50%;
-      border:1px solid rgba(100,80,70,.10);background:rgba(255,255,255,.88);
-      display:grid;place-items:center;font-size:13px;font-weight:900;color:#786D67;
-      box-shadow:0 3px 10px rgba(70,55,45,.06);z-index:3;
-    }
-    .info-btn:hover{background:#fff}
-    .info-sheet-icon{
-      width:48px;height:48px;border-radius:16px;background:var(--sage-2);
-      display:grid;place-items:center;font-size:23px;margin-bottom:12px;
-    }
-
-
-    .mix-action-row{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:12px}
-    .mix-result-wrap{margin-top:12px}
-    .mix-result-grid{display:grid;grid-template-columns:1fr;gap:9px}
-    .compact-rec{
-      display:grid;grid-template-columns:62px 1fr auto;gap:10px;align-items:center;
-      background:#FFFDFC;border:1px solid rgba(107,85,73,.07);border-radius:18px;padding:10px;
-      box-shadow:var(--shadow-soft)
-    }
-    .compact-rec-art{height:58px;border-radius:15px;display:grid;place-items:center;font-size:28px;background:#F5F0EA}
-    .compact-rec h3{font-size:14px;margin:0 0 3px}
-    .compact-rec p{font-size:11px;line-height:1.35;margin:0}
-    .compact-rec .btn{padding:8px 9px;font-size:10px;border-radius:12px}
-    .result-footer{display:flex;justify-content:flex-end;margin-top:10px}
-    .suggested-focus{
-      background:linear-gradient(135deg,#EAF3E8,#FFFDFC);border:1px solid #D9E9D6;
-      border-radius:22px;padding:15px
-    }
-    .focus-combo{display:flex;gap:7px;flex-wrap:wrap;margin:10px 0 11px}
-    .focus-token{
-      padding:8px 10px;border-radius:999px;background:#fff;font-size:12px;font-weight:900;
-      color:#526452;box-shadow:var(--shadow-soft)
-    }
-    .custom-focus-card{
-      background:#FFFDFC;border:1px solid rgba(107,85,73,.07);border-radius:22px;padding:15px;margin-top:12px
-    }
-    .skill-groups{display:grid;gap:14px;margin-top:14px}
-    .skill-group{
-      background:#FAF7F3;border-radius:18px;padding:12px
-    }
-    .skill-group-title{font-size:12px;font-weight:900;color:#6E655F;margin-bottom:8px}
-    .skill-options{display:flex;flex-wrap:wrap;gap:7px}
-    .skill-option{
-      border:1px solid #E8E0D9;background:#FFFDFC;border-radius:999px;padding:8px 10px;
-      font-size:11px;font-weight:850;color:#6B625D
-    }
-    .skill-option.selected{background:var(--sage);border-color:var(--sage);color:#354637}
-    .selection-status{
-      display:flex;align-items:center;justify-content:space-between;gap:10px;margin:12px 0 4px;
-      padding:9px 11px;border-radius:14px;background:var(--sage-2);font-size:11px;color:#5A6958
-    }
-    .gift-mode-row{display:flex;gap:7px;flex-wrap:wrap;margin-top:11px}
-    .gift-result-heading{margin:18px 0 10px}
-    .match-badge{
-      display:inline-block;font-size:10px;font-weight:900;padding:5px 7px;border-radius:999px;
-      background:var(--sage-2);color:#59705A;margin-bottom:6px
-    }
-    .child-name-inline{font-weight:inherit}
-
-    .hide{display:none!important}
-    @media (min-width:521px){
-      body{padding:18px 0}
-      .app{min-height:calc(100vh - 36px);border-radius:32px;overflow:hidden}
-      .bottom-nav{bottom:18px;border-radius:0 0 32px 32px}
-    }
-  </style>
+</style>
 </head>
 <body>
-<div class="app">
+<div class="app-shell" id="app">
+  <div id="onboarding" class="onboarding"></div>
 
-  <section id="welcome" class="welcome-screen active">
-    <div class="welcome-logo"><div class="brand-mark">🌱</div>SmartParent</div>
-    <div class="eyebrow">Cognitive play, made practical</div>
-    <h1 style="font-size:36px;max-width:430px">More than keeping them busy.</h1>
-    <p style="font-size:16px;max-width:450px">
-      Find games and activities that naturally exercise different cognitive and developmental skills.
-    </p>
-    <p class="mini" style="font-size:13px;max-width:440px;margin-top:-2px">
-      Personalized around your child’s age, interests and everyday activities.
-    </p>
-    <div class="value-pills">
-      <span class="value-pill">🧠 Cognitive Mix</span>
-      <span class="value-pill">🎲 Purposeful play</span>
-      <span class="value-pill">🏠 Uses what you have</span>
-      <span class="value-pill">🎁 Smarter gift ideas</span>
-    </div>
-    
-    <div class="intro-animation" aria-label="Animated overview of SmartParent">
-      <div class="intro-scene scene-one">
-        <div class="intro-title">Everyday play</div>
-        <div class="play-people">👩‍👧</div>
-        <div class="play-things">🧱 🎨 🚲 📚</div>
-      </div>
-      <div class="intro-arrow">→</div>
-      <div class="intro-scene scene-two">
-        <div class="intro-title">Cognitive Mix</div>
-        <div class="mini-wheel">
-          <span></span><span></span><span></span><span></span><span></span><span></span>
-        </div>
-      </div>
-      <div class="intro-arrow">→</div>
-      <div class="intro-scene scene-three">
-        <div class="intro-title">Smart next ideas</div>
-        <div class="idea-stack">🎲 🧩 🎁</div>
-      </div>
-    </div>
-    <div class="mini" style="text-align:center;margin:-10px 0 20px">Everyday play → Cognitive Mix → smarter suggestions</div>
-
-    <div class="auth-box">
-      <div class="auth-switch">
-        <button id="signupTab" class="active" onclick="switchAuth('signup')">Create account</button>
-        <button id="loginTab" onclick="switchAuth('login')">Log in</button>
-      </div>
-      <div id="signupFields">
-        <input class="auth-input" id="parentNameInput" placeholder="Your name" />
-        <input class="auth-input" id="childNameInput" placeholder="Child's name or nickname" />
-        <select class="auth-input" id="childAgeInput">
-          <option value="">Child's age</option>
-          <option>4</option><option>5</option><option selected>6</option><option>7</option><option>8</option>
-        </select>
-      </div>
-      <input class="auth-input" id="emailInput" type="email" placeholder="Email" />
-      <input class="auth-input" id="passwordInput" type="password" placeholder="Password" />
-      <button class="btn btn-primary btn-block" style="margin-top:12px" onclick="enterApp()">Start with SmartParent</button>
-      <div class="welcome-foot">More purposeful play. Smarter choices. A broader mix of cognitive skills.</div>
-    </div>
-  </section>
-
-  <!-- HOME -->
-<section id="home" class="screen">
-    <div class="topbar">
+  <div id="mainApp" style="display:none">
+    <header class="topbar">
       <div class="brand-row">
-        <div class="brand" onclick="go('home')"><div class="brand-mark">🌱</div>SmartParent</div>
-        <button class="profile-pill" onclick="openProfile()">Sofia · 6 ▾</button>
-      </div>
-    </div>
-
-    <div class="home-greeting">
-      <div class="eyebrow">Today with <span id="homeChildName">Sofia</span></div>
-      <h1 id="homeHello">Good morning 👋</h1>
-      <p>Today’s plans, play and one useful next idea.</p>
-    </div>
-
-    <div class="card today-card">
-      <div class="today-top">
         <div>
-          <div class="eyebrow" style="margin-bottom:3px">Today</div>
-          <div class="today-date" id="todayDateLabel"></div>
+          <div class="brand">SmartRoom</div>
+          <div class="subtle" id="childLine">Personalized playroom guidance</div>
         </div>
-        <button class="section-link" onclick="openCalendarDay(selectedHomeDate)">Open day →</button>
+        <button class="profile-btn" id="profileBtn" aria-label="Open child profile">S</button>
       </div>
-      <div class="today-items" id="homeTodayItems"></div>
-      <button class="btn btn-soft btn-block" style="margin-top:8px" onclick="openAddCalendarEvent()">＋ Add activity or reminder</button>
-    </div>
+    </header>
 
-    <div class="section">
-      <div class="section-head"><h2>This week</h2><button class="section-link" onclick="openCalendarDay(selectedHomeDate)">Calendar →</button></div>
-      <div class="card week-card">
-        <div class="week-strip" id="homeWeekStrip"></div>
-      </div>
-    </div>
+    <main class="content">
+      <section id="discoverScreen" class="screen active"></section>
+      <section id="playroomScreen" class="screen"></section>
+      <section id="wishesScreen" class="screen"></section>
+    </main>
 
-    <div class="section">
-      <div class="section-head"><div><div class="eyebrow">For today</div><h2>One smart suggestion</h2></div></div>
-      <div class="card suggestion-card card-with-info">
-        <button class="info-btn" aria-label="Why this suggestion?" onclick="openHomeInfo('suggestion')">i</button>
-        <div class="suggestion-art">🕵️</div>
-        <div style="padding-right:24px">
-          <div class="mini">10 min · At home</div>
-          <h3 style="margin:3px 0 5px">Secret Delivery</h3>
-          <p class="mini" style="margin-bottom:9px">A memory mission selected to complement <span id="homeSuggestionChild">Sofia</span>’s recent play.</p>
-          <button class="btn btn-primary" style="padding:9px 11px;font-size:12px" onclick="openGame('secret-delivery')">Start this game</button>
-        </div>
-      </div>
-    </div>
-
-    <div class="section">
-      <div class="section-head"><h2>This month</h2><button class="section-link" onclick="go('mix')">Full Cognitive Mix →</button></div>
-      <div class="card card-with-info">
-        <button class="info-btn" aria-label="About this overview" onclick="openHomeInfo('mix')">i</button>
-        <div class="compact-kpi" style="padding-right:24px">
-          <div>
-            <div class="eyebrow">Cognitive overview</div>
-            <h3 id="homeMixHeadline" style="margin-bottom:4px">A varied month so far</h3>
-            <p class="mini" id="homeMixSub" style="margin-bottom:0">Next opportunity: Focus & Memory</p>
-          </div>
-          <div class="mini-mix" id="homeMiniMix" aria-label="Cognitive mix mini chart"></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="section">
-      <div class="section-head"><div><div class="eyebrow">For you · 1 min read</div><h2>Parent insight</h2></div></div>
-      <details class="expand-card article-card">
-        <summary>Why repeating the same game can be useful</summary>
-        <div class="expand-body">
-          <p class="mini">Children often get more cognitive value from a familiar game once the basic rules feel easy. That familiarity frees attention for planning, strategy, storytelling or self-control.</p>
-          <p class="mini">Instead of constantly finding something new, change one small element: add a rule, swap roles, introduce a memory challenge or ask the child to invent the next version.</p>
-          <button class="btn btn-soft" style="padding:9px 11px;font-size:12px" onclick="openGame('cup-tower')">Try an adaptable game</button>
-        </div>
-      </details>
-    </div>
-</section>
-
-  <!-- FIND -->
-  <section id="find" class="screen">
-    <div class="topbar">
-      <div class="brand-row"><div class="brand"><div class="brand-mark">🎲</div>Find a game</div><button class="profile-pill" onclick="openProfile()">Sofia · 6 ▾</button></div>
-    </div>
-    <div class="eyebrow">Right now</div>
-    <h1>What works for you?</h1>
-    <p>Pick only what matters. SmartParent will keep the suggestions short and realistic.</p>
-
-    <div class="filter-group"><label>Time</label><div class="chips" data-filter="time">
-      <button class="chip selected">10 min</button><button class="chip">5 min</button><button class="chip">15 min</button><button class="chip">30+ min</button>
-    </div></div>
-
-    <div class="filter-group"><label>Where?</label><div class="chips" data-filter="place">
-      <button class="chip selected">Home</button><button class="chip">Outside</button><button class="chip">Car</button><button class="chip">Waiting somewhere</button>
-    </div></div>
-
-    <div class="filter-group"><label>What do you have?</label><div class="chips multi" data-filter="materials">
-      <button class="chip selected">Nothing special</button><button class="chip">Cups</button><button class="chip">Paper</button><button class="chip">Ball</button><button class="chip">Socks</button><button class="chip">Toys</button><button class="chip">Crayons</button><button class="chip">Dice</button>
-    </div></div>
-
-    <div class="filter-group"><label>Who is playing?</label><div class="chips" data-filter="who">
-      <button class="chip selected">Together</button><button class="chip">Independent play</button><button class="chip">Siblings / friends</button>
-    </div></div>
-
-    <div class="filter-group"><label>Add some variety <span class="mini">(optional)</span></label><div class="chips multi" data-filter="skill">
-      <button class="chip">Focus & Memory</button><button class="chip">Thinking</button><button class="chip">Language</button><button class="chip">Movement</button><button class="chip">Emotions</button><button class="chip">Social</button>
-    </div></div>
-
-    <button class="btn btn-primary btn-block" style="margin-top:22px" onclick="renderFindResults()">Find 3 games</button>
-
-    <div id="findResults" class="section"></div>
-  </section>
-
-  <!-- LOG -->
-  <section id="log" class="screen">
-    <div class="topbar">
-      <div class="brand-row"><div class="brand"><div class="brand-mark">＋</div>Log play</div><button class="profile-pill" onclick="openProfile()">Sofia · 6 ▾</button></div>
-    </div>
-    <div class="eyebrow">Add to <span id="logChildName">Sofia</span>’s activity history</div>
-    <h1>What did <span id="logChildNameHeading">Sofia</span> do?</h1>
-    <p>Log a game, hobby or everyday activity and SmartParent will add its cognitive contribution to the right day.</p>
-
-    <div class="section" style="margin-top:16px">
-      <div class="section-head"><h2 style="font-size:18px">When did it happen?</h2><span class="mini" id="selectedDateLabel">Today</span></div>
-      <div class="date-strip" id="dateStrip"></div>
-      <div class="date-picker-row">
-        <button class="chip selected" id="todayBtn" onclick="selectQuickDate(0)">Today</button>
-        <button class="chip" id="yesterdayBtn" onclick="selectQuickDate(1)">Yesterday</button>
-        <input type="date" id="logDateInput" onchange="selectDate(this.value)" />
-      </div>
-    </div>
-
-    <div class="section" style="margin-top:18px">
-      <div class="section-head"><h2 style="font-size:18px">Choose an activity</h2></div>
-    </div>
-    <div class="quick-grid">
-      <button class="quick" onclick="quickLog('LEGO')"><span class="emoji">🧱</span>LEGO / building</button>
-      <button class="quick" onclick="quickLog('Drawing')"><span class="emoji">🎨</span>Drawing</button>
-      <button class="quick" onclick="quickLog('Football')"><span class="emoji">⚽</span>Football</button>
-      <button class="quick" onclick="quickLog('Swimming')"><span class="emoji">🏊</span>Swimming</button>
-      <button class="quick" onclick="quickLog('UNO')"><span class="emoji">🃏</span>Cards / UNO</button>
-      <button class="quick" onclick="quickLog('Pretend play')"><span class="emoji">🦸</span>Pretend play</button>
-    </div>
-
-    <div class="section">
-      <label style="font-weight:900;font-size:13px">Or add something else</label>
-      <div class="search-bar" style="margin-top:8px"><span>✍️</span><input id="customActivity" placeholder="e.g. baked cookies, played dolls, bike ride..." oninput="previewMapping()"></div>
-      <div id="mappingPreview" class="mapped">
-        <div class="eyebrow">This could add some</div>
-        <div class="tag-row" id="mappingTags"></div>
-        <p class="mini" style="margin-bottom:0">This becomes part of the Cognitive Mix and helps shape smarter future suggestions.</p>
-      </div>
-      <button class="btn btn-primary btn-block" style="margin-top:12px" onclick="saveCustomActivity()">Add to Cognitive Mix</button>
-      <div class="form-note">Quick logging keeps the Cognitive Mix current and makes recommendations more relevant.</div>
-    </div>
-
-    <div class="section">
-      <div class="section-head"><h2 id="historyTitle">Activities today</h2><button class="section-link" onclick="clearLog()">Reset demo</button></div>
-      <div class="card" id="logRecent"></div>
-      <div class="form-note">Use the calendar above to browse another day or add something you forgot earlier.</div>
-    </div>
-  </section>
-
-  <!-- MIX -->
-  <section id="mix" class="screen">
-    <div class="topbar">
-      <div class="brand-row"><div class="brand"><div class="brand-mark">🌈</div>Cognitive Mix</div><button class="profile-pill" onclick="openProfile()">Sofia · 6 ▾</button></div>
-    </div>
-    <div class="eyebrow">Cognitive balance over time</div>
-    <h1>A clearer picture of how <span id="mixChildName">Sofia</span> plays and learns.</h1>
-    <p>See which cognitive areas are exercised through games, hobbies and everyday activities — and use that pattern to choose the next kind of play with more purpose.</p>
-
-    <div class="tab-toggle">
-      <button>Week</button><button class="active">Month</button><button>3 Months</button>
-    </div>
-
-    <div class="card section" id="bars"></div>
-
-    <div class="section">
-      <div class="insight insight-green">
-        <div class="eyebrow">Best next opportunity</div>
-        <h2 style="margin-bottom:6px">Add memory + planning into the mix</h2>
-        <p id="mixOpportunityText" style="margin-bottom:0">Sofia’s recent activities already cover movement and imagination well. A sequence, route-planning or multi-step game would broaden the cognitive pattern nicely.</p>
-      </div>
-      <div class="mix-action-row">
-        <button class="btn btn-sage" onclick="showMixOpportunityIdeas('free')">🎲 3 free ideas</button>
-        <button class="btn btn-soft" onclick="showMixOpportunityIdeas('products')">🎁 3 product ideas</button>
-      </div>
-      <div id="mixOpportunityResults" class="mix-result-wrap"></div>
-    </div>
-
-    <div class="section">
-      <div class="section-head"><h2>What built this mix?</h2></div>
-      <div class="card" id="mixRecent"></div>
-    </div>
-
-    <div class="section">
-      <div class="card" style="background:var(--sage-2)">
-        <div class="eyebrow">How to read the mix</div>
-        <h3>Look for breadth, then follow the child’s interests.</h3>
-        <p class="mini" style="margin-bottom:0">The goal is not equal percentages. It is a varied set of experiences that keeps different kinds of thinking, movement and interaction in play.</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- GIFTS -->
-  <section id="gifts" class="screen">
-    <div class="topbar">
-      <div class="brand-row"><div class="brand"><div class="brand-mark">🎁</div>Gift ideas</div><button class="profile-pill" onclick="openProfile()">Sofia · 6 ▾</button></div>
-    </div>
-
-    <div class="card gift-hero">
-      <div class="eyebrow">Personalized for <span id="giftHeroChild">Sofia</span></div>
-      <h1 style="font-size:28px">Gift ideas chosen around how <span id="giftHeroChild2">Sofia</span> actually plays.</h1>
-      <p style="margin-bottom:0">SmartParent combines age, interests, regular activities and cognitive goals to build a more relevant shortlist.</p>
-    </div>
-
-    <div class="section">
-      <div class="suggested-focus">
-        <div class="eyebrow">SmartParent’s suggested focus</div>
-        <h2 style="font-size:20px;margin-bottom:5px">A useful combination right now</h2>
-        <p class="mini" style="margin-bottom:0">Based on <span id="giftSuggestedChild">Sofia</span>’s current Cognitive Mix.</p>
-        <div class="focus-combo">
-          <span class="focus-token">Attention & focus</span>
-          <span class="focus-token">Working memory</span>
-          <span class="focus-token">Planning</span>
-        </div>
-        <button class="btn btn-primary btn-block" onclick="useSuggestedGiftFocus()">Show 3 recommendations</button>
-      </div>
-
-      <div class="custom-focus-card">
-        <div class="eyebrow">Or choose the goal yourself</div>
-        <h3 style="margin-bottom:5px">Build your own cognitive focus</h3>
-        <p class="mini" style="margin-bottom:10px">Combine up to 3 skills and SmartParent will look for products that bring them together.</p>
-        <button class="btn btn-soft btn-block" onclick="openSkillBuilder()">＋ Choose cognitive skills</button>
-        <div id="customFocusSummary" class="focus-combo" style="margin-bottom:0"></div>
-      </div>
-
-      <div class="gift-mode-row">
-        <button class="chip" onclick="showGiftMode('overall',this)">✨ Best overall fit</button>
-        <button class="chip" onclick="showGiftMode('different',this)">↗ Adds something different</button>
-      </div>
-    </div>
-
-    <div class="section">
-      <div class="gift-result-heading">
-        <div class="eyebrow" id="giftResultEyebrow">For Sofia right now</div>
-        <h2 id="giftResultTitle">3 personalized gift ideas</h2>
-      </div>
-      <div class="product-grid" id="giftGrid"></div>
-    </div>
-
-    <div class="section">
-      <div class="card" style="background:#F8F4EF">
-        <h3>Want to achieve the same goal with things at home?</h3>
-        <p class="mini">SmartParent can suggest free activities around the same cognitive focus.</p>
-        <button class="btn btn-soft btn-block" onclick="openFindForRecommendedFocus()">Show free ideas</button>
-      </div>
-      <div class="affiliate">Product buttons open Amazon search results. In a real release, affiliate disclosures and local marketplace handling would be added clearly.</div>
-    </div>
-  </section>
-
-  <nav class="bottom-nav" id="bottomNav" style="display:none">
-    <button class="nav-btn active" data-screen="home" onclick="go('home')"><span class="icon">⌂</span>Home</button>
-    <button class="nav-btn" data-screen="find" onclick="go('find')"><span class="icon">🎲</span>Find</button>
-    <button class="nav-btn" data-screen="log" onclick="go('log')"><span class="icon">＋</span>Log</button>
-    <button class="nav-btn" data-screen="mix" onclick="go('mix')"><span class="icon">◉</span>Mix</button>
-    <button class="nav-btn" data-screen="gifts" onclick="go('gifts')"><span class="icon">🎁</span>Gifts</button>
-  </nav>
-</div>
-
-<!-- GAME MODAL -->
-<div id="gameModal" class="modal" onclick="if(event.target===this) closeModal('gameModal')">
-  <div class="sheet">
-    <div class="sheet-handle"></div>
-    <button class="sheet-close" onclick="closeModal('gameModal')">×</button>
-    <div id="gameDetail"></div>
+    <nav class="bottom-nav" aria-label="Primary">
+      <button class="nav-btn active" data-screen="discover"><span>✨</span>Discover</button>
+      <button class="nav-btn" data-screen="playroom"><span>🧸</span>Playroom</button>
+      <button class="nav-btn" data-screen="wishes"><span>🎁</span>Wishes</button>
+    </nav>
   </div>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
 </div>
 
-<!-- PROFILE MODAL -->
-<div id="profileModal" class="modal" onclick="if(event.target===this) closeModal('profileModal')">
-  <div class="sheet">
-    <div class="sheet-handle"></div>
-    <button class="sheet-close" onclick="closeModal('profileModal')">×</button>
-    <div class="eyebrow">Child profile</div>
-    <h2><span id="profileChildName">Sofia</span>, <span id="profileChildAge">6</span></h2>
-    <p>A simple profile helps SmartParent tailor cognitive play ideas around your child’s age, interests and everyday routines.</p>
-    <div class="filter-group"><label>Interests</label><div class="chips multi">
-      <button class="chip selected">Animals</button><button class="chip selected">Building</button><button class="chip selected">Stories</button><button class="chip">Music</button><button class="chip selected">Cycling</button><button class="chip">Numbers</button>
-    </div></div>
-    <div class="filter-group"><label>Regular activities</label><div class="chips multi">
-      <button class="chip selected">Swimming</button><button class="chip selected">LEGO</button><button class="chip selected">Drawing</button><button class="chip">Dance</button><button class="chip">Board games</button>
-    </div></div>
-    <div class="callout" style="margin-top:18px">These preferences help SmartParent recommend activities and products that fit naturally into your child’s real life.</div>
-  </div>
-</div>
-
-
-
-
-<div id="skillBuilderModal" class="modal" onclick="if(event.target===this) closeModal('skillBuilderModal')">
-  <div class="sheet">
-    <div class="sheet-handle"></div>
-    <button class="sheet-close" onclick="closeModal('skillBuilderModal')">×</button>
-    <div class="eyebrow">Build a cognitive focus</div>
-    <h2>Choose up to 3 skills</h2>
-    <p class="mini">Combine the skills you want a new toy or activity to encourage. We’ll find products where those skills naturally overlap.</p>
-
-    <div class="skill-groups">
-      <div class="skill-group">
-        <div class="skill-group-title">Attention & memory</div>
-        <div class="skill-options">
-          <button class="skill-option" data-detail-skill="attention" onclick="toggleDetailedSkill(this)">Attention & focus</button>
-          <button class="skill-option" data-detail-skill="working_memory" onclick="toggleDetailedSkill(this)">Working memory</button>
-          <button class="skill-option" data-detail-skill="inhibitory_control" onclick="toggleDetailedSkill(this)">Inhibitory control</button>
-        </div>
-      </div>
-
-      <div class="skill-group">
-        <div class="skill-group-title">Thinking & problem-solving</div>
-        <div class="skill-options">
-          <button class="skill-option" data-detail-skill="planning" onclick="toggleDetailedSkill(this)">Planning</button>
-          <button class="skill-option" data-detail-skill="problem_solving" onclick="toggleDetailedSkill(this)">Problem-solving</button>
-          <button class="skill-option" data-detail-skill="spatial" onclick="toggleDetailedSkill(this)">Spatial reasoning</button>
-          <button class="skill-option" data-detail-skill="patterns" onclick="toggleDetailedSkill(this)">Number sense & patterns</button>
-        </div>
-      </div>
-
-      <div class="skill-group">
-        <div class="skill-group-title">Language & creativity</div>
-        <div class="skill-options">
-          <button class="skill-option" data-detail-skill="language" onclick="toggleDetailedSkill(this)">Language</button>
-          <button class="skill-option" data-detail-skill="storytelling" onclick="toggleDetailedSkill(this)">Storytelling</button>
-          <button class="skill-option" data-detail-skill="creativity" onclick="toggleDetailedSkill(this)">Creativity</button>
-          <button class="skill-option" data-detail-skill="flexible_thinking" onclick="toggleDetailedSkill(this)">Flexible thinking</button>
-        </div>
-      </div>
-
-      <div class="skill-group">
-        <div class="skill-group-title">Movement & body</div>
-        <div class="skill-options">
-          <button class="skill-option" data-detail-skill="motor_planning" onclick="toggleDetailedSkill(this)">Motor planning</button>
-          <button class="skill-option" data-detail-skill="coordination" onclick="toggleDetailedSkill(this)">Coordination</button>
-          <button class="skill-option" data-detail-skill="body_awareness" onclick="toggleDetailedSkill(this)">Body awareness</button>
-        </div>
-      </div>
-
-      <div class="skill-group">
-        <div class="skill-group-title">Emotional & social</div>
-        <div class="skill-options">
-          <button class="skill-option" data-detail-skill="emotional_regulation" onclick="toggleDetailedSkill(this)">Emotional regulation</button>
-          <button class="skill-option" data-detail-skill="patience" onclick="toggleDetailedSkill(this)">Patience & self-control</button>
-          <button class="skill-option" data-detail-skill="cooperation" onclick="toggleDetailedSkill(this)">Cooperation</button>
-          <button class="skill-option" data-detail-skill="turn_taking" onclick="toggleDetailedSkill(this)">Turn-taking</button>
-        </div>
-      </div>
+<dialog id="skillDialog">
+  <div class="dialog-body">
+    <div class="dialog-head">
+      <div><div class="eyebrow">Why it matters</div><h2 id="skillTitle"></h2></div>
+      <button class="dialog-close" data-close-dialog="skillDialog" aria-label="Close">×</button>
     </div>
+    <p id="skillText" class="subtle" style="font-size:15px"></p>
+  </div>
+</dialog>
 
-    <div class="selection-status">
-      <span id="skillSelectionText">0 of 3 selected</span>
-      <button class="section-link" onclick="clearDetailedSkills()">Clear</button>
+<dialog id="giftDialog">
+  <div class="gift-view">
+    <div class="dialog-head">
+      <div></div>
+      <button class="dialog-close" data-close-dialog="giftDialog" aria-label="Close">×</button>
     </div>
-    <button class="btn btn-primary btn-block" onclick="applyDetailedGiftSkills()">Find 3 matching gifts</button>
-    <button class="btn btn-soft btn-block" style="margin-top:8px" onclick="useSuggestedFocusFromBuilder()">Use SmartParent’s suggested focus instead</button>
+    <div id="giftContent"></div>
   </div>
-</div>
+</dialog>
 
-<div id="homeInfoModal" class="modal" onclick="if(event.target===this) closeModal('homeInfoModal')">
-  <div class="sheet">
-    <div class="sheet-handle"></div>
-    <button class="sheet-close" onclick="closeModal('homeInfoModal')">×</button>
-    <div class="info-sheet-icon" id="homeInfoIcon">🧠</div>
-    <div class="eyebrow" id="homeInfoEyebrow">SmartParent insight</div>
-    <h2 id="homeInfoTitle">Why this suggestion?</h2>
-    <p id="homeInfoText"></p>
-  </div>
-</div>
 
-<div id="calendarModal" class="modal" onclick="if(event.target===this) closeModal('calendarModal')">
-  <div class="sheet">
-    <div class="sheet-handle"></div>
-    <button class="sheet-close" onclick="closeModal('calendarModal')">×</button>
-    <div class="eyebrow">Calendar</div>
-    <h2 id="calendarModalTitle">Today</h2>
-    <p class="mini">Planned activities, reminders and confirmed play all live in one place. Confirmed activities feed the Cognitive Mix automatically.</p>
-    <div id="calendarModalList" class="calendar-modal-list"></div>
-    <button class="btn btn-primary btn-block" style="margin-top:12px" onclick="openAddCalendarEvent()">＋ Add activity or reminder</button>
-  </div>
-</div>
 
-<div id="addEventModal" class="modal" onclick="if(event.target===this) closeModal('addEventModal')">
-  <div class="sheet">
-    <div class="sheet-handle"></div>
-    <button class="sheet-close" onclick="closeModal('addEventModal')">×</button>
-    <div class="eyebrow">Plan something</div>
-    <h2>Add activity or reminder</h2>
-    <input class="activity-entry" id="eventTitleInput" placeholder="e.g. Swimming, playdate, Secret Delivery" />
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:10px">
-      <input class="activity-entry" type="date" id="eventDateInput" />
-      <input class="activity-entry" type="time" id="eventTimeInput" />
+<dialog id="addDialog">
+  <div class="dialog-body">
+    <div class="dialog-head">
+      <div><div class="eyebrow">Add context</div><h2 id="addDialogTitle">Add something</h2></div>
+      <button class="dialog-close" data-close-dialog="addDialog" aria-label="Close">×</button>
     </div>
-    <div class="filter-group">
-      <label>Reminder</label>
-      <div class="chips" data-event-reminder>
-        <button class="chip selected" onclick="setEventReminder(this,'1 hour before')">1 hour before</button>
-        <button class="chip" onclick="setEventReminder(this,'Morning of')">Morning of</button>
-        <button class="chip" onclick="setEventReminder(this,'None')">None</button>
-      </div>
-    </div>
-    <button class="btn btn-primary btn-block" style="margin-top:14px" onclick="saveCalendarEvent()">Add to calendar</button>
-    <div class="form-note">Planned activities can later be confirmed with one tap and added to the activity history.</div>
+    <div id="addDialogContent"></div>
   </div>
-</div>
+</dialog>
 
-<div id="toast" class="toast">Added</div>
+<dialog id="bundleDialog">
+  <div class="dialog-body">
+    <div class="dialog-head">
+      <div><div class="eyebrow">SmartRoom bundle</div><h2>Build / complete the Playroom</h2></div>
+      <button class="dialog-close" data-close-dialog="bundleDialog" aria-label="Close">×</button>
+    </div>
+    <div id="bundleContent"></div>
+  </div>
+</dialog>
+
+<dialog id="shareWishDialog">
+  <div class="dialog-body">
+    <div class="dialog-head">
+      <div><div class="eyebrow">Share a wish</div><h2 id="shareWishTitle">Send this gift idea</h2></div>
+      <button class="dialog-close" data-close-dialog="shareWishDialog" aria-label="Close">×</button>
+    </div>
+    <div id="shareWishContent"></div>
+  </div>
+</dialog>
+
+<dialog id="wishesMapDialog">
+  <div class="dialog-body">
+    <div class="dialog-head">
+      <div><div class="eyebrow">Wishes Map</div><h2>What these Wishes would bring</h2></div>
+      <button class="dialog-close" data-close-dialog="wishesMapDialog" aria-label="Close">×</button>
+    </div>
+    <div id="wishesMapContent"></div>
+  </div>
+</dialog>
 
 <script>
+(function(){
+  'use strict';
+  const app = document.getElementById('app');
+  const onboardingEl = document.getElementById('onboarding');
+  const mainAppEl = document.getElementById('mainApp');
+  const discoverEl = document.getElementById('discoverScreen');
+  const playroomEl = document.getElementById('playroomScreen');
+  const wishesEl = document.getElementById('wishesScreen');
+  const toastEl = document.getElementById('toast');
+  const skillDialog = document.getElementById('skillDialog');
+  const giftDialog = document.getElementById('giftDialog');
+  const addDialog = document.getElementById('addDialog');
+  const bundleDialog = document.getElementById('bundleDialog');
+  const shareWishDialog = document.getElementById('shareWishDialog');
+  const wishesMapDialog = document.getElementById('wishesMapDialog');
+  let sharingWishId=null;
+  let shareMethod='email';
+  let addFlow={type:null,category:null};
 
-
-const memoryStore = {};
-const safeStorage = {
-  getItem(key){
-    try { return window.localStorage.getItem(key); }
-    catch(e) { return Object.prototype.hasOwnProperty.call(memoryStore,key) ? memoryStore[key] : null; }
-  },
-  setItem(key,value){
-    try { window.localStorage.setItem(key,value); }
-    catch(e) { memoryStore[key] = String(value); }
-  },
-  removeItem(key){
-    try { window.localStorage.removeItem(key); }
-    catch(e) { delete memoryStore[key]; }
-  }
-};
-
-
-let childProfile = JSON.parse(safeStorage.getItem("smartparent_child") || "null") || {name:"Sofia",age:"6"};
-
-function getChildName(){ return (childProfile?.name || "Sofia").trim() || "Sofia"; }
-function getChildAge(){ return String(childProfile?.age || "6"); }
-
-function applyChildProfile(){
-  const name=getChildName(), age=getChildAge();
-
-  document.querySelectorAll(".profile-pill").forEach(p=>p.textContent=`${name} · ${age} ▾`);
-
-  const ids = [
-    "homeChildName","homeSuggestionChild","logChildName","logChildNameHeading",
-    "mixChildName","giftHeroChild","giftHeroChild2","giftProfileChild",
-    "giftSuggestedChild","profileChildName"
-  ];
-  ids.forEach(id=>{ const el=document.getElementById(id); if(el) el.textContent=name; });
-
-  const ageIds=["giftProfileAge","profileChildAge"];
-  ageIds.forEach(id=>{ const el=document.getElementById(id); if(el) el.textContent=age; });
-
-  const opp=document.getElementById("mixOpportunityText");
-  if(opp) opp.textContent=`${name}’s recent activities already cover movement and imagination well. A sequence, route-planning or multi-step game would broaden the cognitive pattern nicely.`;
-
-  const resultEye=document.getElementById("giftResultEyebrow");
-  if(resultEye && !resultEye.dataset.custom) resultEye.textContent=`For ${name} right now`;
-}
-
-let authMode = "signup";
-function switchAuth(mode){
-  authMode = mode;
-  document.getElementById("signupTab").classList.toggle("active", mode==="signup");
-  document.getElementById("loginTab").classList.toggle("active", mode==="login");
-  document.getElementById("signupFields").style.display = mode==="signup" ? "block" : "none";
-  const btn = document.querySelector("#welcome .btn-primary");
-  btn.textContent = mode==="signup" ? "Start with SmartParent" : "Log in";
-}
-function enterApp(){
-  const enteredName = document.getElementById("childNameInput")?.value.trim();
-  const enteredAge = document.getElementById("childAgeInput")?.value;
-
-  if(authMode==="signup"){
-    childProfile = {
-      name: enteredName || getChildName() || "Sofia",
-      age: enteredAge || getChildAge() || "6"
-    };
-    safeStorage.setItem("smartparent_child", JSON.stringify(childProfile));
-  }else{
-    childProfile = JSON.parse(safeStorage.getItem("smartparent_child") || "null") || childProfile || {name:"Sofia",age:"6"};
-  }
-
-  applyChildProfile();
-  document.getElementById("welcome").classList.remove("active");
-  document.getElementById("bottomNav").style.display = "grid";
-  go("home");
-  toast(authMode==="signup" ? `Welcome — ${getChildName()} is ready` : "Welcome back");
-}
-
-const SKILLS = {
-  focus:{label:"Focus & Memory", color:"var(--rose)", short:"Focus"},
-  thinking:{label:"Thinking & Problem Solving", color:"var(--sage)", short:"Thinking"},
-  language:{label:"Language & Imagination", color:"var(--sky)", short:"Language"},
-  movement:{label:"Movement & Body", color:"var(--peach)", short:"Movement"},
-  emotions:{label:"Emotions & Self-Control", color:"var(--lav)", short:"Emotions"},
-  social:{label:"Social & Cooperation", color:"var(--sun)", short:"Social"}
-};
-
-const games = [
-  {
-    id:"secret-delivery", title:"Secret Delivery", emoji:"🕵️", visual:"var(--rose-2)", time:"5–10 min", place:"Home",
-    materials:"3–5 household objects", tags:["focus","thinking"], age:"5–7",
-    one:"Remember a secret mission and deliver the objects in the right order.",
-    why:"Keeping a short mission in mind while moving around gives memory something practical to do.",
-    steps:["Place 3–5 objects at one end of the room.","Give a mission such as: “Bring me the spoon, then the sock, then the red cup.”","Let your child complete the mission without reminders.","Swap roles and let the child invent your mission."],
-    easy:"Start with two objects.", hard:"Use four or five objects or add a rule such as touching the sofa between deliveries.", silly:"Every delivery must arrive with a secret-agent code word."
-  },
-  {
-    id:"cup-tower", title:"Cup Tower Challenge", emoji:"🏗️", visual:"var(--sage-2)", time:"10 min", place:"Home",
-    materials:"Plastic or paper cups", tags:["thinking","movement"], age:"4–8",
-    one:"Build the tallest tower you can without letting it fall.",
-    why:"Experimenting with balance and structure encourages children to change plans when something does not work.",
-    steps:["Put a pile of cups on the floor or table.","Ask: “How tall do you think we can make it?”","Build together and test different bases.","When it falls, treat it like useful information and try again."],
-    easy:"Build a wide pyramid.", hard:"Use fewer cups or require the tower to hold a small toy.", silly:"Give each tower a ridiculous name before testing it."
-  },
-  {
-    id:"treasure-map", title:"Treasure Map", emoji:"🗺️", visual:"var(--sky)", time:"10–15 min", place:"Home",
-    materials:"Paper + pencil", tags:["thinking","language"], age:"5–8",
-    one:"Hide something small and draw a simple map that leads to it.",
-    why:"Turning a real room into a map helps connect symbols, directions and real-world space.",
-    steps:["Hide a safe small object.","Draw the room using simple shapes.","Mark a path or clues on the map.","Let your child follow it, then swap roles."],
-    easy:"Use one room and a large X.", hard:"Add two rooms, landmarks or directional clues.", silly:"The treasure can be something absurd, like one clean sock."
-  },
-  {
-    id:"story-bag", title:"Three-Object Story", emoji:"🎭", visual:"var(--lav)", time:"5–10 min", place:"Anywhere",
-    materials:"Any 3 nearby objects", tags:["language","social"], age:"4–8",
-    one:"Pick three random objects and invent one story that includes all of them.",
-    why:"Connecting unrelated objects encourages flexible ideas and gives children a reason to build a story together.",
-    steps:["Each person chooses an object.","Start a story using the first object.","Take turns adding one sentence.","Make sure every object becomes important somehow."],
-    easy:"Use two objects and tell the story together.", hard:"Add a problem the characters must solve.", silly:"Every time someone says “and then,” make an animal noise."
-  },
-  {
-    id:"freeze-switch", title:"Freeze & Switch", emoji:"🧊", visual:"var(--peach)", time:"5 min", place:"Home",
-    materials:"Nothing", tags:["movement","emotions"], age:"4–7",
-    one:"Move in silly ways, then freeze and switch instantly when the signal changes.",
-    why:"Stopping one action and quickly changing to another gives self-control practice through movement rather than sitting still.",
-    steps:["Choose two movements: e.g. jumping and tiptoeing.","Call “switch” to change movement.","Call “freeze” to stop completely.","Let the child become the caller."],
-    easy:"Use only freeze/go.", hard:"Add three movement rules and change them quickly.", silly:"Use ridiculous movement names such as jellyfish walk."
-  },
-  {
-    id:"cup-slalom", title:"Cup Slalom", emoji:"🚲", visual:"var(--sky)", time:"10–15 min", place:"Outside",
-    materials:"Cups/bottles + bike or scooter", tags:["thinking","movement"], age:"5–8",
-    one:"Create a small zig-zag route and let the child plan how to ride through it.",
-    why:"Planning a route while controlling speed and direction connects decisions with body movement.",
-    steps:["Place 5–8 safe markers in a zig-zag.","Ride through slowly once.","Move the markers and ask what changed.","Let the child design the next route."],
-    easy:"Use fewer markers with large gaps.", hard:"Number checkpoints or ask the child to remember a route.", silly:"Give every checkpoint an animal sound."
-  }
-];
-
-const products = [
-  {
-    name:"Magnetic Building Tiles",emoji:"🧲",price:29,match:true,different:true,
-    skills:["thinking","language"],
-    detailed:["spatial","problem_solving","creativity","planning"],
-    why:"Open-ended building that brings together spatial reasoning, planning and creative experimentation.",
-    q:"magnetic building tiles kids"
-  },
-  {
-    name:"Junior Logic Puzzle",emoji:"🧩",price:19,match:true,different:true,
-    skills:["focus","thinking"],
-    detailed:["attention","working_memory","planning","problem_solving"],
-    why:"A compact challenge for holding rules in mind, planning steps and solving problems.",
-    q:"junior logic puzzle age 6"
-  },
-  {
-    name:"Memory Matching Game",emoji:"🃏",price:16,match:true,different:true,
-    skills:["focus","social"],
-    detailed:["attention","working_memory","turn_taking","patience"],
-    why:"A simple way to combine sustained attention, memory and turn-taking.",
-    q:"memory matching game kids age 6"
-  },
-  {
-    name:"Story Cubes",emoji:"🎲",price:14,match:true,different:false,
-    skills:["language","social"],
-    detailed:["language","storytelling","creativity","flexible_thinking"],
-    why:"Turns a love of stories into quick, collaborative storytelling and flexible thinking.",
-    q:"story cubes kids"
-  },
-  {
-    name:"Tangram Puzzle Set",emoji:"🔷",price:18,match:true,different:true,
-    skills:["thinking","focus"],
-    detailed:["spatial","problem_solving","attention","patterns"],
-    why:"Combines visual-spatial thinking, pattern recognition and problem solving in one compact activity.",
-    q:"tangram puzzle kids age 6"
-  },
-  {
-    name:"Beginner Marble Run",emoji:"🟠",price:32,match:true,different:true,
-    skills:["thinking","focus"],
-    detailed:["planning","problem_solving","spatial","attention"],
-    why:"Encourages predicting, building, testing and rebuilding while keeping attention on a multi-step goal.",
-    q:"beginner marble run kids"
-  },
-  {
-    name:"Cooperative Board Game",emoji:"🤝",price:25,match:false,different:true,
-    skills:["social","emotions"],
-    detailed:["cooperation","turn_taking","patience","planning"],
-    why:"Builds shared planning, turn-taking and patience around a common goal.",
-    q:"cooperative board game kids age 6"
-  },
-  {
-    name:"Balance Stepping Stones",emoji:"🪨",price:35,match:true,different:false,
-    skills:["movement","focus"],
-    detailed:["motor_planning","coordination","body_awareness","attention"],
-    why:"Pairs active play with route planning, coordination and body awareness.",
-    q:"kids balance stepping stones"
-  },
-  {
-    name:"Kids' Gardening Set",emoji:"🌱",price:24,match:false,different:true,
-    skills:["movement","thinking"],
-    detailed:["planning","motor_planning","patience","body_awareness"],
-    why:"Adds hands-on sequencing, planning and patient follow-through to outdoor play.",
-    q:"kids gardening set age 6"
-  }
-];
-
-function isoDate(d){
-  const x = new Date(d);
-  const y = x.getFullYear(), m = String(x.getMonth()+1).padStart(2,"0"), day = String(x.getDate()).padStart(2,"0");
-  return `${y}-${m}-${day}`;
-}
-function dateDaysAgo(n){
-  const d = new Date(); d.setHours(12,0,0,0); d.setDate(d.getDate()-n); return isoDate(d);
-}
-let selectedLogDate = dateDaysAgo(0);
-
-const defaultRecent = [
-  {name:"Swimming",emoji:"🏊",tags:["movement","emotions"],date:dateDaysAgo(1)},
-  {name:"LEGO",emoji:"🧱",tags:["thinking","language"],date:dateDaysAgo(1)},
-  {name:"Drawing",emoji:"🎨",tags:["language","movement"],date:dateDaysAgo(1)},
-  {name:"UNO",emoji:"🃏",tags:["focus","emotions","social"],date:dateDaysAgo(2)},
-  {name:"Bike ride",emoji:"🚲",tags:["movement","thinking"],date:dateDaysAgo(3)}
-];
-
-let recent = JSON.parse(safeStorage.getItem("smartparent_recent") || "null") || defaultRecent;
-recent = recent.map((r,i)=>({...r,date:r.date || dateDaysAgo(Math.min(i,3))}));
-
-
-let selectedHomeDate = dateDaysAgo(0);
-let selectedEventReminder = "1 hour before";
-
-const defaultCalendarEvents = [
-  {id:"e1",title:"Swimming",emoji:"🏊",date:dateDaysAgo(0),time:"17:00",status:"planned",tags:["movement","emotions"],reminder:"1 hour before"},
-  {id:"e2",title:"Drawing",emoji:"🎨",date:dateDaysAgo(0),time:"",status:"logged",tags:["language","movement"],reminder:"None"},
-  {id:"e3",title:"Playdate with Leo",emoji:"🧸",date:dateDaysAgo(-1),time:"16:30",status:"planned",tags:["social","language"],reminder:"1 hour before"},
-  {id:"e4",title:"Football",emoji:"⚽",date:dateDaysAgo(-3),time:"11:00",status:"planned",tags:["movement","social","emotions"],reminder:"Morning of"}
-];
-let calendarEvents = JSON.parse(safeStorage.getItem("smartparent_calendar") || "null") || defaultCalendarEvents;
-
-function persistCalendar(){
-  safeStorage.setItem("smartparent_calendar",JSON.stringify(calendarEvents));
-  renderHome();
-}
-
-function greetingForNow(){
-  const h=new Date().getHours();
-  if(h<12) return "Good morning";
-  if(h<18) return "Good afternoon";
-  return "Good evening";
-}
-
-function niceFullDate(dateStr){
-  const d=new Date(dateStr+"T12:00:00");
-  return d.toLocaleDateString(undefined,{weekday:"long",day:"numeric",month:"long"});
-}
-function eventIcon(title){
-  const t=title.toLowerCase();
-  if(t.includes("swim")) return "🏊";
-  if(t.includes("foot")) return "⚽";
-  if(t.includes("draw")||t.includes("paint")) return "🎨";
-  if(t.includes("bike")||t.includes("cycle")) return "🚲";
-  if(t.includes("lego")||t.includes("build")) return "🧱";
-  if(t.includes("playdate")||t.includes("friend")) return "🧸";
-  if(t.includes("story")||t.includes("read")) return "📚";
-  return "✨";
-}
-function tagsForEvent(title){
-  return inferTags(title);
-}
-function renderHome(){
-  applyChildProfile();
-  const hello=document.getElementById("homeHello");
-  if(hello) hello.textContent=greetingForNow()+" 👋";
-  const todayLabel=document.getElementById("todayDateLabel");
-  if(todayLabel) todayLabel.textContent=niceFullDate(dateDaysAgo(0));
-
-  renderHomeWeek();
-  renderHomeToday();
-  renderHomeMix();
-}
-function renderHomeWeek(){
-  const el=document.getElementById("homeWeekStrip"); if(!el)return;
-  const start=new Date(); start.setHours(12,0,0,0);
-  const dow=start.getDay()||7;
-  start.setDate(start.getDate()-(dow-1));
-  const buttons=[];
-  for(let i=0;i<7;i++){
-    const d=new Date(start); d.setDate(start.getDate()+i);
-    const iso=isoDate(d);
-    const evs=calendarEvents.filter(e=>e.date===iso);
-    const logged=recent.filter(r=>r.date===iso);
-    const dots=[];
-    if(evs.some(e=>e.status==="planned")) dots.push('<span class="cal-dot"></span>');
-    if(evs.some(e=>e.status==="logged")||logged.length) dots.push('<span class="cal-dot logged"></span>');
-    buttons.push(`<button class="week-day ${iso===selectedHomeDate?"active":""}" onclick="selectHomeDate('${iso}')">
-      <div class="wday">${d.toLocaleDateString(undefined,{weekday:"short"})}</div>
-      <div class="wdate">${d.getDate()}</div>
-      <div class="dot-row">${dots.join("")}</div>
-    </button>`);
-  }
-  el.innerHTML=buttons.join("");
-}
-function selectHomeDate(date){
-  selectedHomeDate=date;
-  renderHomeWeek();
-  openCalendarDay(date);
-}
-function renderHomeToday(){
-  const el=document.getElementById("homeTodayItems"); if(!el)return;
-  const date=dateDaysAgo(0);
-  const evs=calendarEvents.filter(e=>e.date===date);
-  const represented=new Set(evs.filter(e=>e.status==="logged").map(e=>e.title.toLowerCase()));
-  recent.filter(r=>r.date===date && !represented.has(r.name.toLowerCase())).forEach(r=>{
-    evs.push({id:"r-"+r.name,title:r.name,emoji:r.emoji,date,status:"logged",tags:r.tags,time:""})
-  });
-  if(!evs.length){
-    el.innerHTML='<div class="empty-note" style="padding:12px 0">Nothing planned yet. Add something or keep the day open.</div>';
-    return;
-  }
-  el.innerHTML=evs.slice(0,4).map(e=>`
-    <div class="today-item">
-      <div class="today-icon">${e.emoji||eventIcon(e.title)}</div>
-      <div class="today-main">
-        <div class="today-title">${e.title}</div>
-        <div class="today-meta">${e.status==="logged"?"Logged":(e.time?e.time+" · planned":"Planned")}</div>
-      </div>
-      <div class="today-actions">
-        ${e.status==="planned" ? `<button class="tiny-btn primary" onclick="confirmCalendarEvent('${e.id}')">Done ✓</button>` : `<span class="event-status logged">in Mix</span>`}
-      </div>
-    </div>`).join("");
-}
-function renderHomeMix(){
-  const scores=computeMix();
-  const ordered=Object.entries(scores).sort((a,b)=>b[1]-a[1]);
-  const top=SKILLS[ordered[0][0]].short;
-  const low=SKILLS[ordered[ordered.length-1][0]].short;
-  const head=document.getElementById("homeMixHeadline");
-  const sub=document.getElementById("homeMixSub");
-  if(head) head.textContent=`${top} is showing up strongly`;
-  if(sub) sub.textContent=`Next opportunity for ${getChildName()}: ${low}`;
-  const bars=document.getElementById("homeMiniMix");
-  if(bars){
-    const max=Math.max(...Object.values(scores),1);
-    bars.innerHTML=Object.entries(SKILLS).map(([k,v])=>{
-      const h=Math.max(10,Math.round((scores[k]/max)*36));
-      return `<span class="mini-bar" title="${v.label}: ${scores[k]}%" style="height:${h}px;background:${v.color}"></span>`;
-    }).join("");
-  }
-}
-function openCalendarDay(date){
-  selectedHomeDate=date||dateDaysAgo(0);
-  const modal=document.getElementById("calendarModal");
-  const title=document.getElementById("calendarModalTitle");
-  title.textContent=niceFullDate(selectedHomeDate);
-  const items=calendarEvents.filter(e=>e.date===selectedHomeDate);
-  const logged=recent.filter(r=>r.date===selectedHomeDate);
-  const all=[...items];
-  const existing=new Set(all.filter(e=>e.status==="logged").map(e=>e.title.toLowerCase()));
-  logged.forEach(r=>{if(!existing.has(r.name.toLowerCase())) all.push({id:"r-"+r.name,title:r.name,emoji:r.emoji,status:"logged",time:"",tags:r.tags})});
-  document.getElementById("calendarModalList").innerHTML = all.length ? all.map(e=>`
-    <div class="calendar-event-row">
-      <div class="today-icon">${e.emoji||eventIcon(e.title)}</div>
-      <div>
-        <div class="today-title">${e.title}</div>
-        <div class="today-meta">${e.time||""}${e.reminder && e.reminder!=="None" ? (e.time?" · ":"")+e.reminder : ""}</div>
-      </div>
-      ${e.status==="planned" ? `<button class="tiny-btn primary" onclick="confirmCalendarEvent('${e.id}')">Done ✓</button>` : `<span class="event-status logged">Logged</span>`}
-    </div>`).join("") : '<div class="empty-note">Nothing on this day yet.</div>';
-  modal.classList.add("show");
-  renderHomeWeek();
-}
-function openAddCalendarEvent(){
-  closeModal("calendarModal");
-  const d=document.getElementById("eventDateInput");
-  if(d) d.value=selectedHomeDate||dateDaysAgo(0);
-  document.getElementById("eventTitleInput").value="";
-  document.getElementById("eventTimeInput").value="";
-  document.getElementById("addEventModal").classList.add("show");
-}
-function setEventReminder(btn,val){
-  selectedEventReminder=val;
-  document.querySelectorAll("[data-event-reminder] .chip").forEach(x=>x.classList.remove("selected"));
-  btn.classList.add("selected");
-}
-function saveCalendarEvent(){
-  const title=document.getElementById("eventTitleInput").value.trim();
-  const date=document.getElementById("eventDateInput").value||dateDaysAgo(0);
-  const time=document.getElementById("eventTimeInput").value||"";
-  if(!title){toast("Add an activity first");return}
-  calendarEvents.push({
-    id:"e"+Date.now(),title,emoji:eventIcon(title),date,time,status:"planned",
-    tags:tagsForEvent(title),reminder:selectedEventReminder
-  });
-  selectedHomeDate=date;
-  persistCalendar();
-  closeModal("addEventModal");
-  toast("Added to calendar");
-}
-function confirmCalendarEvent(id){
-  const e=calendarEvents.find(x=>x.id===id);
-  if(!e)return;
-  e.status="logged";
-  if(!recent.some(r=>r.date===e.date && r.name.toLowerCase()===e.title.toLowerCase())){
-    recent.unshift({name:e.title,emoji:e.emoji||eventIcon(e.title),tags:e.tags||tagsForEvent(e.title),date:e.date});
-    recent=recent.slice(0,30);
-    safeStorage.setItem("smartparent_recent",JSON.stringify(recent));
-  }
-  persistCalendar();
-  renderRecent(); renderMix(); updateMixSummary();
-  if(document.getElementById("calendarModal").classList.contains("show")) openCalendarDay(e.date);
-  toast("Added to Cognitive Mix");
-}
-
-
-function openHomeInfo(type){
-  const modal=document.getElementById("homeInfoModal");
-  const icon=document.getElementById("homeInfoIcon");
-  const eyebrow=document.getElementById("homeInfoEyebrow");
-  const title=document.getElementById("homeInfoTitle");
-  const text=document.getElementById("homeInfoText");
-  const name=getChildName();
-
-  if(type==="suggestion"){
-    icon.textContent="🎯";
-    eyebrow.textContent="Why this fits today";
-    title.textContent="A small shift in the mix";
-    text.textContent=`${name}’s recent play already includes plenty of movement and imagination. Secret Delivery brings in memory, sequencing and planning, making it a useful complement to what has been happening lately.`;
-  }else{
-    icon.textContent="🧠";
-    eyebrow.textContent="About the Cognitive Mix";
-    title.textContent="A quick view of cognitive variety";
-    text.textContent=`The overview combines the cognitive areas appearing across ${name}’s games, hobbies and everyday activities. SmartParent uses the pattern to spot useful opportunities for variety and personalize what to suggest next.`;
-  }
-  modal.classList.add("show");
-}
-
-function go(id){
-  document.getElementById("welcome")?.classList.remove("active");
-  document.querySelectorAll(".screen").forEach(s=>s.classList.toggle("active",s.id===id));
-  document.querySelectorAll(".nav-btn").forEach(b=>b.classList.toggle("active",b.dataset.screen===id));
-  window.scrollTo({top:0,behavior:"smooth"});
-  if(id==="home") renderHome();
-  if(id==="mix") renderMix();
-  if(id==="log"){ renderDateStrip(); renderRecent(); }
-  if(id==="gifts") renderGifts();
-}
-function toast(msg){
-  const t=document.getElementById("toast"); t.textContent=msg; t.classList.add("show"); setTimeout(()=>t.classList.remove("show"),1500);
-}
-function closeModal(id){document.getElementById(id).classList.remove("show")}
-function openProfile(){applyChildProfile();document.getElementById("profileModal").classList.add("show")}
-
-function gameCard(g){
-  return `<div class="game-card">
-    <div class="game-visual" style="background:${g.visual}">${g.emoji}</div>
-    <div class="mini">${g.time} · ${g.place}</div>
-    <h3>${g.title}</h3>
-    <p class="mini">${g.one}</p>
-    <div class="tag-row">${g.tags.map(t=>`<span class="tag">${SKILLS[t].short}</span>`).join("")}</div>
-    <button class="btn btn-soft btn-block" onclick="openGame('${g.id}')">See game</button>
-  </div>`;
-}
-function renderHomeGames(){
-  const el=document.getElementById("homeGames");
-  if(!el) return;
-  el.innerHTML = ["cup-tower","secret-delivery","treasure-map"].map(id=>gameCard(games.find(g=>g.id===id))).join("");
-}
-function openGame(id){
-  const g=games.find(x=>x.id===id); if(!g)return;
-  document.getElementById("gameDetail").innerHTML=`
-    <div class="eyebrow">${g.age} · ${g.time} · ${g.place}</div>
-    <h1 style="font-size:28px">${g.emoji} ${g.title}</h1>
-    <p>${g.one}</p>
-    <div class="tag-row">${g.tags.map(t=>`<span class="tag">${SKILLS[t].label}</span>`).join("")}</div>
-    <div class="subtle-divider"></div>
-    <h3>You need</h3><p>${g.materials}</p>
-    <h3>What to do</h3><ol class="steps">${g.steps.map(s=>`<li>${s}</li>`).join("")}</ol>
-    <div class="callout"><b>Why it's useful</b><br>${g.why}</div>
-    <div class="section"><h3>Make it easier</h3><p class="mini">${g.easy}</p><h3>Make it harder</h3><p class="mini">${g.hard}</p><h3>Make it silly</h3><p class="mini">${g.silly}</p></div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:16px">
-      <button class="btn btn-soft">♡ Save</button>
-      <button class="btn btn-primary" onclick="markPlayed('${g.id}')">✓ We played this</button>
-    </div>`;
-  document.getElementById("gameModal").classList.add("show");
-}
-function markPlayed(id){
-  const g=games.find(x=>x.id===id);
-  recent.unshift({name:g.title,emoji:g.emoji,tags:g.tags,date:selectedLogDate});
-  recent=recent.slice(0,12); persistRecent(); closeModal("gameModal"); toast("Added to Cognitive Mix");
-}
-function persistRecent(){
-  safeStorage.setItem("smartparent_recent",JSON.stringify(recent));
-  renderRecent(); renderMix(); updateMixSummary(); renderHome();
-}
-
-function inferTags(text){
-  const t=text.toLowerCase();
-  const map=[];
-  if(/lego|build|tower|puzzle|chess|marble|blocks|bake|cook|treasure|map/.test(t)) map.push("thinking");
-  if(/draw|paint|story|book|read|pretend|doll|music|sing|craft/.test(t)) map.push("language");
-  if(/football|swim|bike|cycle|run|dance|park|climb|ball|scooter/.test(t)) map.push("movement");
-  if(/uno|cards|memory|sequence|simon|matching/.test(t)) map.push("focus");
-  if(/turn|sibling|friend|board|uno|team|football|pretend/.test(t)) map.push("social");
-  if(/freeze|wait|yoga|swim|cards|uno|puzzle/.test(t)) map.push("emotions");
-  return [...new Set(map)].slice(0,3).length ? [...new Set(map)].slice(0,3) : ["language","social"];
-}
-function previewMapping(){
-  const v=document.getElementById("customActivity").value.trim();
-  const box=document.getElementById("mappingPreview");
-  if(!v){box.classList.remove("show");return}
-  box.classList.add("show");
-  document.getElementById("mappingTags").innerHTML=inferTags(v).map(t=>`<span class="tag green">${SKILLS[t].label}</span>`).join("");
-}
-function saveCustomActivity(){
-  const input=document.getElementById("customActivity"); const v=input.value.trim();
-  if(!v){toast("Type an activity first");return}
-  recent.unshift({name:v,emoji:"✨",tags:inferTags(v),date:selectedLogDate}); recent=recent.slice(0,12); input.value=""; previewMapping(); persistRecent(); toast("Added to Cognitive Mix");
-}
-function quickLog(name){
-  const dict={
-    "LEGO":{emoji:"🧱",tags:["thinking","language"]},
-    "Drawing":{emoji:"🎨",tags:["language","movement"]},
-    "Football":{emoji:"⚽",tags:["movement","social","emotions"]},
-    "Swimming":{emoji:"🏊",tags:["movement","emotions"]},
-    "UNO":{emoji:"🃏",tags:["focus","emotions","social"]},
-    "Pretend play":{emoji:"🦸",tags:["language","social"]}
+  const skillInfo = {
+    attention:['Attention','Staying focused on what matters long enough to follow rules, notice details and finish a task.'],
+    workingMemory:['Working memory','Holding information in mind while using it — such as remembering several instructions, following a sequence or keeping track of game rules.'],
+    inhibition:['Inhibitory control','Pausing an automatic response and following a rule instead — for example waiting for a turn or stopping when a game says “freeze.”'],
+    planning:['Planning','Thinking ahead about the steps needed to reach a goal, then adjusting when something changes.'],
+    problemSolving:['Problem solving','Trying possibilities, noticing what works and changing approach when a first idea does not solve the problem.'],
+    spatial:['Spatial reasoning','Understanding how shapes, objects and spaces relate to one another. It appears naturally in building, puzzles and navigation.'],
+    patterns:['Patterns & number sense','Noticing order, repetition and quantity — useful in sorting, sequences, counting and rule-based games.'],
+    language:['Language','Using words to describe, explain, ask questions and understand what other people mean.'],
+    storytelling:['Storytelling','Organizing ideas into a sequence, imagining possibilities and communicating them to other people.'],
+    creativity:['Creativity','Generating ideas, trying unusual combinations and using familiar things in new ways.'],
+    flexibility:['Flexible thinking','Switching between ideas, rules or strategies when the situation changes.'],
+    cooperation:['Cooperation','Working with others toward a shared goal, including listening, negotiating and taking turns.'],
+    patience:['Patience & self-control','Waiting, tolerating small frustrations and staying with an activity even when the result is not immediate.'],
+    coordination:['Coordination','Organizing movements smoothly and accurately while responding to what is happening around the body.'],
+    motorPlanning:['Motor planning','Thinking through and carrying out a sequence of body movements to complete an action.'],
+    bodyAwareness:['Body awareness','Understanding where the body is in space and how much force or movement is needed.'],
+    fineMotor:['Fine motor control','Using the hands and fingers accurately for tasks such as drawing, placing pieces or manipulating small objects.']
   };
-  recent.unshift({name,emoji:dict[name].emoji,tags:dict[name].tags,date:selectedLogDate}); recent=recent.slice(0,12); persistRecent(); toast(`${name} added`);
-}
-function prettyDate(dateStr){
-  const d = new Date(dateStr+"T12:00:00");
-  if(dateStr===dateDaysAgo(0)) return "today";
-  if(dateStr===dateDaysAgo(1)) return "yesterday";
-  return d.toLocaleDateString(undefined,{weekday:"short",day:"numeric",month:"short"});
-}
-function renderDateStrip(){
-  const el=document.getElementById("dateStrip"); if(!el)return;
-  const days=[];
-  for(let i=6;i>=0;i--){
-    const date=dateDaysAgo(i);
-    const d=new Date(date+"T12:00:00");
-    const count=recent.filter(r=>r.date===date).length;
-    days.push(`<button class="date-card ${date===selectedLogDate?"selected":""} ${i===0?"today":""}" onclick="selectDate('${date}')">
-      <div class="dow">${d.toLocaleDateString(undefined,{weekday:"short"})}</div>
-      <div class="num">${d.getDate()}</div>
-      <div class="count">${count?count+" "+(count===1?"activity":"activities"):""}</div>
-    </button>`);
+
+  const skillLabels = Object.fromEntries(Object.entries(skillInfo).map(([k,v])=>[k,v[0]]));
+
+  const broadSkillGroups = {
+    'Focus & memory':['attention','workingMemory','inhibition'],
+    'Thinking & solving':['planning','problemSolving','spatial','patterns'],
+    'Language & imagination':['language','storytelling','creativity','flexibility'],
+    'Movement & body':['coordination','motorPlanning','bodyAwareness','fineMotor'],
+    'Social & self-control':['cooperation','patience','inhibition']
+  };
+
+  const interests = ['Animals','Building','Cars','Dinosaurs','Drawing','Stories','Nature','Sports','Music','Pretend play','Science','Space','Numbers','Puzzles'];
+  const activities = ['Swimming','Football','Dance','Gymnastics','Music','Martial arts','Cycling','Theatre','Scouts','Outdoor play'];
+
+  const playroomLibrary = [
+    {id:'lego',name:'LEGO / bricks',emoji:'🧱',group:'construction',skills:{spatial:5,planning:4,problemSolving:4,creativity:4,fineMotor:2},interests:['Building']},
+    {id:'magtiles',name:'Magnetic tiles',emoji:'🧲',group:'construction',skills:{spatial:5,planning:3,creativity:4,problemSolving:3,fineMotor:2},interests:['Building']},
+    {id:'blocks',name:'Wooden blocks',emoji:'🪵',group:'construction',skills:{spatial:4,planning:3,creativity:4,motorPlanning:2},interests:['Building']},
+    {id:'puzzle',name:'Puzzles',emoji:'🧩',group:'puzzle',skills:{spatial:4,attention:4,problemSolving:4,planning:2,patience:2},interests:['Puzzles']},
+    {id:'uno',name:'UNO / card games',emoji:'🃏',group:'cards',skills:{attention:4,workingMemory:3,inhibition:3,patterns:3,cooperation:2},interests:['Numbers']},
+    {id:'art',name:'Art materials',emoji:'🎨',group:'creative',skills:{creativity:5,fineMotor:4,planning:2,flexibility:3},interests:['Drawing']},
+    {id:'playdoh',name:'Play-Doh / clay',emoji:'🟠',group:'creative',skills:{creativity:4,fineMotor:4,spatial:2,bodyAwareness:2},interests:['Drawing']},
+    {id:'bike',name:'Bicycle',emoji:'🚲',group:'movement',skills:{coordination:5,bodyAwareness:4,motorPlanning:4,attention:3,planning:2},interests:['Sports','Nature']},
+    {id:'ball',name:'Ball',emoji:'⚽',group:'movement',skills:{coordination:5,bodyAwareness:4,motorPlanning:4,cooperation:3,attention:2},interests:['Sports']},
+    {id:'dolls',name:'Dolls / figures',emoji:'🧸',group:'pretend',skills:{storytelling:5,language:4,creativity:4,cooperation:2,flexibility:2},interests:['Pretend play','Stories']},
+    {id:'cars',name:'Toy cars',emoji:'🚗',group:'pretend',skills:{creativity:3,spatial:3,storytelling:3,motorPlanning:2},interests:['Cars']},
+    {id:'books',name:'Books',emoji:'📚',group:'language',skills:{language:5,storytelling:5,attention:3,workingMemory:2,creativity:2},interests:['Stories']},
+    {id:'memorycards',name:'Memory cards',emoji:'🀄',group:'memory',skills:{workingMemory:5,attention:4,inhibition:2,patterns:2},interests:['Puzzles']},
+    {id:'boardgames',name:'Board games',emoji:'🎲',group:'board',skills:{planning:3,workingMemory:3,attention:3,cooperation:3,inhibition:3,problemSolving:2},interests:['Puzzles','Numbers']}
+  ];
+
+  const activitySkillMap = {
+    'Swimming':{coordination:5,bodyAwareness:5,motorPlanning:4,attention:2,patience:2},
+    'Football':{coordination:5,bodyAwareness:4,motorPlanning:4,cooperation:4,attention:3,planning:2},
+    'Dance':{coordination:5,bodyAwareness:5,motorPlanning:4,workingMemory:2,creativity:2},
+    'Gymnastics':{coordination:5,bodyAwareness:5,motorPlanning:5,attention:3,patience:2},
+    'Music':{attention:4,workingMemory:4,patterns:4,coordination:2,patience:3},
+    'Martial arts':{inhibition:5,attention:4,coordination:4,bodyAwareness:4,patience:4},
+    'Cycling':{coordination:5,bodyAwareness:4,motorPlanning:4,attention:3,planning:2},
+    'Theatre':{language:4,storytelling:5,creativity:5,cooperation:4,flexibility:3},
+    'Scouts':{cooperation:4,planning:4,problemSolving:4,bodyAwareness:2,creativity:2},
+    'Outdoor play':{bodyAwareness:4,coordination:3,creativity:3,problemSolving:2,cooperation:2}
+  };
+
+  const products = [
+    {id:'outfoxed',name:'Outfoxed!',emoji:'🦊',desc:'Cooperative whodunit board game',age:[5,8],price:25,group:'cooperative-board',interests:['Animals','Puzzles','Stories'],skills:{cooperation:5,problemSolving:5,attention:4,planning:3,workingMemory:3},image:'https://www.steamrocket.co.uk/cdn/shop/products/outfoxed-cooperative-kids-family-game-gamewright-boxcopy_300x.jpg?v=1619746478',amazon:'https://www.amazon.de/s?k=Gamewright+Outfoxed+board+game'},
+    {id:'dobblekids',name:'Dobble Kids',emoji:'🔎',desc:'Fast visual matching card game',age:[4,8],price:14,group:'visual-card',interests:['Animals','Puzzles'],skills:{attention:5,workingMemory:3,inhibition:3,patterns:3},image:'https://cdn.svc.asmodee.net/production-asmodeeit/uploads/image-converter/2022/09/DOKI_SETUP_20231113-1024x627.webp',amazon:'https://www.amazon.de/s?k=Dobble+Kids+Asmodee'},
+    {id:'squirrels',name:'Squirrels Go Nuts!',emoji:'🐿️',desc:'Single-player sliding logic puzzle',age:[6,8],price:18,group:'logic',interests:['Animals','Puzzles'],skills:{planning:5,problemSolving:5,spatial:4,attention:4,workingMemory:2},image:'https://mp-sellers-files.danubehome.com/sellers/KLUG-TOYS/pi/179900097876/image_1727281269237.jpeg',amazon:'https://www.amazon.de/s?k=SmartGames+Squirrels+Go+Nuts'},
+    {id:'rushhourjr',name:'Rush Hour Junior',emoji:'🚗',desc:'Traffic-jam logic game by ThinkFun',age:[5,8],price:25,group:'logic',interests:['Cars','Puzzles'],skills:{planning:5,problemSolving:5,spatial:5,attention:4,workingMemory:3},image:'https://m.media-amazon.com/images/I/81DVjxytyLL._AC_SL1500_.jpg',amazon:'https://www.amazon.de/s?k=ThinkFun+Rush+Hour+Junior'},
+    {id:'animaluponanimal',name:'Animal Upon Animal',emoji:'🐊',desc:'Wooden stacking game by HABA',age:[4,8],price:25,group:'dexterity',interests:['Animals'],skills:{fineMotor:5,coordination:4,planning:3,patience:4,inhibition:2},image:'https://www.bellalunatoys.com/cdn/shop/files/games-animal-upon-animal-3678-ls1_7193e17e-3ef5-40ba-b72a-631f6f42b21f.jpg?v=1743540453&width=1000',amazon:'https://www.amazon.de/s?k=HABA+Animal+Upon+Animal'},
+    {id:'ticketfirst',name:'Ticket to Ride: First Journey',emoji:'🚂',desc:'Junior route-building strategy game',age:[6,8],price:30,group:'strategy-board',interests:['Cars','Stories','Puzzles'],skills:{planning:5,workingMemory:3,patterns:3,attention:3,problemSolving:3},image:'https://cdn.svc.asmodee.net/production-asmodeeca/uploads/image-converter/2022/01/EN-TICKET_TO_RIDE-FIRST_JOURNEY-EUROPE-L.webp',amazon:'https://www.amazon.de/s?k=Ticket+to+Ride+First+Journey+Europe'},
+    {id:'zingo',name:'Zingo!',emoji:'🔤',desc:'Picture-and-word matching game',age:[4,8],price:25,group:'language-game',interests:['Stories','Numbers'],skills:{language:5,attention:4,patterns:4,inhibition:3,workingMemory:3},image:'https://www.bigw.com.au/medias/sys_master/images/images/hb7/h95/138157100171294.jpg',amazon:'https://www.amazon.de/s?k=ThinkFun+Zingo'},
+    {id:'storycubes',name:"Rory's Story Cubes Classic",emoji:'🎲',desc:'Storytelling dice for open-ended imagination',age:[6,8],price:15,group:'storytelling',interests:['Stories','Pretend play'],skills:{storytelling:5,language:5,creativity:5,flexibility:4,cooperation:2},image:'https://cdn.svc.asmodee.net/production-asmodeeca/uploads/image-converter/2022/01/ML-RSC-CLASSIC-L.webp',amazon:'https://www.amazon.de/s?k=Rory%27s+Story+Cubes+Classic'},
+    {id:'iqpuzzler',name:'IQ Puzzler Pro',emoji:'🧠',desc:'120 compact 2D and 3D logic challenges',age:[6,8],price:15,group:'logic',interests:['Puzzles','Numbers'],skills:{planning:5,problemSolving:5,spatial:5,attention:5,workingMemory:3},image:'https://smartgamesusa.com/sites/default/files/smartgames-product-banner_IQ-Puzzler-Pro_0.jpg',amazon:'https://www.amazon.de/s?k=SmartGames+IQ+Puzzler+Pro'},
+    {id:'juniorlabyrinth',name:'Junior Labyrinth',emoji:'🌀',desc:'Ravensburger shifting-maze strategy game',age:[5,8],price:22,group:'strategy-board',interests:['Puzzles','Stories'],skills:{planning:4,spatial:5,problemSolving:4,attention:4,workingMemory:2},image:'https://m.media-amazon.com/images/I/61V+zdyHLQL._AC_SL1024_.jpg',amazon:'https://www.amazon.de/Ravensburger-Kinderspiele-21210-Junior-Labyrinth/dp/B0000TZ4VG'},
+    {id:'conceptkids',name:'Concept Kids: Animals',emoji:'🐯',desc:'Cooperative animal guessing game',age:[4,8],price:28,group:'cooperative-board',interests:['Animals','Stories'],skills:{language:5,cooperation:5,flexibility:4,attention:3,problemSolving:3},image:'https://shop.steamda.com/cdn/shop/files/CONC02-image2_2000_720x_1089ba4b-8c0f-458f-a35f-2b19bbd5b05b.webp?v=1705118599&width=1445',amazon:'https://www.amazon.de/s?k=Concept+Kids+Animals+Asmodee'}
+  ];
+
+  const defaults = {
+    onboardingStep:-1,
+    profile:{name:'',age:6,interests:[],activities:[]},
+    playroom:[],
+    wishes:[],
+    skipped:[],
+    reserved:[],
+    currentProductId:null,
+    activeScreen:'discover',
+    completed:false,
+    bundle:[],
+    bundleBudget:150,
+    customItems:[],
+    customActivities:[],
+    seenSwipeHint:false
+  };
+
+  function loadState(){
+    try{
+      const raw = localStorage.getItem('smartroom_mvp_v4');
+      if(!raw) return structuredClone(defaults);
+      const parsed = JSON.parse(raw);
+      return Object.assign(structuredClone(defaults), parsed, {profile:Object.assign({},defaults.profile,parsed.profile||{})});
+    }catch(e){ return structuredClone(defaults); }
   }
-  el.innerHTML=days.join("");
-  const input=document.getElementById("logDateInput"); if(input) input.value=selectedLogDate;
-  const lab=document.getElementById("selectedDateLabel"); if(lab) lab.textContent=prettyDate(selectedLogDate).replace(/^./,c=>c.toUpperCase());
-  const title=document.getElementById("historyTitle"); if(title) title.textContent=`Activities ${prettyDate(selectedLogDate)}`;
-  document.getElementById("todayBtn")?.classList.toggle("selected",selectedLogDate===dateDaysAgo(0));
-  document.getElementById("yesterdayBtn")?.classList.toggle("selected",selectedLogDate===dateDaysAgo(1));
-}
-function selectQuickDate(daysAgo){ selectDate(dateDaysAgo(daysAgo)); }
-function selectDate(date){
-  if(!date)return;
-  selectedLogDate=date;
-  renderDateStrip();
-  renderRecent();
-}
-function renderRecent(){
-  applyChildProfile();
-  const el=document.getElementById("logRecent"); if(!el)return;
-  const items=recent.filter(r=>r.date===selectedLogDate);
-  el.innerHTML=items.length?items.map(r=>`<div class="recent-item"><div class="recent-icon">${r.emoji}</div><div><b>${r.name}</b><div class="mini">${r.tags.map(t=>SKILLS[t].short).join(" · ")}</div></div></div>`).join(""):`<div class="empty-note">No activities logged for this day yet.</div>`;
-  renderDateStrip();
-}
-function clearLog(){
-  recent=defaultRecent.map(r=>({...r})); selectedLogDate=dateDaysAgo(0); persistRecent(); toast("Demo reset");
-}
+  let state = loadState();
+  function save(){ try{ localStorage.setItem('smartroom_mvp_v4',JSON.stringify(state)); }catch(e){} }
+  function escapeHtml(str){ return String(str??'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c])); }
+  function showToast(msg){ toastEl.textContent=msg; toastEl.classList.add('show'); clearTimeout(showToast.t); showToast.t=setTimeout(()=>toastEl.classList.remove('show'),1800); }
+  function initials(){ return (state.profile.name||'S').trim().charAt(0).toUpperCase() || 'S'; }
 
-function computeMix(){
-  const scores={focus:0,thinking:0,language:0,movement:0,emotions:0,social:0};
-  recent.forEach(r=>r.tags.forEach(t=>scores[t]+=1));
-  const total=Object.values(scores).reduce((a,b)=>a+b,0)||1;
-  Object.keys(scores).forEach(k=>scores[k]=Math.round(scores[k]/total*100));
-  return scores;
-}
-function renderMix(){
-  applyChildProfile();
-  const scores=computeMix();
-  document.getElementById("bars").innerHTML=`
-    <div class="eyebrow">This month</div>
-    ${Object.keys(SKILLS).map(k=>`<div class="bar-item">
-      <div class="bar-label"><span>${SKILLS[k].label}</span><span>${scores[k]}%</span></div>
-      <div class="bar-track"><div class="bar-fill" style="width:${scores[k]}%;background:${SKILLS[k].color}"></div></div>
-    </div>`).join("")}
-  `;
-  document.getElementById("mixRecent").innerHTML=recent.slice(0,7).map(r=>`<div class="recent-item"><div class="recent-icon">${r.emoji}</div><div><b>${r.name}</b><div class="mini">${r.tags.map(t=>SKILLS[t].label).join(" · ")}</div></div></div>`).join("");
-}
-function updateMixSummary(){
-  const s=computeMix(); const entries=Object.entries(s).sort((a,b)=>b[1]-a[1]);
-  const top=SKILLS[entries[0][0]].short; const low=SKILLS[entries[entries.length-1][0]].short;
-  const title=document.getElementById("mixSummaryTitle");
-  const text=document.getElementById("mixSummaryText");
-  if(title) title.textContent=`${top} is leading the mix`;
-  if(text) text.textContent=`Recent activities are giving ${getChildName()} plenty of ${top.toLowerCase()} experiences. Adding some ${low.toLowerCase()} play would complement the pattern well.`;
-}
+  function allSkillKeys(){ return Object.keys(skillInfo); }
+  function emptyScores(){ return Object.fromEntries(allSkillKeys().map(k=>[k,0])); }
+  function addScores(target,src,mult=1){ Object.entries(src||{}).forEach(([k,v])=>{ if(target[k]!==undefined) target[k]+=Number(v)*mult; }); }
 
-
-function mixRecommendedGames(){
-  const priority=["focus","thinking"];
-  return [...games]
-    .map(g=>({g,score:g.tags.filter(t=>priority.includes(t)).length}))
-    .sort((a,b)=>b.score-a.score)
-    .slice(0,3)
-    .map(x=>x.g);
-}
-
-function mixRecommendedProducts(){
-  const wanted=["attention","working_memory","planning"];
-  return rankProductsForDetailedSkills(wanted).slice(0,3);
-}
-
-function compactGameRecommendation(g){
-  return `<div class="compact-rec">
-    <div class="compact-rec-art" style="background:${g.visual}">${g.emoji}</div>
-    <div>
-      <h3>${g.title}</h3>
-      <p>${g.one}</p>
-    </div>
-    <button class="btn btn-soft" onclick="openGame('${g.id}')">Open</button>
-  </div>`;
-}
-
-function compactProductRecommendation(p){
-  return `<div class="compact-rec">
-    <div class="compact-rec-art">${p.emoji}</div>
-    <div>
-      <h3>${p.name}</h3>
-      <p>${p.why}</p>
-    </div>
-    <button class="btn btn-sage" onclick="openAmazon('${p.q.replace(/'/g,"\\'")}')">View</button>
-  </div>`;
-}
-
-function showMixOpportunityIdeas(type){
-  const el=document.getElementById("mixOpportunityResults");
-  if(type==="free"){
-    const picks=mixRecommendedGames();
-    el.innerHTML=`
-      <div class="mix-results-head">
-        <div><div class="eyebrow">For this opportunity</div><h3 style="margin-bottom:0">3 free ideas for ${getChildName()}</h3></div>
-      </div>
-      <div class="mix-result-grid">${picks.map(compactGameRecommendation).join("")}</div>
-      <div class="result-footer"><button class="section-link" onclick="openFindForRecommendedFocus()">See more free ideas →</button></div>`;
-  }else{
-    const picks=mixRecommendedProducts();
-    el.innerHTML=`
-      <div class="mix-results-head">
-        <div><div class="eyebrow">For this opportunity</div><h3 style="margin-bottom:0">3 product ideas for ${getChildName()}</h3></div>
-      </div>
-      <div class="mix-result-grid">${picks.map(compactProductRecommendation).join("")}</div>
-      <div class="result-footer"><button class="section-link" onclick="openGiftsForRecommendedFocus()">Explore Gifts in detail →</button></div>`;
+  function customItemById(id){ return (state.customItems||[]).find(x=>x.id===id); }
+  function ownedItemById(id){ return playroomLibrary.find(x=>x.id===id)||products.find(x=>x.id===id)||customItemById(id); }
+  function getPlayMap(extraProducts=[]){
+    const scores=emptyScores();
+    state.playroom.forEach(id=>{ const item=ownedItemById(id); if(item) addScores(scores,item.skills,1); });
+    (state.profile.activities||[]).forEach(a=>addScores(scores,activitySkillMap[a],1.15));
+    (state.customActivities||[]).forEach(a=>addScores(scores,a.skills,1.05));
+    extraProducts.forEach(p=>addScores(scores,p.skills,1));
+    const values=Object.values(scores); const max=Math.max(1,...values);
+    const norm={}; Object.entries(scores).forEach(([k,v])=>norm[k]=Math.round((v/max)*100));
+    return {scores,norm};
   }
-}
 
-function openFindForRecommendedFocus(){
-  go("find");
-  document.querySelectorAll('[data-filter="skill"] .chip').forEach(c=>{
-    c.classList.toggle("selected",["Focus & Memory","Thinking"].includes(c.textContent.trim()));
-  });
-  renderFindResults();
-}
-
-function openGiftsForRecommendedFocus(){
-  go("gifts");
-  useSuggestedGiftFocus();
-}
-
-function renderFindResults(){
-  const preferred=[...document.querySelectorAll('[data-filter="skill"] .chip.selected')].map(x=>x.textContent);
-  let picked=games;
-  if(preferred.length){
-    const keyMap={"Focus & Memory":"focus","Thinking":"thinking","Language":"language","Movement":"movement","Emotions":"emotions","Social":"social"};
-    const keys=preferred.map(x=>keyMap[x]);
-    picked=[...games].sort((a,b)=>b.tags.filter(t=>keys.includes(t)).length-a.tags.filter(t=>keys.includes(t)).length);
-  } else {
-    picked=[games[1],games[0],games[2],...games.slice(3)];
+  function broadMap(extraProducts=[]){
+    const {scores}=getPlayMap(extraProducts);
+    const vals={};
+    Object.entries(broadSkillGroups).forEach(([label,keys])=>vals[label]=keys.reduce((a,k)=>a+(scores[k]||0),0)/keys.length);
+    const max=Math.max(1,...Object.values(vals));
+    return Object.entries(vals).map(([label,v])=>({label,value:Math.round((v/max)*100),raw:v})).sort((a,b)=>b.raw-a.raw);
   }
-  document.getElementById("findResults").innerHTML=`
-    <div class="section-head"><div><div class="eyebrow">3 good fits</div><h2>Keep it simple</h2></div></div>
-    <div class="scroll-row">${picked.slice(0,3).map(gameCard).join("")}</div>
-    <div class="trust-note">Pick the idea that feels most enjoyable right now—the best cognitive play still starts with genuine interest.</div>`;
-}
 
-const DETAIL_SKILL_LABELS = {
-  attention:"Attention & focus",
-  working_memory:"Working memory",
-  inhibitory_control:"Inhibitory control",
-  planning:"Planning",
-  problem_solving:"Problem-solving",
-  spatial:"Spatial reasoning",
-  patterns:"Number sense & patterns",
-  language:"Language",
-  storytelling:"Storytelling",
-  creativity:"Creativity",
-  flexible_thinking:"Flexible thinking",
-  motor_planning:"Motor planning",
-  coordination:"Coordination",
-  body_awareness:"Body awareness",
-  emotional_regulation:"Emotional regulation",
-  patience:"Patience & self-control",
-  cooperation:"Cooperation",
-  turn_taking:"Turn-taking"
-};
-
-let selectedDetailedGiftSkills = [];
-const suggestedDetailedGiftSkills = ["attention","working_memory","planning"];
-let currentGiftMode = "suggested";
-
-function rankProductsForDetailedSkills(skillList){
-  return [...products]
-    .map((p,index)=>{
-      const overlap=(p.detailed||[]).filter(s=>skillList.includes(s)).length;
-      const exactness=skillList.length ? overlap/skillList.length : 0;
-      const profileBonus=p.match ? 0.35 : 0;
-      return {p,score:overlap*3+exactness+profileBonus-index*0.001};
-    })
-    .sort((a,b)=>b.score-a.score)
-    .map(x=>x.p);
-}
-
-function giftProductCard(p, selectedSkills=[]){
-  const overlap=(p.detailed||[]).filter(s=>selectedSkills.includes(s));
-  let badge="Personalized pick";
-  if(selectedSkills.length){
-    if(overlap.length>=Math.min(2,selectedSkills.length)) badge="Excellent match";
-    else if(overlap.length>=1) badge="Strong match";
-    else badge="Good complementary fit";
+  function broadRawFromScores(scores){
+    return Object.fromEntries(Object.entries(broadSkillGroups).map(([label,keys])=>[label,keys.reduce((a,k)=>a+(scores[k]||0),0)/keys.length]));
   }
-  const shown=(overlap.length?overlap:(p.detailed||[]).slice(0,2)).slice(0,3);
 
-  return `<div class="product-card">
-    <div class="product-visual">${p.emoji}</div>
-    <div class="match-badge">${badge}</div>
-    <div class="price">€${p.price}</div>
-    <h3 style="margin:3px 0 6px">${p.name}</h3>
-    <div class="why">${p.why}</div>
-    <div class="tag-row">${shown.map(s=>`<span class="tag green">${DETAIL_SKILL_LABELS[s]||s}</span>`).join("")}</div>
-    <button class="btn btn-sage btn-block" style="margin-top:6px;padding:9px 8px;font-size:11px" onclick="openAmazon('${p.q.replace(/'/g,"\'")}')">View on Amazon</button>
-  </div>`;
-}
-
-function renderGiftResults(productsToShow, title, eyebrow, selectedSkills=[]){
-  const grid=document.getElementById("giftGrid");
-  if(!grid)return;
-  document.getElementById("giftResultTitle").textContent=title;
-  const eye=document.getElementById("giftResultEyebrow");
-  eye.textContent=eyebrow;
-  eye.dataset.custom="1";
-  grid.innerHTML=productsToShow.slice(0,3).map(p=>giftProductCard(p,selectedSkills)).join("");
-}
-
-function useSuggestedGiftFocus(){
-  currentGiftMode="suggested";
-  const ranked=rankProductsForDetailedSkills(suggestedDetailedGiftSkills);
-  renderGiftResults(
-    ranked,
-    "3 recommendations for this focus",
-    `Suggested for ${getChildName()}: attention + memory + planning`,
-    suggestedDetailedGiftSkills
-  );
-}
-
-function showGiftMode(mode,btn){
-  currentGiftMode=mode;
-  document.querySelectorAll(".gift-mode-row .chip").forEach(c=>c.classList.remove("selected"));
-  if(btn) btn.classList.add("selected");
-
-  if(mode==="overall"){
-    const arr=[...products].sort((a,b)=>(b.match?1:0)-(a.match?1:0));
-    renderGiftResults(arr,"3 best overall fits",`Personalized for ${getChildName()}`,[]);
-  }else{
-    const arr=[...products].sort((a,b)=>(b.different?1:0)-(a.different?1:0));
-    renderGiftResults(arr,"3 ideas that add something different",`Broaden ${getChildName()}’s play`,[]);
+  function dominantBroadForProduct(p){
+    const vals=Object.entries(broadSkillGroups).map(([label,keys])=>({label,value:keys.reduce((a,k)=>a+(p.skills?.[k]||0),0)}));
+    vals.sort((a,b)=>b.value-a.value);
+    return vals[0]?.label||'Other play';
   }
-}
 
-function openSkillBuilder(){
-  document.querySelectorAll("[data-detail-skill]").forEach(btn=>{
-    btn.classList.toggle("selected",selectedDetailedGiftSkills.includes(btn.dataset.detailSkill));
-  });
-  updateSkillSelectionStatus();
-  document.getElementById("skillBuilderModal").classList.add("show");
-}
+  function lowSkills(count=3){
+    const {scores}=getPlayMap();
+    return Object.entries(scores).sort((a,b)=>a[1]-b[1]).slice(0,count).map(x=>x[0]);
+  }
 
-function toggleDetailedSkill(btn){
-  const skill=btn.dataset.detailSkill;
-  const idx=selectedDetailedGiftSkills.indexOf(skill);
-  if(idx>=0){
-    selectedDetailedGiftSkills.splice(idx,1);
-    btn.classList.remove("selected");
-  }else{
-    if(selectedDetailedGiftSkills.length>=3){
-      toast("Choose up to 3 skills");
+  function ownedGroups(){
+    const set=new Set();
+    state.playroom.forEach(id=>{ const item=ownedItemById(id); if(item?.group) set.add(item.group); });
+    return set;
+  }
+
+  function scoreProduct(p){
+    const age=Number(state.profile.age)||6;
+    if(age<p.age[0]||age>p.age[1]) return -9999;
+    if(state.playroom.includes(p.id)||state.skipped.includes(p.id)||state.wishes.includes(p.id)) return -9999;
+    let s=0;
+    const likes=new Set(state.profile.interests||[]);
+    p.interests.forEach(i=>{ if(likes.has(i)) s+=14; });
+    const lows=lowSkills(5);
+    lows.forEach((k,idx)=>{ if(p.skills[k]) s += p.skills[k]*(5-idx)*1.25; });
+    if(ownedGroups().has(p.group)) s-=14;
+    const similarCount=state.playroom.filter(id=>{
+      const b=playroomLibrary.find(x=>x.id===id); const q=products.find(x=>x.id===id);
+      return (b&&b.group===p.group)||(q&&q.group===p.group);
+    }).length;
+    s-=similarCount*6;
+    const savedGroups=state.wishes.map(id=>products.find(x=>x.id===id)?.group).filter(Boolean);
+    if(savedGroups.includes(p.group)) s+=2;
+    s += (p.skills.cooperation||0)*0.3;
+    return s;
+  }
+
+  function rankedProducts(){ return products.map(p=>({p,s:scoreProduct(p)})).filter(x=>x.s>-1000).sort((a,b)=>b.s-a.s); }
+  function currentProduct(){
+    const ranked=rankedProducts();
+    if(!ranked.length) return null;
+    let p=products.find(x=>x.id===state.currentProductId);
+    if(!p || scoreProduct(p)<-1000) p=ranked[0].p;
+    state.currentProductId=p.id; save(); return p;
+  }
+  function nextProduct(){ const ranked=rankedProducts(); state.currentProductId=ranked[0]?.p.id||null; save(); renderAll(); }
+
+  function skillPills(skills,limit=3){
+    return Object.entries(skills).sort((a,b)=>b[1]-a[1]).slice(0,limit).map(([k])=>`<span class="pill">${escapeHtml(skillLabels[k])}<button type="button" class="skill-info" data-skill="${k}" aria-label="About ${escapeHtml(skillLabels[k])}">ⓘ</button></span>`).join('');
+  }
+
+  function recommendationReason(p){
+    const lows=lowSkills(4);
+    const relevant=Object.entries(p.skills).filter(([k])=>lows.includes(k)).sort((a,b)=>b[1]-a[1]).slice(0,2).map(([k])=>skillLabels[k]);
+    const broad=broadMap();
+    const strong=broad[0]?.label.toLowerCase()||'several areas';
+    if(relevant.length>=2) return `Adds more ${relevant[0].toLowerCase()} and ${relevant[1].toLowerCase()} to a play environment already strong in ${strong}.`;
+    return `Adds a different kind of play while still fitting ${state.profile.name||'your child'}’s interests.`;
+  }
+
+  function loveReason(p){
+    const matches=p.interests.filter(i=>(state.profile.interests||[]).includes(i));
+    if(matches.length===0) return 'A different format that still suits this age and play stage.';
+    if(matches.length===1) return `Matches an interest in ${matches[0].toLowerCase()}.`;
+    return `Connects ${matches[0].toLowerCase()} with ${matches[1].toLowerCase()}.`;
+  }
+
+  function renderOnboarding(){
+    if(state.completed){ onboardingEl.style.display='none'; mainAppEl.style.display='block'; return; }
+    onboardingEl.style.display='block'; mainAppEl.style.display='none';
+    const step=state.onboardingStep;
+    if(step===-1){
+      const hero=products.slice(0,3);
+      onboardingEl.className='welcome-wrap';
+      onboardingEl.innerHTML=`<div class="welcome-logo"><div class="welcome-logo-mark">✨</div>SmartRoom</div>
+        <h1 class="welcome-title">Find what belongs in their Playroom next.</h1>
+        <p class="welcome-copy">Add what they already have and love. SmartRoom looks at the range of cognitive play around them, then helps you choose what is genuinely worth adding next.</p>
+        <div class="hero-products">${hero.map((p,i)=>`<div class="hero-product hp${i+1}"><img src="${p.image}" alt="${escapeHtml(p.name)}"></div>`).join('')}</div>
+        <button class="btn btn-primary" id="startOnboarding" style="width:100%;min-height:54px;font-size:16px">Build my child’s profile</button>
+        <div class="welcome-points">
+          <div class="welcome-point"><div class="welcome-point-icon">🧸</div><div><strong>Start with what you already own</strong><span>Your Playroom becomes the context behind every recommendation.</span></div></div>
+          <div class="welcome-point"><div class="welcome-point-icon">🧠</div><div><strong>Understand why each match matters</strong><span>Short cognitive explanations, without judging or scoring your child.</span></div></div>
+          <div class="welcome-point"><div class="welcome-point-icon">🎁</div><div><strong>Save wishes and send them to family</strong><span>Turn “what should we get?” into a one-tap answer.</span></div></div>
+        </div>
+        <p class="source-note">Prototype: product imagery and retailer links are used only to make the MVP shopping experience realistic.</p>`;
       return;
     }
-    selectedDetailedGiftSkills.push(skill);
-    btn.classList.add("selected");
+    onboardingEl.className='onboarding';
+    const dots=[0,1,2,3].map(i=>`<div class="step-dot ${i<=step?'active':''}"></div>`).join('');
+    let body='';
+    if(step===0){
+      body=`<div class="hero-mark">✨</div><div class="eyebrow">A few seconds of context</div><h1>Who are we building for?</h1><p class="subtle" style="font-size:16px">We only need enough to make the first matches feel personal.</p><div class="stepper">${dots}</div><div class="card form-card"><label for="childName">Child name or nickname</label><input id="childName" type="text" maxlength="30" placeholder="e.g. Sofia" value="${escapeHtml(state.profile.name)}"><div style="height:14px"></div><label for="childAge">Age</label><select id="childAge">${[4,5,6,7,8].map(a=>`<option value="${a}" ${Number(state.profile.age)===a?'selected':''}>${a} years</option>`).join('')}</select><div style="height:16px"></div><button class="btn btn-primary" style="width:100%" id="nextOnboarding">Continue</button></div>`;
+    } else if(step===1){
+      body=`<div class="eyebrow">Step 2</div><h1>What are they into?</h1><p class="subtle">Pick a few. Fun comes first; the cognitive fit comes underneath.</p><div class="stepper">${dots}</div><div class="chip-grid">${interests.map(x=>`<button class="chip ${state.profile.interests.includes(x)?'selected':''}" data-interest="${escapeHtml(x)}">${escapeHtml(x)}</button>`).join('')}</div><div style="height:22px"></div><div class="btn-row"><button class="btn btn-ghost" id="backOnboarding">Back</button><button class="btn btn-primary" id="nextOnboarding">Continue</button></div>`;
+    } else if(step===2){
+      body=`<div class="eyebrow">Step 3</div><h1>What’s already in the Playroom?</h1><p class="subtle">Tap the obvious things. You can add specific games later in one tap.</p><div class="stepper">${dots}</div><div class="chip-grid">${playroomLibrary.slice(0,12).map(x=>`<button class="chip ${state.playroom.includes(x.id)?'selected':''}" data-playroom-select="${x.id}">${x.emoji} ${escapeHtml(x.name)}</button>`).join('')}</div><div style="height:22px"></div><div class="btn-row"><button class="btn btn-ghost" id="backOnboarding">Back</button><button class="btn btn-primary" id="nextOnboarding">Continue</button></div>`;
+    } else {
+      body=`<div class="eyebrow">Step 4</div><h1>Any regular activities?</h1><p class="subtle">Swimming, football, dance and music also shape the play environment.</p><div class="stepper">${dots}</div><div class="chip-grid">${activities.map(x=>`<button class="chip ${state.profile.activities.includes(x)?'selected':''}" data-activity="${escapeHtml(x)}">${escapeHtml(x)}</button>`).join('')}</div><div style="height:22px"></div><div class="btn-row"><button class="btn btn-ghost" id="backOnboarding">Back</button><button class="btn btn-primary" id="finishOnboarding">Start matching</button></div>`;
+    }
+    onboardingEl.innerHTML=body;
   }
-  updateSkillSelectionStatus();
-}
 
-function updateSkillSelectionStatus(){
-  const el=document.getElementById("skillSelectionText");
-  if(el) el.textContent=`${selectedDetailedGiftSkills.length} of 3 selected`;
-}
-
-function clearDetailedSkills(){
-  selectedDetailedGiftSkills=[];
-  document.querySelectorAll("[data-detail-skill]").forEach(btn=>btn.classList.remove("selected"));
-  updateSkillSelectionStatus();
-}
-
-function useSuggestedFocusFromBuilder(){
-  closeModal("skillBuilderModal");
-  useSuggestedGiftFocus();
-  window.setTimeout(()=>document.getElementById("giftGrid")?.scrollIntoView({behavior:"smooth",block:"start"}),80);
-}
-
-function applyDetailedGiftSkills(){
-  if(!selectedDetailedGiftSkills.length){
-    toast("Choose at least 1 skill");
-    return;
+  function renderHeader(){
+    document.getElementById('childLine').textContent = `${state.profile.name||'Child'}, age ${state.profile.age} · ${state.playroom.length} Playroom items`;
+    document.getElementById('profileBtn').textContent=initials();
   }
-  currentGiftMode="custom";
-  const ranked=rankProductsForDetailedSkills(selectedDetailedGiftSkills);
-  const labels=selectedDetailedGiftSkills.map(s=>DETAIL_SKILL_LABELS[s]);
-  renderGiftResults(
-    ranked,
-    "3 matches for your cognitive focus",
-    labels.join(" + "),
-    selectedDetailedGiftSkills
-  );
-  renderCustomFocusSummary();
-  closeModal("skillBuilderModal");
-  window.setTimeout(()=>document.getElementById("giftGrid")?.scrollIntoView({behavior:"smooth",block:"start"}),80);
-}
 
-function renderCustomFocusSummary(){
-  const el=document.getElementById("customFocusSummary");
-  if(!el)return;
-  if(!selectedDetailedGiftSkills.length){
-    el.innerHTML="";
-    return;
+  function renderDiscover(){
+    const p=currentProduct();
+    if(!p){
+      discoverEl.innerHTML=`<div class="deck-empty card"><h2>You’ve seen the current deck.</h2><p class="subtle">Refresh skipped games or add more Playroom context for a new set of matches.</p><button class="btn btn-primary" id="resetSkipped">Refresh deck</button></div>`;
+      return;
+    }
+    const hintClass=state.seenSwipeHint?'':' swipe-hint-active';
+    discoverEl.innerHTML=`
+      <div class="discover-head simple"><div class="eyebrow">Personalized for ${escapeHtml(state.profile.name||'your child')}</div><h1>Find their next favorite.</h1><p class="subtle">Swipe left to skip or right to save. Every choice sharpens the next match.</p></div>
+      <article class="card product-card${hintClass}" id="productCard" data-product="${p.id}">
+        <div class="product-visual"><div class="match-badge">SmartRoom match</div><div class="amazon-badge">Amazon</div><div class="swipe-stamp nope" id="nopeStamp">Skip</div><div class="swipe-stamp like" id="likeStamp">Wish</div><img src="${p.image}" alt="${escapeHtml(p.name)}" onerror="this.style.display='none';this.nextElementSibling.style.display='grid'"><div class="product-fallback">${p.emoji}</div></div>
+        <div class="product-body">
+          <div class="product-title-row"><div><div class="product-name">${escapeHtml(p.name)}</div><div class="product-meta">${escapeHtml(p.desc)} · Ages ${p.age[0]}–${p.age[1]} · ~€${p.price}</div></div></div>
+          <div class="reason-box"><div class="reason-label">Why ${escapeHtml(state.profile.name||'they')} may love it</div><div class="reason-text">${escapeHtml(loveReason(p))}</div></div>
+          <div class="reason-box" style="background:var(--sage)"><div class="reason-label">Why SmartRoom matched it</div><div class="reason-text">${escapeHtml(recommendationReason(p))}</div></div>
+          <div>${skillPills(p.skills,3)}</div>
+          <div class="action-row"><button class="btn btn-skip" id="skipProduct">✕ Skip</button><button class="btn btn-wish" id="saveProduct">♡ Add to Wishes</button></div>
+          <div class="secondary-actions"><button id="ownProduct">Already own it</button><a class="amazon-link" href="${p.amazon}" target="_blank" rel="noopener">Buy on Amazon ↗</a></div>
+          ${state.seenSwipeHint?'':'<div class="swipe-cue">← skip &nbsp;&nbsp; swipe &nbsp;&nbsp; save →</div>'}
+          <div class="retailer-note">Indicative demo price. Amazon availability and price may vary.</div>
+        </div>
+      </article>`;
   }
-  el.innerHTML=selectedDetailedGiftSkills.map(s=>`<span class="focus-token">${DETAIL_SKILL_LABELS[s]}</span>`).join("");
-}
 
-function renderGifts(){
-  applyChildProfile();
-  if(currentGiftMode==="custom" && selectedDetailedGiftSkills.length){
-    const ranked=rankProductsForDetailedSkills(selectedDetailedGiftSkills);
-    renderGiftResults(ranked,"3 matches for your cognitive focus",selectedDetailedGiftSkills.map(s=>DETAIL_SKILL_LABELS[s]).join(" + "),selectedDetailedGiftSkills);
-  }else{
-    useSuggestedGiftFocus();
+  function renderPlayroom(){
+    const map=broadMap();
+    const next=lowSkills(3);
+    const owned=state.playroom.map(ownedItemById).filter(Boolean);
+    const allActivities=[...(state.profile.activities||[]).map(name=>({id:name,name})),...(state.customActivities||[])];
+    playroomEl.innerHTML=`
+      <div class="section"><div class="eyebrow">The context behind every match</div><h1>${escapeHtml(state.profile.name||'Your child')}’s Playroom</h1><p class="subtle">Just enough context for smarter buying — never an inventory chore.</p></div>
+      <div class="card playroom-overview section">
+        <h2>What’s already here</h2>
+        <div class="stat-row"><div class="stat"><strong>${owned.length}</strong><span>Playroom items</span></div><div class="stat"><strong>${allActivities.length}</strong><span>Regular activities</span></div></div>
+        <div class="existing-section"><div class="existing-title">Playroom items</div><div class="mini-owned-list">${owned.length?owned.map(x=>`<span class="owned-chip">${x.emoji||'🎲'} ${escapeHtml(x.name)}<button class="x" data-remove-owned="${x.id}" aria-label="Remove ${escapeHtml(x.name)}">×</button></span>`).join(''):'<span class="subtle">Nothing added yet.</span>'}</div></div>
+        <div class="existing-section"><div class="existing-title">Activities</div><div class="mini-owned-list">${allActivities.length?allActivities.map(x=>`<span class="owned-chip activity-chip">🏃 ${escapeHtml(x.name)}<button class="x" data-remove-activity="${escapeHtml(x.id)}" aria-label="Remove ${escapeHtml(x.name)}">×</button></span>`).join(''):'<span class="subtle">No regular activities added yet.</span>'}</div></div>
+        <div style="height:14px"></div>
+        <button class="feature-action green" id="openAddDialog"><span class="feature-icon">＋</span><span><strong>Add something</strong><span>Add a toy/game or a regular activity.</span></span><span class="feature-chevron">›</span></button>
+      </div>
+      <div class="card playmap section"><div class="eyebrow">Play Map</div><h2>What this environment already offers</h2><p class="subtle">This maps the play opportunities around ${escapeHtml(state.profile.name||'your child')} — not their ability.</p>${map.map(m=>`<div class="map-row"><div class="map-label">${escapeHtml(m.label)}</div><div class="bar"><span style="width:${Math.max(8,m.value)}%"></span></div><div class="map-state">${m.value>=72?'Strong':m.value>=42?'Present':'Explore'}</div></div>`).join('')}<div class="next-focus"><strong>A useful next direction</strong><div class="next-skills">${skillPills(Object.fromEntries(next.map(k=>[k,5])),3)}</div></div></div>
+      <button class="feature-action" id="openBundleDialog"><span class="feature-icon">🧩</span><span><strong>Build / complete the Playroom</strong><span>Let SmartRoom create a complementary bundle for your budget.</span></span><span class="feature-chevron">›</span></button>`;
   }
-}
-function openAmazon(q){
-  window.open("https://www.amazon.de/s?k="+encodeURIComponent(q),"_blank","noopener");
-}
-document.addEventListener("click",e=>{
-  if(e.target.classList.contains("chip")){
-    const parent=e.target.parentElement;
-    if(parent && parent.classList.contains("multi")) e.target.classList.toggle("selected");
-    else if(parent && parent.dataset.filter){
-      parent.querySelectorAll(".chip").forEach(c=>c.classList.remove("selected")); e.target.classList.add("selected");
+
+  const categoryConfig={
+    building:{label:'Building',emoji:'🧱',groups:['construction'],skills:{spatial:4,planning:3,problemSolving:3,creativity:3,fineMotor:2}},
+    games:{label:'Games & cards',emoji:'🎲',groups:['board','cards','memory','puzzle'],skills:{attention:3,workingMemory:3,planning:2,cooperation:2,inhibition:2}},
+    creative:{label:'Creative',emoji:'🎨',groups:['creative'],skills:{creativity:5,fineMotor:4,planning:2,flexibility:3}},
+    pretend:{label:'Pretend play',emoji:'🧸',groups:['pretend'],skills:{storytelling:4,language:3,creativity:4,cooperation:2}},
+    movement:{label:'Movement',emoji:'⚽',groups:['movement'],skills:{coordination:5,bodyAwareness:4,motorPlanning:4,cooperation:2}},
+    books:{label:'Books & puzzles',emoji:'📚',groups:['language','puzzle'],skills:{language:4,storytelling:3,attention:3,problemSolving:3,spatial:2}}
+  };
+
+  function inferCustomActivitySkills(name){
+    const n=name.toLowerCase();
+    if(/swim|football|soccer|dance|gym|bike|cycling|sport|tennis|basket|climb|martial/.test(n)) return {coordination:4,bodyAwareness:4,motorPlanning:3,attention:2,cooperation:2};
+    if(/music|piano|guitar|drum|sing/.test(n)) return {attention:4,workingMemory:4,patterns:4,coordination:2,patience:3};
+    if(/theatre|drama|art|draw|paint/.test(n)) return {creativity:4,language:3,storytelling:4,cooperation:3,flexibility:3};
+    return {attention:2,planning:2,cooperation:2,creativity:2};
+  }
+
+  function renderAddDialog(){
+    const c=document.getElementById('addDialogContent'); if(!c)return;
+    const title=document.getElementById('addDialogTitle');
+    if(!addFlow.type){
+      title.textContent='Add something';
+      c.innerHTML=`<p class="subtle">What would you like SmartRoom to know about?</p><div class="modal-choice-grid"><button class="modal-choice" data-add-type="item"><div class="mi">🧸</div><strong>Playroom item</strong><span>A toy, board game, puzzle, art set or other thing they already have.</span></button><button class="modal-choice" data-add-type="activity"><div class="mi">🏃</div><strong>Activity</strong><span>A regular hobby such as swimming, football, dance or music.</span></button></div>`;
+      return;
+    }
+    if(addFlow.type==='activity'){
+      title.textContent='Add an activity';
+      c.innerHTML=`<button class="modal-back" data-add-back="root">← Back</button><p class="subtle">Tap one, or write your own.</p><div class="chip-grid">${activities.filter(x=>!state.profile.activities.includes(x)).map(x=>`<button class="chip small" data-add-activity="${escapeHtml(x)}">${escapeHtml(x)}</button>`).join('')||'<span class="subtle">All starter activities are already added.</span>'}</div><div class="custom-add"><label for="customActivityInput">Something else?</label><div class="custom-row"><input id="customActivityInput" type="text" maxlength="40" placeholder="e.g. Tennis lessons"><button class="btn btn-soft" id="addCustomActivity">Add</button></div></div>`;
+      return;
+    }
+    if(!addFlow.category){
+      title.textContent='Add a Playroom item';
+      c.innerHTML=`<button class="modal-back" data-add-back="root">← Back</button><p class="subtle">Choose the closest category.</p><div class="category-grid">${Object.entries(categoryConfig).map(([k,v])=>`<button class="category-btn" data-add-category="${k}">${v.emoji} ${escapeHtml(v.label)}</button>`).join('')}</div>`;
+      return;
+    }
+    const cfg=categoryConfig[addFlow.category];
+    const options=playroomLibrary.filter(x=>cfg.groups.includes(x.group)&&!state.playroom.includes(x.id));
+    title.textContent=cfg.label;
+    c.innerHTML=`<button class="modal-back" data-add-back="categories">← Categories</button><p class="subtle">Tap an item, or write the exact game/toy if it isn’t listed.</p><div class="chip-grid">${options.map(x=>`<button class="chip small" data-add-item="${x.id}">${x.emoji} ${escapeHtml(x.name)}</button>`).join('')||'<span class="subtle">No unused starter items in this category.</span>'}</div><div class="custom-add"><label for="customItemInput">Can’t find it?</label><div class="custom-row"><input id="customItemInput" type="text" maxlength="50" placeholder="e.g. Catan Junior"><button class="btn btn-soft" id="addCustomItem">Add</button></div></div>`;
+  }
+
+  function renderAddPanel(){}
+
+  function generateBundle(){
+    const budget=Number(state.bundleBudget)||150;
+    const candidates=products.filter(p=>!state.playroom.includes(p.id) && !state.wishes.includes(p.id) && Number(state.profile.age)>=p.age[0] && Number(state.profile.age)<=p.age[1]);
+    const selected=[]; let spent=0; const usedGroups=new Set(ownedGroups());
+    let pool=[...candidates];
+    while(selected.length<5 && pool.length){
+      pool.sort((a,b)=>{
+        const groupBonusA=usedGroups.has(a.group)?0:20, groupBonusB=usedGroups.has(b.group)?0:20;
+        return (scoreProduct(b)+groupBonusB)-(scoreProduct(a)+groupBonusA);
+      });
+      let pick=pool.find(p=>spent+p.price<=budget);
+      if(!pick) break;
+      selected.push(pick); spent+=pick.price; usedGroups.add(pick.group); pool=pool.filter(p=>p.id!==pick.id);
+    }
+    state.bundle=selected.map(p=>p.id); save();
+  }
+
+  function renderBundlePanel(){
+    const panel=document.getElementById('bundleContent'); if(!panel) return;
+    if(!state.bundle.length) generateBundle();
+    const items=state.bundle.map(id=>products.find(p=>p.id===id)).filter(Boolean);
+    const total=items.reduce((a,p)=>a+p.price,0);
+    panel.innerHTML=`<p class="subtle">We’ve spread this bundle across different kinds of play so it introduces a broader range of cognitive skills, rather than repeating what the Playroom already offers.</p><label for="bundleBudget">Budget</label><select id="bundleBudget"><option value="80" ${state.bundleBudget==80?'selected':''}>Around €80</option><option value="120" ${state.bundleBudget==120?'selected':''}>Around €120</option><option value="150" ${state.bundleBudget==150?'selected':''}>Around €150</option><option value="220" ${state.bundleBudget==220?'selected':''}>Around €220</option></select><div class="bundle-card card"><div style="display:flex;justify-content:space-between;gap:10px"><strong>Suggested bundle</strong><strong>~€${total}</strong></div>${items.map(p=>`<div class="bundle-item"><div class="bundle-emoji"><img src="${p.image}" alt="${escapeHtml(p.name)}"></div><div class="bundle-main"><div class="bundle-name">${escapeHtml(p.name)}</div><div class="bundle-skills">${Object.entries(p.skills).sort((a,b)=>b[1]-a[1]).slice(0,2).map(([k])=>skillLabels[k]).join(' · ')}</div></div><div><button class="bundle-swap" data-swap-bundle="${p.id}">Swap</button></div></div>`).join('')}</div><div style="height:10px"></div><button class="btn btn-soft" id="saveBundleWishes" style="width:100%">Save bundle to Wishes</button><div class="retailer-note">Bundle prices are indicative; Amazon prices may change.</div>`;
+  }
+
+  function renderWishes(){
+    const ws=state.wishes.map(id=>products.find(p=>p.id===id)).filter(Boolean);
+    wishesEl.innerHTML=`
+      <div class="section"><div class="eyebrow">Approved by you</div><h1>${escapeHtml(state.profile.name||'Child')}’s Wishes 🎁</h1><p class="subtle">Keep good gift ideas in one place, buy them directly, or share them with family and friends.</p></div>
+      <div class="section">${ws.length?ws.map(p=>`<div class="card wish-card"><div class="wish-thumb"><img src="${p.image}" alt="${escapeHtml(p.name)}"></div><div class="wish-main"><div class="wish-name">${escapeHtml(p.name)}</div><div class="wish-meta">~€${p.price} · ${escapeHtml(p.desc)}</div><div>${skillPills(p.skills,2)}</div><div class="wish-cta-grid"><a class="wish-cta amazon" href="${p.amazon}" target="_blank" rel="noopener">🛒 Buy on Amazon</a><button class="wish-cta share" data-share-single="${p.id}">↗ Share wish</button></div><button class="wish-remove" data-remove-wish="${p.id}">Remove from Wishes</button>${state.reserved.includes(p.id)?'<div style="margin-top:6px"><span class="pill" style="background:var(--sage)">Reserved ✓</span></div>':''}</div></div>`).join(''):`<div class="card" style="padding:22px;text-align:center"><div style="font-size:42px">♡</div><h2>No Wishes yet</h2><p class="subtle">Save a few matches and this becomes a ready-made answer when someone asks what gift to buy.</p><button class="btn btn-soft" data-go="discover">Discover products</button></div>`}</div>
+      ${ws.length?`<button class="wishes-map-card" id="openWishesMap"><span class="wm-icon">🧠</span><span><strong>Wishes Map</strong><span>See the cognitive play these saved games would add — and where they overlap.</span></span><span class="feature-chevron">›</span></button><div class="wishes-footer-actions"><button class="feature-action share-all" id="shareWishes"><span class="feature-icon">🎁</span><span><strong>Share all Wishes</strong><span>Send the whole list to family or friends.</span></span><span class="feature-chevron">›</span></button><button class="feature-action discover-more" data-go="discover"><span class="feature-icon">✨</span><span><strong>Discover more</strong><span>Find another good match.</span></span><span class="feature-chevron">›</span></button></div><p class="subtle" style="text-align:center;margin-top:10px">Each Wish can also be bought directly on Amazon.</p>`:''}`;
+  }
+
+  function renderGiftView(){
+    const ws=state.wishes.map(id=>products.find(p=>p.id===id)).filter(Boolean);
+    document.getElementById('giftContent').innerHTML=`<div class="gift-header"><div class="eyebrow">SmartRoom Wishes</div><h2>Gift ideas for ${escapeHtml(state.profile.name||'this child')} 🎁</h2><p class="subtle" style="color:var(--ink);margin:0">Picked by the parent because they fit what ${escapeHtml(state.profile.name||'they')} enjoy and add something useful to the Playroom.</p></div>${ws.map(p=>`<div class="card wish-card"><div class="wish-thumb"><img src="${p.image}" alt="${escapeHtml(p.name)}"></div><div class="wish-main"><div class="wish-name">${escapeHtml(p.name)}</div><div class="wish-meta">~€${p.price} · ${Object.entries(p.skills).sort((a,b)=>b[1]-a[1]).slice(0,2).map(([k])=>skillLabels[k]).join(' + ')}</div><div class="wish-actions">${state.reserved.includes(p.id)?'<button class="reserved">Someone is getting this ✓</button>':`<button data-reserve-gift="${p.id}">I’m getting this</button>`}<a class="amazon-link" href="${p.amazon}" target="_blank" rel="noopener">Buy on Amazon ↗</a></div></div></div>`).join('')}`;
+  }
+
+  function wishShareMessage(p){
+    const child=state.profile.name||'our child';
+    return `Gift idea for ${child}: ${p.name} (~€${p.price}). We saved it on SmartRoom because it looks like a good fit for ${child}'s Playroom. Amazon: ${p.amazon}`;
+  }
+
+  function allWishesShareMessage(){
+    const child=state.profile.name||'our child';
+    const ws=state.wishes.map(id=>products.find(p=>p.id===id)).filter(Boolean);
+    const lines=ws.map(p=>`• ${p.name} (~€${p.price}) — ${p.amazon}`).join('\n');
+    return `${child}'s Wishes 🎁\n\nHere are a few things we think would fit ${child}'s Playroom well:\n\n${lines}\n\nSaved with SmartRoom.`;
+  }
+
+  function renderShareWishDialog(productId){
+    const isAll=productId==='__all__';
+    const p=isAll?null:products.find(x=>x.id===productId); if(!isAll&&!p)return;
+    sharingWishId=productId; shareMethod='email';
+    document.getElementById('shareWishTitle').textContent=isAll?'Share all Wishes':`Share ${p.name}`;
+    const content=document.getElementById('shareWishContent');
+    const message=isAll?allWishesShareMessage():wishShareMessage(p);
+    content.innerHTML=`<p class="subtle">Choose email or text message. SmartRoom will open your device’s app with ${isAll?'the whole list':'the gift idea'} ready to send.</p>
+      <div class="share-choice"><button class="share-method selected" data-share-method="email"><div style="font-size:24px">✉️</div><strong>Email</strong><span>Send it to an email address.</span></button><button class="share-method" data-share-method="sms"><div style="font-size:24px">💬</div><strong>Text message</strong><span>Send it to a phone number.</span></button></div>
+      <div class="share-fields"><label id="shareRecipientLabel" for="shareRecipient">Email address</label><input id="shareRecipient" type="text" inputmode="email" placeholder="name@example.com"><div class="share-preview">${escapeHtml(message)}</div><div style="height:12px"></div><button class="btn btn-soft" id="sendWishShare" style="width:100%">Open email</button></div>`;
+    bindShareWishDialog();
+  }
+
+  function bindShareWishDialog(){
+    const content=document.getElementById('shareWishContent'); if(!content)return;
+    content.querySelectorAll('[data-share-method]').forEach(btn=>btn.addEventListener('click',()=>{
+      shareMethod=btn.dataset.shareMethod;
+      content.querySelectorAll('[data-share-method]').forEach(x=>x.classList.toggle('selected',x.dataset.shareMethod===shareMethod));
+      const label=content.querySelector('#shareRecipientLabel'), input=content.querySelector('#shareRecipient'), send=content.querySelector('#sendWishShare');
+      if(shareMethod==='email'){label.textContent='Email address';input.placeholder='name@example.com';input.inputMode='email';send.textContent='Open email';}
+      else{label.textContent='Phone number';input.placeholder='+30 69…';input.inputMode='tel';send.textContent='Open text message';}
+    }));
+    content.querySelector('#sendWishShare')?.addEventListener('click',()=>{
+      const isAll=sharingWishId==='__all__';
+      const p=isAll?null:products.find(x=>x.id===sharingWishId); if(!isAll&&!p)return;
+      const recipient=content.querySelector('#shareRecipient')?.value.trim()||'';
+      const msg=isAll?allWishesShareMessage():wishShareMessage(p);
+      if(shareMethod==='email'){
+        const subject=isAll?`${state.profile.name||'Our child'}'s Wishes`:`Gift idea for ${state.profile.name||'our child'}: ${p.name}`;
+        window.location.href=`mailto:${encodeURIComponent(recipient)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(msg)}`;
+      }else{
+        const prefix=recipient?encodeURIComponent(recipient):'';
+        window.location.href=`sms:${prefix}?&body=${encodeURIComponent(msg)}`;
+      }
+    });
+  }
+
+  function wishesMapRows(ws){
+    const current=getPlayMap().scores;
+    const future=getPlayMap(ws).scores;
+    const curBroad=broadRawFromScores(current);
+    const futBroad=broadRawFromScores(future);
+    const max=Math.max(1,...Object.values(futBroad));
+    return Object.keys(broadSkillGroups).map(label=>({
+      label,
+      current:Math.round((curBroad[label]/max)*100),
+      future:Math.round((futBroad[label]/max)*100),
+      delta:futBroad[label]-curBroad[label]
+    })).sort((a,b)=>b.delta-a.delta);
+  }
+
+  function wishesOverlap(ws){
+    const counts={};
+    ws.forEach(p=>{const label=dominantBroadForProduct(p);counts[label]=(counts[label]||0)+1;});
+    const sorted=Object.entries(counts).sort((a,b)=>b[1]-a[1]);
+    if(!sorted.length||sorted[0][1]<2)return null;
+    return {label:sorted[0][0],count:sorted[0][1]};
+  }
+
+  function wishesAlternative(ws,overlap){
+    if(!overlap)return null;
+    return rankedProducts().map(x=>x.p).find(p=>!state.wishes.includes(p.id)&&!state.playroom.includes(p.id)&&dominantBroadForProduct(p)!==overlap.label)||null;
+  }
+
+  function renderWishesMap(){
+    const ws=state.wishes.map(id=>products.find(p=>p.id===id)).filter(Boolean);
+    const content=document.getElementById('wishesMapContent'); if(!content)return;
+    if(!ws.length){content.innerHTML='<p class="subtle">Save a few Wishes first and their map will appear here.</p>';return;}
+    const rows=wishesMapRows(ws);
+    const current=getPlayMap().scores, future=getPlayMap(ws).scores;
+    const topSkills=Object.keys(future).map(k=>({k,d:future[k]-current[k]})).filter(x=>x.d>0).sort((a,b)=>b.d-a.d).slice(0,5);
+    const overlap=wishesOverlap(ws);
+    const alt=wishesAlternative(ws,overlap);
+    content.innerHTML=`<p class="subtle">This compares the cognitive play already represented by the Playroom and regular activities with what the saved Wishes would add.</p>
+      <div class="wm-legend"><span><i class="wm-dot current"></i>Current</span><span><i class="wm-dot future"></i>With Wishes</span></div>
+      <div>${rows.map(r=>`<div class="wm-row"><div class="wm-row-head"><strong>${escapeHtml(r.label)}</strong><span class="wm-delta">${r.delta>0?'adds variety':'little change'}</span></div><div class="wm-bar-track"><span class="wm-bar-future" style="width:${Math.max(4,r.future)}%"></span><span class="wm-bar-current" style="width:${Math.max(2,r.current)}%"></span></div></div>`).join('')}</div>
+      <div class="divider"></div><h3>What these Wishes add most</h3><p class="subtle">Tap a skill to see which saved games contribute to it.</p><div class="wm-skill-list">${topSkills.map(x=>`<button class="wm-skill-btn" data-wish-skill="${x.k}">${escapeHtml(skillLabels[x.k])}</button>`).join('')}</div><div class="wm-detail" id="wishSkillDetail">Choose a skill above.</div>
+      ${overlap?`<div class="wm-overlap"><strong>${overlap.count>=3?`${overlap.count} Wishes are quite similar.`:'Some Wishes lean toward the same kind of play.'}</strong><div class="subtle" style="color:var(--ink);margin-top:3px">${escapeHtml(overlap.label)} appears repeatedly. That is not bad, but one different choice could broaden the cognitive variety.</div>${alt?`<div class="wm-alt"><img src="${alt.image}" alt="${escapeHtml(alt.name)}"><div class="wm-alt-main"><div class="wm-alt-name">Try something different: ${escapeHtml(alt.name)}</div><div class="wm-alt-copy">A stronger contrast with the current Wishes.</div></div><button class="bundle-swap" id="viewWishAlternative" data-alt-product="${alt.id}">See it</button></div>`:''}</div>`:''}`;
+    bindWishesMap();
+  }
+
+  function bindWishesMap(){
+    const content=document.getElementById('wishesMapContent'); if(!content)return;
+    content.querySelectorAll('[data-wish-skill]').forEach(btn=>btn.addEventListener('click',()=>{
+      content.querySelectorAll('[data-wish-skill]').forEach(x=>x.classList.toggle('active',x===btn));
+      const k=btn.dataset.wishSkill;
+      const contributing=state.wishes.map(id=>products.find(p=>p.id===id)).filter(p=>p?.skills?.[k]).sort((a,b)=>(b.skills[k]||0)-(a.skills[k]||0));
+      const detail=content.querySelector('#wishSkillDetail');
+      detail.innerHTML=contributing.length?`<strong>${escapeHtml(skillLabels[k])}</strong><br>${contributing.map(p=>escapeHtml(p.name)).join(' · ')}`:'No saved Wish contributes strongly to this area yet.';
+    }));
+    content.querySelector('#viewWishAlternative')?.addEventListener('click',e=>{
+      state.currentProductId=e.currentTarget.dataset.altProduct;state.activeScreen='discover';save();wishesMapDialog.close();renderAll();showToast('Showing a more complementary option.');
+    });
+  }
+
+  function renderProfilePanel(){
+    const name=state.profile.name||'Child';
+    return `<div class="eyebrow">Child profile</div><h2>${escapeHtml(name)}</h2><label for="profileName">Name</label><input id="profileName" type="text" value="${escapeHtml(name)}"><div style="height:12px"></div><label for="profileAge">Age</label><select id="profileAge">${[4,5,6,7,8].map(a=>`<option value="${a}" ${Number(state.profile.age)===a?'selected':''}>${a} years</option>`).join('')}</select><div style="height:14px"></div><h3>Interests</h3><div class="chip-grid">${interests.map(x=>`<button class="chip small ${state.profile.interests.includes(x)?'selected':''}" data-profile-interest="${escapeHtml(x)}">${escapeHtml(x)}</button>`).join('')}</div><div style="height:14px"></div><h3>Regular activities</h3><div class="chip-grid">${activities.map(x=>`<button class="chip small ${state.profile.activities.includes(x)?'selected':''}" data-profile-activity="${escapeHtml(x)}">${escapeHtml(x)}</button>`).join('')}</div><div style="height:8px"></div>${(state.customActivities||[]).length?`<p class="subtle">Also added: ${(state.customActivities||[]).map(a=>escapeHtml(a.name)).join(' · ')}</p>`:''}<div style="height:16px"></div><button class="btn btn-primary" id="saveProfile" style="width:100%">Save profile</button><div style="height:8px"></div><button class="btn btn-ghost" id="resetDemo" style="width:100%">Reset MVP</button>`;
+  }
+
+  function renderAll(){
+    renderOnboarding();
+    if(!state.completed) return;
+    renderHeader(); renderDiscover(); renderPlayroom(); renderWishes();
+    document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+    document.getElementById(`${state.activeScreen}Screen`)?.classList.add('active');
+    document.querySelectorAll('.nav-btn').forEach(b=>b.classList.toggle('active',b.dataset.screen===state.activeScreen));
+    bindDynamic();
+  }
+
+  function bindDynamic(){
+    document.querySelectorAll('.skill-info').forEach(btn=>btn.addEventListener('click',e=>{ e.stopPropagation(); const k=btn.dataset.skill; document.getElementById('skillTitle').textContent=skillInfo[k]?.[0]||'Skill'; document.getElementById('skillText').textContent=skillInfo[k]?.[1]||''; skillDialog.showModal(); }));
+
+    document.getElementById('skipProduct')?.addEventListener('click',()=>{ const p=currentProduct(); if(!p)return; state.seenSwipeHint=true; state.skipped.push(p.id); state.currentProductId=null; save(); showToast('Skipped. We’ll learn from that.'); nextProduct(); });
+    document.getElementById('saveProduct')?.addEventListener('click',()=>{ const p=currentProduct(); if(!p)return; state.seenSwipeHint=true; if(!state.wishes.includes(p.id)) state.wishes.push(p.id); state.currentProductId=null; save(); showToast('Saved to Wishes'); nextProduct(); });
+    document.getElementById('ownProduct')?.addEventListener('click',()=>{ const p=currentProduct(); if(!p)return; state.seenSwipeHint=true; if(!state.playroom.includes(p.id)) state.playroom.push(p.id); state.currentProductId=null; save(); showToast(`Added ${p.name} to the Playroom`); nextProduct(); });
+    document.getElementById('resetSkipped')?.addEventListener('click',()=>{ state.skipped=[];state.currentProductId=null;save();renderAll(); });
+    document.getElementById('openAddDialog')?.addEventListener('click',()=>{ addFlow={type:null,category:null}; renderAddDialog(); addDialog.showModal(); bindAddDialog(); });
+    document.getElementById('openBundleDialog')?.addEventListener('click',()=>{ state.bundle=[]; renderBundlePanel(); bundleDialog.showModal(); bindBundleDialog(); });
+    document.querySelectorAll('[data-remove-owned]').forEach(btn=>btn.addEventListener('click',()=>{ state.playroom=state.playroom.filter(x=>x!==btn.dataset.removeOwned); save(); renderAll(); showToast('Removed from Playroom'); }));
+    document.querySelectorAll('[data-remove-activity]').forEach(btn=>btn.addEventListener('click',()=>{ const id=btn.dataset.removeActivity; state.profile.activities=state.profile.activities.filter(x=>x!==id); state.customActivities=(state.customActivities||[]).filter(x=>x.id!==id); save(); renderAll(); showToast('Activity removed'); }));
+
+    document.querySelectorAll('[data-remove-wish]').forEach(btn=>btn.addEventListener('click',()=>{ state.wishes=state.wishes.filter(x=>x!==btn.dataset.removeWish); state.reserved=state.reserved.filter(x=>x!==btn.dataset.removeWish); save(); renderAll(); }));
+    document.getElementById('shareWishes')?.addEventListener('click',()=>{ renderShareWishDialog('__all__'); shareWishDialog.showModal(); });
+    document.getElementById('openWishesMap')?.addEventListener('click',()=>{ renderWishesMap(); wishesMapDialog.showModal(); });
+    document.querySelectorAll('[data-share-single]').forEach(btn=>btn.addEventListener('click',()=>{ renderShareWishDialog(btn.dataset.shareSingle); shareWishDialog.showModal(); }));
+    document.querySelectorAll('[data-go]').forEach(btn=>btn.addEventListener('click',()=>{ state.activeScreen=btn.dataset.go;save();renderAll(); }));
+  }
+
+  function bindAddDialog(){
+    const content=document.getElementById('addDialogContent'); if(!content)return;
+    content.querySelectorAll('[data-add-type]').forEach(btn=>btn.addEventListener('click',()=>{addFlow={type:btn.dataset.addType,category:null};renderAddDialog();bindAddDialog();}));
+    content.querySelectorAll('[data-add-back]').forEach(btn=>btn.addEventListener('click',()=>{ if(btn.dataset.addBack==='root')addFlow={type:null,category:null}; else addFlow.category=null; renderAddDialog();bindAddDialog(); }));
+    content.querySelectorAll('[data-add-category]').forEach(btn=>btn.addEventListener('click',()=>{addFlow.category=btn.dataset.addCategory;renderAddDialog();bindAddDialog();}));
+    content.querySelectorAll('[data-add-item]').forEach(btn=>btn.addEventListener('click',()=>{ if(!state.playroom.includes(btn.dataset.addItem))state.playroom.push(btn.dataset.addItem);save();renderAll();renderAddDialog();bindAddDialog();showToast('Added to Playroom'); }));
+    content.querySelectorAll('[data-add-activity]').forEach(btn=>btn.addEventListener('click',()=>{ if(!state.profile.activities.includes(btn.dataset.addActivity))state.profile.activities.push(btn.dataset.addActivity);save();renderAll();renderAddDialog();bindAddDialog();showToast('Activity added'); }));
+    content.querySelector('#addCustomItem')?.addEventListener('click',()=>{ const input=content.querySelector('#customItemInput'); const name=input?.value.trim(); if(!name){showToast('Write a toy or game name first.');return;} const cfg=categoryConfig[addFlow.category]||categoryConfig.games; const id='custom-item-'+Date.now(); state.customItems.push({id,name,emoji:cfg.emoji,group:'custom-'+addFlow.category,skills:cfg.skills});state.playroom.push(id);save();addDialog.close();renderAll();showToast(`${name} added to the Playroom`); });
+    content.querySelector('#addCustomActivity')?.addEventListener('click',()=>{ const input=content.querySelector('#customActivityInput'); const name=input?.value.trim(); if(!name){showToast('Write an activity first.');return;} const id='custom-activity-'+Date.now(); state.customActivities.push({id,name,skills:inferCustomActivitySkills(name)});save();addDialog.close();renderAll();showToast(`${name} added`); });
+  }
+
+  function bindBundleDialog(){
+    const panel=document.getElementById('bundleContent'); if(!panel)return;
+    panel.querySelector('#bundleBudget')?.addEventListener('change',e=>{ state.bundleBudget=Number(e.target.value); state.bundle=[]; generateBundle(); renderBundlePanel(); bindBundleDialog(); });
+    panel.querySelectorAll('[data-swap-bundle]').forEach(btn=>btn.addEventListener('click',()=>{swapBundleItem(btn.dataset.swapBundle);renderBundlePanel();bindBundleDialog();}));
+    panel.querySelector('#saveBundleWishes')?.addEventListener('click',()=>{ state.bundle.forEach(id=>{if(!state.wishes.includes(id))state.wishes.push(id)}); save(); bundleDialog.close(); renderAll(); showToast('Bundle saved to Wishes'); });
+  }
+
+  function swapBundleItem(id){
+    const current=products.find(p=>p.id===id); if(!current)return;
+    const taken=new Set([...state.playroom,...state.bundle,...state.wishes]); taken.delete(id);
+    const options=products.filter(p=>!taken.has(p.id)&&Number(state.profile.age)>=p.age[0]&&Number(state.profile.age)<=p.age[1]&&p.group!==current.group).sort((a,b)=>scoreProduct(b)-scoreProduct(a));
+    if(!options.length){ showToast('No good swap found right now.'); return; }
+    state.bundle=state.bundle.map(x=>x===id?options[0].id:x); save(); showToast('Swapped for a different kind of play');
+  }
+
+  function toggleArray(arr,val){ const i=arr.indexOf(val); if(i>=0)arr.splice(i,1); else arr.push(val); }
+
+  app.addEventListener('click',e=>{
+    const btn=e.target.closest('button'); if(!btn)return;
+    if(btn.id==='startOnboarding'){state.onboardingStep=0;save();renderAll();}
+    if(btn.id==='nextOnboarding'){
+      if(state.onboardingStep===0){ const n=document.getElementById('childName')?.value.trim(); const a=Number(document.getElementById('childAge')?.value); if(!n){showToast('Add a name or nickname first.');return;} state.profile.name=n;state.profile.age=a; }
+      state.onboardingStep=Math.min(3,state.onboardingStep+1); save(); renderAll();
+    }
+    if(btn.id==='backOnboarding'){state.onboardingStep=Math.max(-1,state.onboardingStep-1);save();renderAll();}
+    if(btn.dataset.interest!==undefined){toggleArray(state.profile.interests,btn.dataset.interest);save();renderAll();}
+    if(btn.dataset.playroomSelect!==undefined){toggleArray(state.playroom,btn.dataset.playroomSelect);save();renderAll();}
+    if(btn.dataset.activity!==undefined){toggleArray(state.profile.activities,btn.dataset.activity);save();renderAll();}
+    if(btn.id==='finishOnboarding'){state.completed=true;state.activeScreen='discover';state.currentProductId=null;save();renderAll();showToast('Your first matches are ready.');}
+  });
+
+  document.querySelectorAll('.nav-btn').forEach(btn=>btn.addEventListener('click',()=>{ state.activeScreen=btn.dataset.screen; save(); renderAll(); }));
+  document.querySelectorAll('[data-close-dialog]').forEach(btn=>btn.addEventListener('click',()=>document.getElementById(btn.dataset.closeDialog)?.close()));
+
+  document.getElementById('profileBtn').addEventListener('click',()=>{
+    const existing=document.getElementById('profileInline');
+    if(existing){existing.remove();return;}
+    const panel=document.createElement('div'); panel.id='profileInline'; panel.className='card profile-panel show'; panel.style.margin='14px 18px 0'; panel.innerHTML=renderProfilePanel(); document.querySelector('.topbar').insertAdjacentElement('afterend',panel);
+    panel.querySelectorAll('[data-profile-interest]').forEach(btn=>btn.addEventListener('click',()=>{toggleArray(state.profile.interests,btn.dataset.profileInterest);btn.classList.toggle('selected');}));
+    panel.querySelectorAll('[data-profile-activity]').forEach(btn=>btn.addEventListener('click',()=>{toggleArray(state.profile.activities,btn.dataset.profileActivity);btn.classList.toggle('selected');}));
+    panel.querySelector('#saveProfile').addEventListener('click',()=>{state.profile.name=panel.querySelector('#profileName').value.trim()||state.profile.name;state.profile.age=Number(panel.querySelector('#profileAge').value)||state.profile.age;state.currentProductId=null;save();panel.remove();renderAll();showToast('Profile updated');});
+    panel.querySelector('#resetDemo').addEventListener('click',()=>{ if(confirm('Reset the SmartRoom MVP and start onboarding again?')){localStorage.removeItem('smartroom_mvp_v4');state=structuredClone(defaults);renderAll();} });
+  });
+
+  giftDialog.addEventListener('click',e=>{
+    const reserve=e.target.closest('[data-reserve-gift]');
+    if(reserve){ if(!state.reserved.includes(reserve.dataset.reserveGift))state.reserved.push(reserve.dataset.reserveGift);save();renderGiftView();renderWishes();bindDynamic();showToast('Gift reserved — duplicates avoided.'); }
+  });
+
+  // Swipe support with visible drag feedback and button fallback.
+  let swipeStart=null;
+  app.addEventListener('pointerdown',e=>{
+    const card=e.target.closest('#productCard'); if(!card||e.target.closest('button,a'))return;
+    state.seenSwipeHint=true; save(); card.classList.remove('swipe-hint-active');
+    swipeStart={x:e.clientX,y:e.clientY,card,pointerId:e.pointerId};
+    try{card.setPointerCapture(e.pointerId)}catch(err){}
+  });
+  app.addEventListener('pointermove',e=>{
+    if(!swipeStart||e.pointerId!==swipeStart.pointerId)return;
+    const dx=e.clientX-swipeStart.x,dy=e.clientY-swipeStart.y;
+    if(Math.abs(dy)>Math.abs(dx)*1.4)return;
+    const rot=Math.max(-7,Math.min(7,dx/18));
+    swipeStart.card.style.transform=`translateX(${dx}px) rotate(${rot}deg)`;
+    swipeStart.card.style.opacity=String(Math.max(.55,1-Math.abs(dx)/420));
+    const like=document.getElementById('likeStamp'),nope=document.getElementById('nopeStamp');
+    if(like)like.style.opacity=dx>25?String(Math.min(1,(dx-25)/70)):0;
+    if(nope)nope.style.opacity=dx<-25?String(Math.min(1,(-dx-25)/70)):0;
+  });
+  function endSwipe(e){
+    if(!swipeStart)return;
+    const dx=e.clientX-swipeStart.x,dy=e.clientY-swipeStart.y; const card=swipeStart.card; swipeStart=null;
+    if(Math.abs(dx)>=82&&Math.abs(dx)>Math.abs(dy)){
+      card.style.transform=`translateX(${dx>0?150:-150}px) rotate(${dx>0?7:-7}deg)`;card.style.opacity='.18';
+      setTimeout(()=>{ if(dx>0)document.getElementById('saveProduct')?.click(); else document.getElementById('skipProduct')?.click(); },120);
+    }else{
+      card.style.transform='';card.style.opacity='';
+      const like=document.getElementById('likeStamp'),nope=document.getElementById('nopeStamp');if(like)like.style.opacity=0;if(nope)nope.style.opacity=0;
     }
   }
-});
+  app.addEventListener('pointerup',endSwipe);
+  app.addEventListener('pointercancel',e=>{ if(swipeStart){swipeStart.card.style.transform='';swipeStart.card.style.opacity='';swipeStart=null;} });
 
-applyChildProfile();
-
-renderHomeGames(); renderDateStrip(); renderRecent(); renderMix(); renderGifts(); updateMixSummary(); renderHome(); applyChildProfile();
+  renderAll();
+})();
 </script>
 </body>
 </html>
